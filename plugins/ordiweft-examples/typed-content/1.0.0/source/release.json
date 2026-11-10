@@ -1,0 +1,40 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/typed-content",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "data",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "title",
+      "kind": "content"
+    }
+  ],
+  "requirements": [],
+  "files": [
+    {
+      "path": "definitions/title.json",
+      "sha256": "03d24d8200f9193c0ad1478da042c33787ff62ba8081c65b780c4fafcb4f5d0d",
+      "bytes": 113
+    },
+    {
+      "path": "title.json",
+      "sha256": "f16bdeca4341c4adf9d1f9c051e1ea5401264dcb742d7eed0c684abac1c90f78",
+      "bytes": 107
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "097e2c00f04ff8c2547d4c39a9b89cf5d1b9739f549d90c2037412df90fc25e8",
+      "bytes": 148
+    }
+  ],
+  "definitions": {
+    "title": "definitions/title.json"
+  }
+}

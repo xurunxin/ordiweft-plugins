@@ -1,0 +1,13 @@
+{
+  "formatVersion": 1,
+  "status": "unpublished",
+  "license": "Apache-2.0",
+  "publication": "manual-tuf",
+  "hostSource": {"repository": "https://github.com/xurunxin/Ordiweft", "commit": "732f0bafb581a05adab6ac8fd3cb28595b19f7fd"},
+  "packages": [
+    "ordiweft-examples/typed-content/1.0.0",
+    "ordiweft-examples/motion-templates/1.0.0",
+    "ordiweft-examples/review-skill/1.0.0",
+    "example/offline-image/1.0.1"
+  ]
+}

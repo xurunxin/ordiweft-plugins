@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/review-skill",
+  "releaseVersion": "1.0.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "732f0bafb581a05adab6ac8fd3cb28595b19f7fd",
+    "path": "examples/plugin-content/agent-skill"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@ordiweft/plugin-repository",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {"node": ">=22.19"},
+  "scripts": {"check": "node scripts/registry.mjs check", "test": "node --test tests/registry.test.mjs"}
+}
