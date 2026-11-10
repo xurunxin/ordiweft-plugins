@@ -10,3 +10,5 @@
 NOT_RUN：通用依赖编译、TS/npm 隔离构建、真实供应商、生产、多后端宿主安装、本仓库正式 namespace 审批、TUF 签名/发布和官方稳定晋级。现有节点/processor/worker 完整交付继续由 Ordiweft 主计划跟踪。
 
 源码闭包以 `.gitattributes` 的 `-text` 保持原字节，避免跨 Windows/Linux checkout 改变清单 SHA。仓库工具只准备未签名提案，不把本文件或可编辑 build-proof 当作独立可信审阅证明。
+
+首次差异检查将保留的原 CRLF 当作尾随空白而 FAIL；已仅对不可变源码闭包声明 `cr-at-eol`，保留其他空白检查，不改写原发行字节。

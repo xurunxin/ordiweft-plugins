@@ -1,2 +1,2 @@
 * text=auto eol=lf
-plugins/**/source/** -text
+plugins/**/source/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
