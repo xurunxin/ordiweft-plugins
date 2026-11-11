@@ -38,3 +38,5 @@ PASS：远程干净克隆5f3938658ba507546553d89cc8df106718f704c4，用同一可
 - PASS：实际固定b11ef92归档源码编译CLI，SHA256 3be0fa6f46107d788becb8c7b27e20f185c2a02f6f16eb381564d51b461814b1；十包check/verify/pack，原九份ZIP与community-build-v3-action-24a9024逐字节一致。新旧规范化release分别为cff274a7…ad38b与2ea14881…14020。
 - PASS：真实CLI集成3项，6.061秒、零SKIP，继续完整proof/ZIP跨CRLF/LF一致、旧证明/错误来源/错误CLI/损坏源码/制品及禁止覆盖检查；新增同一包两版本同时准备候选、独立撤回1.0.0而1.0.1保持原候选摘要，原1.0.0ZIP仍逐字节不变。
 - 本轮不执行插件、Go/TS编译、依赖安装、模型、签名或部署。来源记录及源码包不替代宿主功能/权限/恢复验证，inputRoles需支持该声明的宿主。实际产物保留在community-build-ten-b11ef92；远程干净克隆在推送后另记。
+
+PASS：远程干净克隆3ecb3526674b1143390f50d701f1e2e99289349d，使用同一显式固定CLI生成十份ZIP及完整v3 proof；与开发工作区构建逐字节一致，克隆工作区保持干净。输出在community-clean-ten-b11ef92，独立克隆在plugin-community-clone-ten；未执行插件、签名或发布。
