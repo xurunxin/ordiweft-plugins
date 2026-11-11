@@ -6,7 +6,7 @@
 
 ## 当前可用范围
 
-十三份无外部依赖的预构建包分别固定原 Ordiweft 源码提交：JSON 内容、可填提示词模板、显式 Skill、表单节点、离线固定图片 Node 适配器，以及结构文本、素材检查、私有文档文件、原文档换行规范化处理器。规范化同时保留1.0.0和声明原素材用途的1.0.1，用于同包升级与独立版本撤回。源码及 release.json 的完整文件清单一起保存。它们保留原 package/provider ID，未经命名空间审核的示例不会自称官方适配器。静态Go文档处理器1.0.1和Host Services图片供应商1.0.0另包含固定公开SDK、Go运行时许可和原构建证明；新增片场素材包携带原创Apache-2.0三角面，成员显式导入个人/团队模型库，已有十二份源码、配方及制品字节不改写。
+十四份无外部依赖的预构建包分别固定原 Ordiweft 源码提交：JSON 内容、可填提示词模板、显式 Skill、表单节点、离线固定图片 Node 适配器，以及结构文本、素材检查、私有文档文件、原文档换行规范化处理器。规范化同时保留1.0.0和声明原素材用途的1.0.1，用于同包升级与独立版本撤回。源码及 release.json 的完整文件清单一起保存。它们保留原 package/provider ID，未经命名空间审核的示例不会自称官方适配器。静态Go文档处理器1.0.1和Host Services图片供应商1.0.0另包含固定公开SDK、Go运行时许可和原构建证明；新增片场素材包携带原创Apache-2.0三角面，成员显式导入个人/团队模型库，环境预设另提供既有灯光和地面设置的显式套用，保留背景与场景值快照；已有十三份源码、配方及制品字节不改写。
 
 `portable-pack` 仅校验和打包预构建字节，不执行插件、npm 脚本、依赖安装或模型请求。它不是通用 TypeScript/npm 编译沙箱。Node与静态process包所需的隔离运行镜像另固定摘要，安装时仍由部署管理员决定是否具备相应运行器。
 
@@ -59,8 +59,8 @@ node scripts/registry.mjs prepare <build-proof.json> <selection.json> <仓外新
 
 ## 验证
 
-新增Go预构建包的固定来源、原十包字节保留和实际宿主验收见[验证记录](docs/prebuilt-go-validation.md)；原创素材包的格式、权限和快照行为见[素材包验证](docs/asset-bundle-validation.md)。这些记录不授予签名或发布权。
+新增Go预构建包的固定来源、原十包字节保留和实际宿主验收见[验证记录](docs/prebuilt-go-validation.md)；原创素材包的格式、权限和快照行为见[素材包验证](docs/asset-bundle-validation.md)。环境预设的字段和场景保存验证见[预设验证](docs/environment-preset-validation.md)。这些记录不授予签名或发布权。
 
 `ORDIWEFT_PLUGIN_CLI` 和 `ORDIWEFT_PLUGIN_CLI_SHA256` 仅用于显式启用真实 CLI 打包/提案集成测试；未设置时相应测试 SKIP。无需模型 Key、Docker、Git 写 Token或 Morpheus。测试使用自己创建的临时副本，破坏性反例不修改仓内源码。
 
-当前消费协议与完整平台计划见 [Ordiweft 插件契约](https://github.com/xurunxin/Ordiweft/blob/ac78e2871220579e67c94892ac87e5c2f26c5e86/docs/reference/plugin-release-contract.md)。新角色声明需要支持inputRoles的宿主；旧宿主严格拒绝未知字段，不忽略限制。静态process供应商需要支持该Host Services路径的宿主；包内源码由维护者受限示例构建器生成，portable-pack只打包其预构建字节。片场素材包需要支持director-models profile的宿主；旧宿主拒绝安装，不把GLB当JSON或执行入口。完整不受信编译构建、社区审阅自动化、正式签名运维与官方稳定发布仍在实施；本仓portable-pack不执行Go或TS编译。
+当前消费协议与完整平台计划见 [Ordiweft 插件契约](https://github.com/xurunxin/Ordiweft/blob/866b7d035eae10d22d81b85bba0069426658b448/docs/reference/plugin-release-contract.md)。新角色声明需要支持inputRoles的宿主；旧宿主严格拒绝未知字段，不忽略限制。静态process供应商需要支持该Host Services路径的宿主；包内源码由维护者受限示例构建器生成，portable-pack只打包其预构建字节。片场素材包需要支持director-models profile的宿主；旧宿主拒绝安装，不把GLB当JSON或执行入口。完整不受信编译构建、社区审阅自动化、正式签名运维与官方稳定发布仍在实施；本仓portable-pack不执行Go或TS编译。

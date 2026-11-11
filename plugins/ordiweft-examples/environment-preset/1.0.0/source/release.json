@@ -1,0 +1,45 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/environment-preset",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "data",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "studio",
+      "kind": "content"
+    }
+  ],
+  "requirements": [],
+  "definitions": {
+    "studio": "definitions/studio.json"
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 122,
+      "sha256": "a1a518242592ab323f441e667a4c0fe4450b4b5be06f91f93930fa32a91f749d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 496,
+      "sha256": "ddadc8c063f4f55ce92ea6818215c78607a82af87f2a21de05c8001551cb7efd"
+    },
+    {
+      "path": "definitions/studio.json",
+      "bytes": 127,
+      "sha256": "458045f25c453e3c6c26742c5106c726f1469711bd7445fb76405f61014ab564"
+    },
+    {
+      "path": "studio.json",
+      "bytes": 273,
+      "sha256": "64f2ab975a4367bb3143bfb0513c2571f5048470359d7077886076de2845f358"
+    }
+  ]
+}
