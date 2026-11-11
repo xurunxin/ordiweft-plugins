@@ -9,3 +9,5 @@
 本仓仅打包预构建字节。固定提交CLI的SHA-256为 `197b28a332444cd1e7f582be0fb6aea9f6742a0ec42941fb1cfdb2c1a1a2a94e`；实际verify/pack原样本，不运行插件、依赖安装、Go/TS编译或模型请求。releaseDigest为 `d901e14a8216d5138cf240dd384d6075c862585cd52c50a53d7b99db2df54f28`。只准备未签名候选，不授予信任根、stable、命名空间晋级或发布资格。
 
 真实CLI门控4项集成测试全部PASS、0 SKIP（10.455s），实际打包十四个包；旧十三个ZIP、releaseDigest、来源及recipeDigest全部不变。新预设六个文件与固定宿主副本逐字节一致，ZIP也与独立宿主打包相同：6130字节、SHA-256 `809a871feb5e41a4d99e2ce3e04e8db30e3476d2de5515599f44e60d97e704ca`。prepare仅为新增预设生成1条unsigned candidate，未发布目录、安装到部署或覆盖历史提案。
+
+从远端全新克隆固定社区提交 `701c3b0f39a3217778633c884a300b8098ef2eef`，重新打包十四个包；十四份ZIP及整个v3 build-proof与原构建逐字节相同，没有复制旧构建证明、制品、缓存或凭据作为输入。
