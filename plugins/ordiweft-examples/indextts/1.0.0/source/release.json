@@ -1,0 +1,752 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/indextts",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "indextts",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "transfers",
+      "version": 1,
+      "operations": [
+        "upload"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "decode",
+        "read"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint",
+        "wait"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "indextts",
+    "name": "本地 IndexTTS",
+    "version": "1.0.0",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "ITT_URL",
+      "ITT_API_KEY"
+    ],
+    "nodes": [
+      {
+        "id": "speech",
+        "label": "语音合成（IndexTTS）",
+        "capability": "speech.generate",
+        "model": "IndexTTS-2.5"
+      }
+    ],
+    "models": [
+      {
+        "id": "IndexTTS-2.5",
+        "label": "IndexTTS 2.5",
+        "capability": "speech.generate",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 2,
+        "inputRoles": {
+          "speaker": {
+            "label": "音色参考",
+            "kind": "audio",
+            "required": true,
+            "description": "画布参考请使用 PCM WAV，0.25–60 秒，建议干净的 3–15 秒人声；超过 15 秒仅使用前 15 秒。"
+          },
+          "emotion_audio": {
+            "label": "情绪参考",
+            "kind": "audio",
+            "order": 1,
+            "required": true,
+            "visibleWhen": {
+              "emotion_mode": "audio"
+            },
+            "description": "使用 PCM WAV，仅提供情绪，音色仍由音色参考决定。"
+          }
+        },
+        "prompt": {
+          "label": "合成文本",
+          "required": true,
+          "maxLength": 20000,
+          "placeholder": "输入需要朗读的文字；发音标注：<文字|PINYIN>、<word|CMU PHONEMES>、<文字|かな>。请连接干净的音色参考音频。"
+        },
+        "fields": {
+          "lang": {
+            "type": "string",
+            "label": "语言",
+            "default": "ZH",
+            "enum": [
+              "ZH",
+              "EN",
+              "JA",
+              "ES",
+              "AR",
+              "ZHEN"
+            ],
+            "optionLabels": {
+              "ZH": "中文",
+              "EN": "英语",
+              "JA": "日语",
+              "ES": "西班牙语",
+              "AR": "阿拉伯语",
+              "ZHEN": "中英混合"
+            },
+            "icon": "language"
+          },
+          "emotion_mode": {
+            "type": "string",
+            "label": "情绪来源",
+            "default": "speaker",
+            "enum": [
+              "speaker",
+              "vector",
+              "audio",
+              "text",
+              "auto"
+            ],
+            "optionLabels": {
+              "speaker": "跟随音色参考",
+              "vector": "八维情绪控制",
+              "audio": "独立情绪参考音频",
+              "text": "文字情绪描述",
+              "auto": "根据正文自动判断"
+            },
+            "icon": "emotion",
+            "description": "情绪来源互斥；文字描述与自动判断由 IndexTTS 本地情绪分析处理。音色参考始终必需，跟随音色参考时情绪强度固定为 1。"
+          },
+          "emotion_vector": {
+            "type": "object",
+            "label": "八维情绪",
+            "sumMaximum": 1,
+            "visibleWhen": {
+              "emotion_mode": "vector"
+            },
+            "default": {
+              "happy": 0,
+              "angry": 0,
+              "sad": 0,
+              "afraid": 0,
+              "disgusted": 0,
+              "melancholic": 0,
+              "surprised": 0,
+              "calm": 0
+            },
+            "description": "各维度为 0–1，总和不得超过 1；建议总强度 0.6–0.8。",
+            "properties": {
+              "happy": {
+                "type": "number",
+                "label": "高兴",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "angry": {
+                "type": "number",
+                "label": "愤怒",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "sad": {
+                "type": "number",
+                "label": "悲伤",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "afraid": {
+                "type": "number",
+                "label": "害怕",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "disgusted": {
+                "type": "number",
+                "label": "厌恶",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "melancholic": {
+                "type": "number",
+                "label": "忧郁",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "surprised": {
+                "type": "number",
+                "label": "惊讶",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "calm": {
+                "type": "number",
+                "label": "平静",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              }
+            }
+          },
+          "emotion_text": {
+            "type": "string",
+            "label": "情绪描述",
+            "control": "textarea",
+            "placement": "body",
+            "default": "",
+            "maxLength": 1000,
+            "visibleWhen": {
+              "emotion_mode": "text"
+            },
+            "description": "例如：压低声音，带着克制的悲伤。由本地服务转换为情绪强度，无需配置外部模型。"
+          },
+          "emotion_alpha": {
+            "type": "number",
+            "label": "情绪强度",
+            "control": "slider",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "visibleWhenAny": [
+              {
+                "emotion_mode": "audio"
+              },
+              {
+                "emotion_mode": "vector"
+              },
+              {
+                "emotion_mode": "text"
+              },
+              {
+                "emotion_mode": "auto"
+              }
+            ],
+            "description": "调整独立情绪来源的混合强度；跟随音色参考时由上游固定为 1。"
+          },
+          "emotion_random": {
+            "type": "boolean",
+            "label": "随机情绪采样",
+            "default": false,
+            "visibleWhenAny": [
+              {
+                "emotion_mode": "vector"
+              },
+              {
+                "emotion_mode": "text"
+              },
+              {
+                "emotion_mode": "auto"
+              }
+            ],
+            "description": "八维、文字描述与自动情绪均可随机采样；关闭便于复现。独立音频情绪模式不使用此选项。"
+          },
+          "duration_factor": {
+            "type": "number",
+            "label": "时长因子",
+            "control": "slider",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2,
+            "step": 0.05,
+            "description": "大于 1 更慢，小于 1 更快；相对时长调节，不是精确目标秒数。"
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子",
+            "default": 42,
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "max_text_tokens_per_segment": {
+            "type": "integer",
+            "label": "分段最大文本词元",
+            "default": 120,
+            "minimum": 20,
+            "maximum": 200,
+            "step": 1
+          },
+          "interval_silence": {
+            "type": "integer",
+            "label": "段间停顿（毫秒）",
+            "default": 200,
+            "minimum": 0,
+            "maximum": 3000,
+            "step": 10
+          },
+          "text_normalization": {
+            "type": "boolean",
+            "label": "文本规范化",
+            "default": true,
+            "description": "规范数字和符号；发音标注直接写入合成文本。"
+          },
+          "num_beams": {
+            "type": "integer",
+            "label": "束搜索数量",
+            "default": 3,
+            "minimum": 1,
+            "maximum": 5,
+            "step": 1,
+            "description": "默认遵循上游；可尝试 1 以降低搜索开销。"
+          },
+          "temperature": {
+            "type": "number",
+            "label": "采样温度",
+            "default": 0.8,
+            "minimum": 0.1,
+            "maximum": 2,
+            "step": 0.05
+          },
+          "top_p": {
+            "type": "number",
+            "label": "累积采样概率",
+            "default": 0.8,
+            "minimum": 0.001,
+            "maximum": 1,
+            "step": 0.01
+          },
+          "top_k": {
+            "type": "integer",
+            "label": "候选采样数量",
+            "default": 30,
+            "minimum": 1,
+            "maximum": 100,
+            "step": 1
+          },
+          "max_mel_tokens": {
+            "type": "integer",
+            "label": "最大音频词元",
+            "default": 1500,
+            "minimum": 50,
+            "maximum": 3000,
+            "step": 50
+          }
+        }
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 1,
+      "maxQueued": 20,
+      "cancelable": false
+    }
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 436,
+      "sha256": "f9325aac778061ddbb0940505fb44555f7090e7c7d692e0078bdf45930c8b14a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2876,
+      "sha256": "046dfdbf64ecb4b7b2118099b045648b3e7e0e1a0d00b5a84907ac1e5a3df645"
+    },
+    {
+      "path": "adapter",
+      "bytes": 7266231,
+      "sha256": "068b20e01f6dfb9ca00702c5924394c16899960c4eb68508164fa7f61ff73b4f"
+    },
+    {
+      "path": "build-proof.json",
+      "bytes": 12473,
+      "sha256": "2c999be9601c1fb1bea2ece726dc4d10047b90140ad1e5d16ddc586b38d4244a"
+    },
+    {
+      "path": "connection.profile.json",
+      "bytes": 4462,
+      "sha256": "1947b6f62520edfad448007a8a952ae8937d8a6346e3f66a74b2c8a9b3291730"
+    },
+    {
+      "path": "fixtures/verification.json",
+      "bytes": 98761,
+      "sha256": "0ca6f18aff8696cf12231d5e76b167f59d2ac82a9aba44cf21bb8aa31e19deab"
+    },
+    {
+      "path": "go.mod",
+      "bytes": 148,
+      "sha256": "6bfd0a7160764e1538ae6ad8ef7503361c86a890b1f00b9126687b7424f48837"
+    },
+    {
+      "path": "licenses/Go-LICENSE",
+      "bytes": 1453,
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "licenses/Go-PATENTS",
+      "bytes": 1303,
+      "sha256": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc"
+    },
+    {
+      "path": "main.go",
+      "bytes": 7743,
+      "sha256": "b6f53533df5a2c43084b0d279678e6e475450ea6c710e2dd4aa58e6863d1dbf8"
+    },
+    {
+      "path": "policies/generate-audio.json",
+      "bytes": 1876,
+      "sha256": "e08e1b69e357173e3e7fbeedf435545c6bf7fdccaf0807ecee148ce7b238f762"
+    },
+    {
+      "path": "policies/generate-auto.json",
+      "bytes": 1777,
+      "sha256": "456f61707066c6e80396bcc5622c20ca2b0a199fca891978268e4f5db2a34720"
+    },
+    {
+      "path": "policies/generate-speaker.json",
+      "bytes": 1751,
+      "sha256": "8ed41e3604bc639ce5d2f5fa38518ad9cc2c05671aab03fc3ed0579f73893da1"
+    },
+    {
+      "path": "policies/generate-text.json",
+      "bytes": 1837,
+      "sha256": "e49cc70e843847994ffbbd3250da864309612555fbbc51a77abd79edf9c739d9"
+    },
+    {
+      "path": "policies/generate-vector.json",
+      "bytes": 2665,
+      "sha256": "25c2fd79f008ef6e429d8748d81844159bc32778e5d486ad66f9d658cedf300e"
+    },
+    {
+      "path": "release.template.json",
+      "bytes": 10883,
+      "sha256": "f903e61a63399bc846c89d60a8dee92eb715ea039bbd2b2a7643da940cbf4b39"
+    },
+    {
+      "path": "sdk/.ordiweft-go-sdk-export",
+      "bytes": 14,
+      "sha256": "046cc5496f50c1d3b1f2caa344af31b9cda425d74d81c452cd0bab7e92d83c9d"
+    },
+    {
+      "path": "sdk/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/NOTICE",
+      "bytes": 115,
+      "sha256": "59f17e8af0291ec7cb607f8c10f93cf991b6d884bd98eadae8a06f1be4be483a"
+    },
+    {
+      "path": "sdk/README.md",
+      "bytes": 938,
+      "sha256": "7641e9e5b492fbe61dc29fc42605748b5a9bee856cfeeed8370d7593aa32892c"
+    },
+    {
+      "path": "sdk/go.mod",
+      "bytes": 47,
+      "sha256": "f759ce39bfcd976fa5da453e6b698637c776e6d08978a3f6a86627ba28b7f0b9"
+    },
+    {
+      "path": "sdk/pkg/aigc/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/pkg/aigc/NOTICE",
+      "bytes": 197,
+      "sha256": "06f58a68d24cbe46029a090e3275b5147fb37026b1fed7ad5f07d52b5ef6c840"
+    },
+    {
+      "path": "sdk/pkg/aigc/catalog.go",
+      "bytes": 2236,
+      "sha256": "fbcf080f780362fcb2bec30d84badaa54c5340f939eac62bdaa49206fb178fca"
+    },
+    {
+      "path": "sdk/pkg/aigc/input_roles.go",
+      "bytes": 1964,
+      "sha256": "3bc48091cdc548334d57dbd0257a8ec27c8fdc73c6af0e0190c4a2fb80b1f389"
+    },
+    {
+      "path": "sdk/pkg/aigc/schema.go",
+      "bytes": 6489,
+      "sha256": "57e0c5e4952aaa2b988393c2e10edd8e77c39c8c78b7b1f475d68d4ad2516c55"
+    },
+    {
+      "path": "sdk/pkg/aigc/sdk.go",
+      "bytes": 16759,
+      "sha256": "1b27979f07d450704d346cb3494784a4482b904d3a1bdcb5036b767722c83bda"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/NOTICE",
+      "bytes": 307,
+      "sha256": "2787b7a123d744afa70e06c9d1fbdfd7da9e1b4b46c5e67a23a476825e752e22"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action.go",
+      "bytes": 4313,
+      "sha256": "2c09ad8475113c49d8e4d5e8b86498a18bc353937d89bed5717948b9d25b17df"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_client.go",
+      "bytes": 1273,
+      "sha256": "7ade36de140f93e47139fb4cb264477ddcfda18ba349e4e20abeac932fa57f5c"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_roles.go",
+      "bytes": 2577,
+      "sha256": "fd6306cd59abff713e4ec1dfe2f542a464e78119b1074e84ef949841abcc0073"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_runtime.go",
+      "bytes": 676,
+      "sha256": "0bfbdd45ffe4a42b500ff1bd3c2426c828840260bcf9f818567657a66add32d0"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_verification.go",
+      "bytes": 3437,
+      "sha256": "d65a523c30c76f855c8a21c0e50cdecbdfa9eafda3d60087c63915f57331ae23"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/archive.go",
+      "bytes": 2410,
+      "sha256": "365f09881b1e66b152b283c2b58bcbfc05dd26ad31b2689f5bd48b1161fd0fea"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_bundle.go",
+      "bytes": 2269,
+      "sha256": "cc43f480adc1c932ef551c83d0b3e2e2618fb3671dd0151e05622292d6ccbb33"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_client.go",
+      "bytes": 1866,
+      "sha256": "64ce177eac4f5ed899dd45184a1c2c48f1c3f1cdf7f56f5e29ed3dd698913f62"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_decode.go",
+      "bytes": 2017,
+      "sha256": "6a69aa617361de12fc603994e584bb8615f39e9f08b7fc0e66e0aa067a83fbae"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/channel.go",
+      "bytes": 1588,
+      "sha256": "59103edc2857aa538982b27bccd05ca1f4173ae9d29e4ae32093864eea0f1759"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/client.go",
+      "bytes": 3179,
+      "sha256": "750b20bf8282906b6d00faa819d20b5628bd7a501e5d76c0887a2ab3489a8a3d"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/connection_policy.go",
+      "bytes": 12406,
+      "sha256": "d5267a592d661bf2f49911cdfd68b6d0d38b8d39a2a5ea258d7c7877bea7ba09"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/contract.go",
+      "bytes": 8428,
+      "sha256": "f5640b3d2e46cef337cb2244f44b0d1401654e6934ed3b84bf6acc7c796990fc"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/definition.go",
+      "bytes": 8116,
+      "sha256": "4fcfb05d3b363df75c8b59687d5d398a15be36323534912f86e7284e79bc194f"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/download.go",
+      "bytes": 1372,
+      "sha256": "4e88bce8181d405a0b76ccca3218d1137701fe7f0672d3a29d55827ec5116bf5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/execution.go",
+      "bytes": 1743,
+      "sha256": "e600665c83e07aba17e0757682c1c1292273df8b217cebcefc26cf4d6cd93afe"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/files.go",
+      "bytes": 2528,
+      "sha256": "065ee2a6a80d5db72286ea438218dea22c6eedf2f53250038dc4b2b6eb3131d5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/generation_client.go",
+      "bytes": 1323,
+      "sha256": "3b7565f70f183284048adfbac9743726bcf2f7caf34228873ca817531e84c0a8"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/input_body.go",
+      "bytes": 1387,
+      "sha256": "4de1e9334660219506189258dd5d922f886411a11288de7f725afbcc1a106d69"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/input_key.go",
+      "bytes": 1824,
+      "sha256": "47523ea157cbd3e6b976ddfae8778bcc2dca44e1da4df85bd703edb395a713a3"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/json_policy.go",
+      "bytes": 14892,
+      "sha256": "160ecda2b8e4458d997bc690664a507453f1d9dac9c5b25ca4d552e468a1ad6a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/media.go",
+      "bytes": 954,
+      "sha256": "966a36b8e388ba6c2c703a4915743694269014db0b80a8ab93cb80e95c2a281c"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/multipart_policy.go",
+      "bytes": 8040,
+      "sha256": "62de92694ec98bd4bd35bfe9aaf17c19a13cb2eab78dae717b454f7aaa388811"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/node_snapshot.go",
+      "bytes": 5408,
+      "sha256": "a346e3e4b28b25eaa4fdcda28dbbaff699beb7b8f56e92f652463b48ef69c12a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/policy_set.go",
+      "bytes": 845,
+      "sha256": "bc1481431b2e0b7ca6f9d9cb6344e53754e451c59ba27329101c08a74f5f600d"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/preset.go",
+      "bytes": 1198,
+      "sha256": "0f9a0dabcccee217c5bdd18d3f490515f8c833a6643de570840720b38767c16e"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/private_client_channel.go",
+      "bytes": 1897,
+      "sha256": "acfd97f34f164b144522c0874a686e39683a88e7666d5e6313a517553c0141b8"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/protocol.go",
+      "bytes": 3857,
+      "sha256": "44d3cb8cf6a1900bee16c89539b4b3deeda2cac4febf70e2167da65db34191f5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/provider_runtime.go",
+      "bytes": 465,
+      "sha256": "b56cb40ef774075753e67ce1bd65d06ebfe7d9d692533a7659471c2ec835f221"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/query_policy.go",
+      "bytes": 906,
+      "sha256": "cbc979d4979744433b28b916ac31ee2780c45423cb53e19166b7d83d49c5f345"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/receipt_target.go",
+      "bytes": 2451,
+      "sha256": "b073cb50a90cf3dd856985b4c28573e998c58a5b0ca9e04f6fc55b8398ca755a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/request_input.go",
+      "bytes": 4657,
+      "sha256": "ba266d49ae78c0dfa6be51de5d45e6de14e7229445a0706c74b7a3e1f233e85f"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task.go",
+      "bytes": 2818,
+      "sha256": "ceb31d5034b666545ec185d20bec18817353c65fe80a60781e7bae65809eb598"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task_io.go",
+      "bytes": 1063,
+      "sha256": "10fab0e830d89ce224d9708d28d5579e5d0c83b8e2c2652ac2a24e509bb45638"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task_runtime.go",
+      "bytes": 343,
+      "sha256": "57d060d0ff01c6041c9738f29cd970d9de085beaaccaf86c59027549df6feaed"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/verification.go",
+      "bytes": 4753,
+      "sha256": "384687810b040d6603fd3246d7af955dde0b274d6a7eae6f29136b44a0d8d4d1"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/verification_context.go",
+      "bytes": 737,
+      "sha256": "8dd77d40c6288fc45021ff8961a1898a6a26d3761ebc3c21763080be10546187"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/wait_policy.go",
+      "bytes": 1959,
+      "sha256": "6312112e6a0b2cf12e65aed92b711ffcbb928a4b77495438210d50fbbd5df527"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/worker.go",
+      "bytes": 7206,
+      "sha256": "ec9d44413cd46c0df40f897824a26bad0c2f5f2bd7dea85e7a10b4d7ab02805a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/worker_policy.go",
+      "bytes": 1666,
+      "sha256": "ed32804b4e03e4e4e01d2378e6d510d84649d77a590649b52b299a065c59e46d"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/workspace.go",
+      "bytes": 4427,
+      "sha256": "198bcf1fca0c40dea756e964aa9d3443faffa4edb8f94b046c4bcc6f60149fad"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/workspace_build.go",
+      "bytes": 2645,
+      "sha256": "800a5c63aa80cbf15298ccdfb3cd172223efea068949f1cd289797e53dff5bad"
+    },
+    {
+      "path": "sdk/sdk-export.json",
+      "bytes": 9014,
+      "sha256": "01ee261b4c8c880b1c2bc2ae4f8606b2d6f7b775e724bf5dcda23cc3a9679ea5"
+    }
+  ]
+}

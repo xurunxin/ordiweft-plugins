@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "models": {
+    "wan2.7-image-pro": "wan2.7-image-pro",
+    "wan2.7-image": "wan2.7-image"
+  },
+  "modelPointer": "/model",
+  "countPointer": "/parameters/n",
+  "whenAny": [
+    {
+      "/inputCount": [
+        0
+      ],
+      "/parameters/enable_sequential": [
+        true
+      ],
+      "/parameters/size": [
+        "1K",
+        "2K"
+      ],
+      "/count": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    }
+  ],
+  "body": {
+    "model": {
+      "$host": "model"
+    },
+    "input": {
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "text": {
+                "$host": "prompt"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "parameters": {
+      "n": {
+        "$host": "count"
+      },
+      "size": {
+        "$host": "parameter",
+        "name": "size"
+      },
+      "watermark": {
+        "$host": "parameter",
+        "name": "watermark"
+      },
+      "seed": {
+        "$host": "parameter",
+        "name": "seed",
+        "optional": true
+      },
+      "enable_sequential": {
+        "$host": "parameter",
+        "name": "enable_sequential"
+      }
+    }
+  }
+}

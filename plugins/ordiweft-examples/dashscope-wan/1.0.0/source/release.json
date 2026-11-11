@@ -1,0 +1,746 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/dashscope-wan",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "dashscope",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "transfers",
+      "version": 1,
+      "operations": [
+        "upload",
+        "download"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "decode",
+        "read"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint",
+        "wait"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "dashscope",
+    "name": "阿里云百炼",
+    "version": "1.0.0",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY",
+      "WORKSPACE_ID",
+      "DASHSCOPE_URL"
+    ],
+    "nodes": [
+      {
+        "id": "image",
+        "label": "百炼万相图片生成",
+        "capability": "image.generate",
+        "model": "wan2.7-image"
+      }
+    ],
+    "models": [
+      {
+        "queueLimit": {
+          "bucket": "wan2.7-image-pro",
+          "rps": 5,
+          "intervalMs": 200,
+          "concurrency": 5
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 5000
+        },
+        "id": "wan2.7-image-pro",
+        "label": "wan2.7-image-pro",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "enable_sequential": {
+            "type": "boolean",
+            "label": "组图生成",
+            "default": false
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量上限",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 12
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出分辨率",
+            "default": "2K",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ]
+          },
+          "thinking_mode": {
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "wan2.7-image",
+          "rps": 5,
+          "intervalMs": 200,
+          "concurrency": 5
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 5000
+        },
+        "id": "wan2.7-image",
+        "label": "wan2.7-image",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "enable_sequential": {
+            "type": "boolean",
+            "label": "组图生成",
+            "default": false
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量上限",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 12
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出分辨率",
+            "default": "2K",
+            "enum": [
+              "1K",
+              "2K"
+            ]
+          },
+          "thinking_mode": {
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 100,
+      "cancelable": false
+    }
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 202,
+      "sha256": "31a91a611cece080aa1c7dae10fbb3555b323eef22d0edc696b89e589b0779c4"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3158,
+      "sha256": "00d151400d18bb97a6dbf57f361350a594d5b6bdb0d02d199e70e04cb5aac754"
+    },
+    {
+      "path": "adapter",
+      "bytes": 7260158,
+      "sha256": "3c44675af4cb11ac794da0423b75749ce83f4948c7623eeae78611905885d577"
+    },
+    {
+      "path": "build-proof.json",
+      "bytes": 18111,
+      "sha256": "3bbc1cd2073ce4ad231d02c639eb7743178774eb34955f1db4053690169599d4"
+    },
+    {
+      "path": "connection.profile.json",
+      "bytes": 31768,
+      "sha256": "9e780d1b41c58a8b394e0dd94ec5df62ee24204569b60c676e3272c9775317be"
+    },
+    {
+      "path": "fixtures/verification.json",
+      "bytes": 4231,
+      "sha256": "3b33ab660a27f57d759c821f55d376e3e98124a575c01b9c2c9841c8cf305943"
+    },
+    {
+      "path": "go.mod",
+      "bytes": 153,
+      "sha256": "a1014d042a2ec562c4a090c5f433c179ce6bf2428b1203a96aab4713f5dcc456"
+    },
+    {
+      "path": "licenses/Go-LICENSE",
+      "bytes": 1453,
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "licenses/Go-PATENTS",
+      "bytes": 1303,
+      "sha256": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc"
+    },
+    {
+      "path": "main.go",
+      "bytes": 6073,
+      "sha256": "0f075895b0e7e038746ac5dd2746255d972f49df86f886826f1932ae9ba1349c"
+    },
+    {
+      "path": "policies/generate-0-thinking.json",
+      "bytes": 1224,
+      "sha256": "ea590553a8fb82af2e6a0fe898d0e04052f6d3d5ce35ed068bc66c79df44ecd0"
+    },
+    {
+      "path": "policies/generate-0.json",
+      "bytes": 1282,
+      "sha256": "b5153ba5b6ca9689b13f103143bd2e3ffda89416d13910ba14ee78d5520be072"
+    },
+    {
+      "path": "policies/generate-1.json",
+      "bytes": 1973,
+      "sha256": "10af2194c610c4aee46f84e75eddd4bd99148103ccc334382751080a31510582"
+    },
+    {
+      "path": "policies/generate-2.json",
+      "bytes": 2412,
+      "sha256": "f822263fd78f0ca9b04a5c28a9950e701703721841900883ed8742fcc570cb16"
+    },
+    {
+      "path": "policies/generate-3.json",
+      "bytes": 2851,
+      "sha256": "f008dcff9fd782344cdc2727b04bdead4580fb169670b2f839adb08520c63103"
+    },
+    {
+      "path": "policies/generate-4.json",
+      "bytes": 3290,
+      "sha256": "726a65a5b7dfb34b157c10adbdc1e479a4f1e886c77dc2dfd510764dac69f08b"
+    },
+    {
+      "path": "policies/generate-5.json",
+      "bytes": 3729,
+      "sha256": "a0f1d4a1284f23ce772bfa16f4acd33ffa103aab02db99d5894a747af3acf904"
+    },
+    {
+      "path": "policies/generate-6.json",
+      "bytes": 4168,
+      "sha256": "1e220f92c57a5868f5c7e5ffa9304b0259534dcafd60ab05b6746ca6c13097b8"
+    },
+    {
+      "path": "policies/generate-7.json",
+      "bytes": 4607,
+      "sha256": "03ec274b80bb6657fc137f8d0acf66002b4dd697832da511f6668c20c6f8a224"
+    },
+    {
+      "path": "policies/generate-8.json",
+      "bytes": 5046,
+      "sha256": "e699bfa548cddad258a82e8ca8cf0b4788aae191446c7964e1a848495b34e70d"
+    },
+    {
+      "path": "policies/generate-9.json",
+      "bytes": 5485,
+      "sha256": "537d57b5668227329d4defe0b6745bb4a64b8e61de2ffbaf8cfaf1058a5366cc"
+    },
+    {
+      "path": "policies/upload-0-jpg.json",
+      "bytes": 1202,
+      "sha256": "e6f70596cbcaf03af0e3eacaf5e89fb8079f3941fde85c6eca287d2b299b21c9"
+    },
+    {
+      "path": "policies/upload-0-png.json",
+      "bytes": 1201,
+      "sha256": "a36d768b8e92a5aa08e507a50e77f2192388af06f69c72ea2f9963b8649ea290"
+    },
+    {
+      "path": "policies/upload-0-webp.json",
+      "bytes": 1202,
+      "sha256": "c2f1c77818d058b798a9198d16ef83bb9d98267757a4cd7652b30f3289348cb2"
+    },
+    {
+      "path": "policies/upload-1-jpg.json",
+      "bytes": 1202,
+      "sha256": "1c88ef627e11004ce3dce8227570a66f66e6d64739088eab6d14947dd11dde9f"
+    },
+    {
+      "path": "policies/upload-1-png.json",
+      "bytes": 1201,
+      "sha256": "c1ed09ed4c13b6c3870750d71fd7e0c99902ab90cdcce9e51a59df3deade33c4"
+    },
+    {
+      "path": "policies/upload-1-webp.json",
+      "bytes": 1202,
+      "sha256": "f99f7e79bf54e98df39b6c7fb13949532613a78c35406b274bdbc1756eb0fc57"
+    },
+    {
+      "path": "policies/upload-2-jpg.json",
+      "bytes": 1202,
+      "sha256": "de8e429cfe70234d4ef0b7f670b6c255e7fa01cc0fa9db68658d3563e5f15903"
+    },
+    {
+      "path": "policies/upload-2-png.json",
+      "bytes": 1201,
+      "sha256": "136a32b3025ab3d19a5452e5f101182071140844e8828f7d367ee167027f31e5"
+    },
+    {
+      "path": "policies/upload-2-webp.json",
+      "bytes": 1202,
+      "sha256": "b48b01bd08b4773224fbd1205c443485fc07de9ae3eaf78b9714fe3d88a93525"
+    },
+    {
+      "path": "policies/upload-3-jpg.json",
+      "bytes": 1202,
+      "sha256": "8e351f40889d91898f867b07810655888267989ca81337f178469799b2a195b1"
+    },
+    {
+      "path": "policies/upload-3-png.json",
+      "bytes": 1201,
+      "sha256": "00b6d586d73c168fae3d92cd049dd0465e3a04cc66fce4ede1363bc505919e4d"
+    },
+    {
+      "path": "policies/upload-3-webp.json",
+      "bytes": 1202,
+      "sha256": "62f432d00d081d3c90e705496510a97c29c03f0afdf1cecdf623c06be234080f"
+    },
+    {
+      "path": "policies/upload-4-jpg.json",
+      "bytes": 1202,
+      "sha256": "90f2a5f07b45e662ce10e97659fa38b7dfe0715bd95ad48a321d3f34c1c8ed16"
+    },
+    {
+      "path": "policies/upload-4-png.json",
+      "bytes": 1201,
+      "sha256": "09f57cc7066613937b391baa24356a2ea3b9a76370f431d04e64dc8c00835065"
+    },
+    {
+      "path": "policies/upload-4-webp.json",
+      "bytes": 1202,
+      "sha256": "7d8cc170ca21e5ae2ddc55c29363a51859069bcf429e7ee8a4abaca94db6ded2"
+    },
+    {
+      "path": "policies/upload-5-jpg.json",
+      "bytes": 1202,
+      "sha256": "744686f692ff40d73f0740a8a9084141a783547112c3a352c064aa4641439834"
+    },
+    {
+      "path": "policies/upload-5-png.json",
+      "bytes": 1201,
+      "sha256": "a86cdc29373b2a86fc3962d9778d2fb6ceaf423cc03106106aac044c1bd4bdf2"
+    },
+    {
+      "path": "policies/upload-5-webp.json",
+      "bytes": 1202,
+      "sha256": "2e1b008320ab1b38dae0cc11f9a3227d8ee46a5dc1017fe2a5adf288782ea13a"
+    },
+    {
+      "path": "policies/upload-6-jpg.json",
+      "bytes": 1202,
+      "sha256": "31fdcde69e7aa4c0ae83b9b8a9058ed5d72f837b94dda50a2fe967c13483483e"
+    },
+    {
+      "path": "policies/upload-6-png.json",
+      "bytes": 1201,
+      "sha256": "861fc974ffd7d1b1fe61aa816501365de30398d12ef4e6ef765dc8c81b27d281"
+    },
+    {
+      "path": "policies/upload-6-webp.json",
+      "bytes": 1202,
+      "sha256": "8b3242c9cb8316ea52dcf291ce75579d197dcd9562c2866761c557c24e4e4d56"
+    },
+    {
+      "path": "policies/upload-7-jpg.json",
+      "bytes": 1202,
+      "sha256": "ff6fc0b08ead8004830dac0a510344266956e7e8a99f1fcf5341b7d915514033"
+    },
+    {
+      "path": "policies/upload-7-png.json",
+      "bytes": 1201,
+      "sha256": "7a770b014d9545f2f43649790c2ee3ea63c88539b866a695d0e206fc171f31ca"
+    },
+    {
+      "path": "policies/upload-7-webp.json",
+      "bytes": 1202,
+      "sha256": "823c126efc6766ec90957bea65cb7f36c89bbea68a56fa7b1b5e827592eedd20"
+    },
+    {
+      "path": "policies/upload-8-jpg.json",
+      "bytes": 1202,
+      "sha256": "48a73b270148153e9b7f3f33310ba8486f26ced7ed79c641c2aa680a7c66487d"
+    },
+    {
+      "path": "policies/upload-8-png.json",
+      "bytes": 1201,
+      "sha256": "54ceb47763a2d0ec35e9a4d7db2975498bece2e02b42d3b62a86aa154884d208"
+    },
+    {
+      "path": "policies/upload-8-webp.json",
+      "bytes": 1202,
+      "sha256": "76bc7063781ce2b3f20f6e4c2d13ea019879009fe03a65a0f8235223db2657bb"
+    },
+    {
+      "path": "policies/upload-policy.json",
+      "bytes": 254,
+      "sha256": "2d69d64a2ae994cfc029350a2ceaa4b796de2ea35e76a417a9208c9e2d3f3a5a"
+    },
+    {
+      "path": "release.template.json",
+      "bytes": 4562,
+      "sha256": "4cfc84deae2bf697d59debfd217d04197ff28556e29f1a1e901c285b61f40f72"
+    },
+    {
+      "path": "sdk/.ordiweft-go-sdk-export",
+      "bytes": 14,
+      "sha256": "046cc5496f50c1d3b1f2caa344af31b9cda425d74d81c452cd0bab7e92d83c9d"
+    },
+    {
+      "path": "sdk/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/NOTICE",
+      "bytes": 115,
+      "sha256": "59f17e8af0291ec7cb607f8c10f93cf991b6d884bd98eadae8a06f1be4be483a"
+    },
+    {
+      "path": "sdk/README.md",
+      "bytes": 923,
+      "sha256": "88396dc14a04b3a40e5f09aba9d8f90e0e7649d166bf8c978fa6dca00ed2a091"
+    },
+    {
+      "path": "sdk/go.mod",
+      "bytes": 47,
+      "sha256": "f759ce39bfcd976fa5da453e6b698637c776e6d08978a3f6a86627ba28b7f0b9"
+    },
+    {
+      "path": "sdk/pkg/aigc/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/pkg/aigc/NOTICE",
+      "bytes": 197,
+      "sha256": "06f58a68d24cbe46029a090e3275b5147fb37026b1fed7ad5f07d52b5ef6c840"
+    },
+    {
+      "path": "sdk/pkg/aigc/catalog.go",
+      "bytes": 2236,
+      "sha256": "fbcf080f780362fcb2bec30d84badaa54c5340f939eac62bdaa49206fb178fca"
+    },
+    {
+      "path": "sdk/pkg/aigc/input_roles.go",
+      "bytes": 1964,
+      "sha256": "3bc48091cdc548334d57dbd0257a8ec27c8fdc73c6af0e0190c4a2fb80b1f389"
+    },
+    {
+      "path": "sdk/pkg/aigc/schema.go",
+      "bytes": 6489,
+      "sha256": "57e0c5e4952aaa2b988393c2e10edd8e77c39c8c78b7b1f475d68d4ad2516c55"
+    },
+    {
+      "path": "sdk/pkg/aigc/sdk.go",
+      "bytes": 16759,
+      "sha256": "1b27979f07d450704d346cb3494784a4482b904d3a1bdcb5036b767722c83bda"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/NOTICE",
+      "bytes": 307,
+      "sha256": "2787b7a123d744afa70e06c9d1fbdfd7da9e1b4b46c5e67a23a476825e752e22"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action.go",
+      "bytes": 4313,
+      "sha256": "2c09ad8475113c49d8e4d5e8b86498a18bc353937d89bed5717948b9d25b17df"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_client.go",
+      "bytes": 1273,
+      "sha256": "7ade36de140f93e47139fb4cb264477ddcfda18ba349e4e20abeac932fa57f5c"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_roles.go",
+      "bytes": 2577,
+      "sha256": "fd6306cd59abff713e4ec1dfe2f542a464e78119b1074e84ef949841abcc0073"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_runtime.go",
+      "bytes": 676,
+      "sha256": "0bfbdd45ffe4a42b500ff1bd3c2426c828840260bcf9f818567657a66add32d0"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_verification.go",
+      "bytes": 3437,
+      "sha256": "d65a523c30c76f855c8a21c0e50cdecbdfa9eafda3d60087c63915f57331ae23"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/archive.go",
+      "bytes": 2410,
+      "sha256": "365f09881b1e66b152b283c2b58bcbfc05dd26ad31b2689f5bd48b1161fd0fea"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_bundle.go",
+      "bytes": 2269,
+      "sha256": "cc43f480adc1c932ef551c83d0b3e2e2618fb3671dd0151e05622292d6ccbb33"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_client.go",
+      "bytes": 1866,
+      "sha256": "64ce177eac4f5ed899dd45184a1c2c48f1c3f1cdf7f56f5e29ed3dd698913f62"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_decode.go",
+      "bytes": 2017,
+      "sha256": "6a69aa617361de12fc603994e584bb8615f39e9f08b7fc0e66e0aa067a83fbae"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/channel.go",
+      "bytes": 1588,
+      "sha256": "59103edc2857aa538982b27bccd05ca1f4173ae9d29e4ae32093864eea0f1759"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/client.go",
+      "bytes": 3179,
+      "sha256": "750b20bf8282906b6d00faa819d20b5628bd7a501e5d76c0887a2ab3489a8a3d"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/connection_policy.go",
+      "bytes": 13021,
+      "sha256": "1a262d56d67a7f7618d19d620eedcf9f605ee09d1feac8713a8d1a8356de63ff"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/contract.go",
+      "bytes": 8428,
+      "sha256": "f5640b3d2e46cef337cb2244f44b0d1401654e6934ed3b84bf6acc7c796990fc"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/definition.go",
+      "bytes": 8116,
+      "sha256": "4fcfb05d3b363df75c8b59687d5d398a15be36323534912f86e7284e79bc194f"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/download.go",
+      "bytes": 1372,
+      "sha256": "4e88bce8181d405a0b76ccca3218d1137701fe7f0672d3a29d55827ec5116bf5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/execution.go",
+      "bytes": 1743,
+      "sha256": "e600665c83e07aba17e0757682c1c1292273df8b217cebcefc26cf4d6cd93afe"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/files.go",
+      "bytes": 2528,
+      "sha256": "065ee2a6a80d5db72286ea438218dea22c6eedf2f53250038dc4b2b6eb3131d5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/generation_client.go",
+      "bytes": 1323,
+      "sha256": "3b7565f70f183284048adfbac9743726bcf2f7caf34228873ca817531e84c0a8"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/input_body.go",
+      "bytes": 1387,
+      "sha256": "4de1e9334660219506189258dd5d922f886411a11288de7f725afbcc1a106d69"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/input_key.go",
+      "bytes": 2023,
+      "sha256": "0fdcba016957bcc90b1c0e1865d7adef46b5b542397c7f8d8f9a93cc66d855d8"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/json_policy.go",
+      "bytes": 16147,
+      "sha256": "e61c77b8d7c855e25542c4b812871778480d086892843dc7562b0bb37e886af5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/media.go",
+      "bytes": 954,
+      "sha256": "966a36b8e388ba6c2c703a4915743694269014db0b80a8ab93cb80e95c2a281c"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/multipart_policy.go",
+      "bytes": 8022,
+      "sha256": "efc5cbca75a0cfcc2d08959724770c5f9251a75b6939d2989940cd7352aeb09a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/node_snapshot.go",
+      "bytes": 5408,
+      "sha256": "a346e3e4b28b25eaa4fdcda28dbbaff699beb7b8f56e92f652463b48ef69c12a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/policy_set.go",
+      "bytes": 845,
+      "sha256": "bc1481431b2e0b7ca6f9d9cb6344e53754e451c59ba27329101c08a74f5f600d"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/preset.go",
+      "bytes": 1198,
+      "sha256": "0f9a0dabcccee217c5bdd18d3f490515f8c833a6643de570840720b38767c16e"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/private_client_channel.go",
+      "bytes": 1897,
+      "sha256": "acfd97f34f164b144522c0874a686e39683a88e7666d5e6313a517553c0141b8"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/protocol.go",
+      "bytes": 3857,
+      "sha256": "44d3cb8cf6a1900bee16c89539b4b3deeda2cac4febf70e2167da65db34191f5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/provider_runtime.go",
+      "bytes": 465,
+      "sha256": "b56cb40ef774075753e67ce1bd65d06ebfe7d9d692533a7659471c2ec835f221"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/query_policy.go",
+      "bytes": 940,
+      "sha256": "d06508ef2b81f344306b2d50daa5727566062cb3960230f73a0aaebf7e654405"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/receipt_target.go",
+      "bytes": 2451,
+      "sha256": "b073cb50a90cf3dd856985b4c28573e998c58a5b0ca9e04f6fc55b8398ca755a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/request_conditions.go",
+      "bytes": 3953,
+      "sha256": "6e81d4529c63798acfb4fb545514f9affec1a3a178cfcfda034607ccab3d7d9c"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/request_input.go",
+      "bytes": 4657,
+      "sha256": "ba266d49ae78c0dfa6be51de5d45e6de14e7229445a0706c74b7a3e1f233e85f"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task.go",
+      "bytes": 2818,
+      "sha256": "ceb31d5034b666545ec185d20bec18817353c65fe80a60781e7bae65809eb598"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task_io.go",
+      "bytes": 1063,
+      "sha256": "10fab0e830d89ce224d9708d28d5579e5d0c83b8e2c2652ac2a24e509bb45638"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task_runtime.go",
+      "bytes": 343,
+      "sha256": "57d060d0ff01c6041c9738f29cd970d9de085beaaccaf86c59027549df6feaed"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/verification.go",
+      "bytes": 4753,
+      "sha256": "384687810b040d6603fd3246d7af955dde0b274d6a7eae6f29136b44a0d8d4d1"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/verification_context.go",
+      "bytes": 737,
+      "sha256": "8dd77d40c6288fc45021ff8961a1898a6a26d3761ebc3c21763080be10546187"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/wait_policy.go",
+      "bytes": 1959,
+      "sha256": "6312112e6a0b2cf12e65aed92b711ffcbb928a4b77495438210d50fbbd5df527"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/worker.go",
+      "bytes": 7206,
+      "sha256": "ec9d44413cd46c0df40f897824a26bad0c2f5f2bd7dea85e7a10b4d7ab02805a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/worker_policy.go",
+      "bytes": 1666,
+      "sha256": "ed32804b4e03e4e4e01d2378e6d510d84649d77a590649b52b299a065c59e46d"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/workspace.go",
+      "bytes": 4427,
+      "sha256": "198bcf1fca0c40dea756e964aa9d3443faffa4edb8f94b046c4bcc6f60149fad"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/workspace_build.go",
+      "bytes": 2645,
+      "sha256": "800a5c63aa80cbf15298ccdfb3cd172223efea068949f1cd289797e53dff5bad"
+    },
+    {
+      "path": "sdk/sdk-export.json",
+      "bytes": 9185,
+      "sha256": "c2f402de454b5db1becb9c8fb01d57cc8da195e1a32e3ccd5c40358c7d271199"
+    }
+  ]
+}

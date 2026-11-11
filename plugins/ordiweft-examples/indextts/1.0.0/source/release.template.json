@@ -1,0 +1,386 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/indextts",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "indextts",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "transfers",
+      "version": 1,
+      "operations": [
+        "upload"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "decode",
+        "read"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint",
+        "wait"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "indextts",
+    "name": "本地 IndexTTS",
+    "version": "1.0.0",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "ITT_URL",
+      "ITT_API_KEY"
+    ],
+    "nodes": [
+      {
+        "id": "speech",
+        "label": "语音合成（IndexTTS）",
+        "capability": "speech.generate",
+        "model": "IndexTTS-2.5"
+      }
+    ],
+    "models": [
+      {
+        "id": "IndexTTS-2.5",
+        "label": "IndexTTS 2.5",
+        "capability": "speech.generate",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 2,
+        "inputRoles": {
+          "speaker": {
+            "label": "音色参考",
+            "kind": "audio",
+            "required": true,
+            "description": "画布参考请使用 PCM WAV，0.25–60 秒，建议干净的 3–15 秒人声；超过 15 秒仅使用前 15 秒。"
+          },
+          "emotion_audio": {
+            "label": "情绪参考",
+            "kind": "audio",
+            "order": 1,
+            "required": true,
+            "visibleWhen": {
+              "emotion_mode": "audio"
+            },
+            "description": "使用 PCM WAV，仅提供情绪，音色仍由音色参考决定。"
+          }
+        },
+        "prompt": {
+          "label": "合成文本",
+          "required": true,
+          "maxLength": 20000,
+          "placeholder": "输入需要朗读的文字；发音标注：<文字|PINYIN>、<word|CMU PHONEMES>、<文字|かな>。请连接干净的音色参考音频。"
+        },
+        "fields": {
+          "lang": {
+            "type": "string",
+            "label": "语言",
+            "default": "ZH",
+            "enum": [
+              "ZH",
+              "EN",
+              "JA",
+              "ES",
+              "AR",
+              "ZHEN"
+            ],
+            "optionLabels": {
+              "ZH": "中文",
+              "EN": "英语",
+              "JA": "日语",
+              "ES": "西班牙语",
+              "AR": "阿拉伯语",
+              "ZHEN": "中英混合"
+            },
+            "icon": "language"
+          },
+          "emotion_mode": {
+            "type": "string",
+            "label": "情绪来源",
+            "default": "speaker",
+            "enum": [
+              "speaker",
+              "vector",
+              "audio",
+              "text",
+              "auto"
+            ],
+            "optionLabels": {
+              "speaker": "跟随音色参考",
+              "vector": "八维情绪控制",
+              "audio": "独立情绪参考音频",
+              "text": "文字情绪描述",
+              "auto": "根据正文自动判断"
+            },
+            "icon": "emotion",
+            "description": "情绪来源互斥；文字描述与自动判断由 IndexTTS 本地情绪分析处理。音色参考始终必需，跟随音色参考时情绪强度固定为 1。"
+          },
+          "emotion_vector": {
+            "type": "object",
+            "label": "八维情绪",
+            "sumMaximum": 1,
+            "visibleWhen": {
+              "emotion_mode": "vector"
+            },
+            "default": {
+              "happy": 0,
+              "angry": 0,
+              "sad": 0,
+              "afraid": 0,
+              "disgusted": 0,
+              "melancholic": 0,
+              "surprised": 0,
+              "calm": 0
+            },
+            "description": "各维度为 0–1，总和不得超过 1；建议总强度 0.6–0.8。",
+            "properties": {
+              "happy": {
+                "type": "number",
+                "label": "高兴",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "angry": {
+                "type": "number",
+                "label": "愤怒",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "sad": {
+                "type": "number",
+                "label": "悲伤",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "afraid": {
+                "type": "number",
+                "label": "害怕",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "disgusted": {
+                "type": "number",
+                "label": "厌恶",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "melancholic": {
+                "type": "number",
+                "label": "忧郁",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "surprised": {
+                "type": "number",
+                "label": "惊讶",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              },
+              "calm": {
+                "type": "number",
+                "label": "平静",
+                "control": "slider",
+                "default": 0,
+                "minimum": 0,
+                "maximum": 1,
+                "step": 0.05
+              }
+            }
+          },
+          "emotion_text": {
+            "type": "string",
+            "label": "情绪描述",
+            "control": "textarea",
+            "placement": "body",
+            "default": "",
+            "maxLength": 1000,
+            "visibleWhen": {
+              "emotion_mode": "text"
+            },
+            "description": "例如：压低声音，带着克制的悲伤。由本地服务转换为情绪强度，无需配置外部模型。"
+          },
+          "emotion_alpha": {
+            "type": "number",
+            "label": "情绪强度",
+            "control": "slider",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "visibleWhenAny": [
+              {
+                "emotion_mode": "audio"
+              },
+              {
+                "emotion_mode": "vector"
+              },
+              {
+                "emotion_mode": "text"
+              },
+              {
+                "emotion_mode": "auto"
+              }
+            ],
+            "description": "调整独立情绪来源的混合强度；跟随音色参考时由上游固定为 1。"
+          },
+          "emotion_random": {
+            "type": "boolean",
+            "label": "随机情绪采样",
+            "default": false,
+            "visibleWhenAny": [
+              {
+                "emotion_mode": "vector"
+              },
+              {
+                "emotion_mode": "text"
+              },
+              {
+                "emotion_mode": "auto"
+              }
+            ],
+            "description": "八维、文字描述与自动情绪均可随机采样；关闭便于复现。独立音频情绪模式不使用此选项。"
+          },
+          "duration_factor": {
+            "type": "number",
+            "label": "时长因子",
+            "control": "slider",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2,
+            "step": 0.05,
+            "description": "大于 1 更慢，小于 1 更快；相对时长调节，不是精确目标秒数。"
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子",
+            "default": 42,
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "max_text_tokens_per_segment": {
+            "type": "integer",
+            "label": "分段最大文本词元",
+            "default": 120,
+            "minimum": 20,
+            "maximum": 200,
+            "step": 1
+          },
+          "interval_silence": {
+            "type": "integer",
+            "label": "段间停顿（毫秒）",
+            "default": 200,
+            "minimum": 0,
+            "maximum": 3000,
+            "step": 10
+          },
+          "text_normalization": {
+            "type": "boolean",
+            "label": "文本规范化",
+            "default": true,
+            "description": "规范数字和符号；发音标注直接写入合成文本。"
+          },
+          "num_beams": {
+            "type": "integer",
+            "label": "束搜索数量",
+            "default": 3,
+            "minimum": 1,
+            "maximum": 5,
+            "step": 1,
+            "description": "默认遵循上游；可尝试 1 以降低搜索开销。"
+          },
+          "temperature": {
+            "type": "number",
+            "label": "采样温度",
+            "default": 0.8,
+            "minimum": 0.1,
+            "maximum": 2,
+            "step": 0.05
+          },
+          "top_p": {
+            "type": "number",
+            "label": "累积采样概率",
+            "default": 0.8,
+            "minimum": 0.001,
+            "maximum": 1,
+            "step": 0.01
+          },
+          "top_k": {
+            "type": "integer",
+            "label": "候选采样数量",
+            "default": 30,
+            "minimum": 1,
+            "maximum": 100,
+            "step": 1
+          },
+          "max_mel_tokens": {
+            "type": "integer",
+            "label": "最大音频词元",
+            "default": 1500,
+            "minimum": 50,
+            "maximum": 3000,
+            "step": 50
+          }
+        }
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 1,
+      "maxQueued": 20,
+      "cancelable": false
+    }
+  },
+  "files": []
+}

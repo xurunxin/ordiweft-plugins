@@ -5,7 +5,7 @@
   "publication": "manual-tuf",
   "hostSource": {
     "repository": "https://github.com/xurunxin/Ordiweft",
-    "commit": "30c45ab14aa2867c61cd9660ebacfe38e8d12b82"
+    "commit": "6b46ba08854c3040f52237d2447fcb238a33cce8"
   },
   "retainedHostSources": [
     {
@@ -39,6 +39,10 @@
     {
       "repository": "https://github.com/xurunxin/Ordiweft",
       "commit": "732f0bafb581a05adab6ac8fd3cb28595b19f7fd"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "30c45ab14aa2867c61cd9660ebacfe38e8d12b82"
     }
   ],
   "packages": [
@@ -57,6 +61,8 @@
     "ordiweft-examples/director-models/1.0.1",
     "ordiweft-examples/environment-preset/1.0.0",
     "ordiweft-examples/text-analysis-node/1.0.0",
-    "ordiweft-examples/png-renderer/1.0.0"
+    "ordiweft-examples/png-renderer/1.0.0",
+    "ordiweft-examples/indextts/1.0.0",
+    "ordiweft-examples/dashscope-wan/1.0.0"
   ]
 }

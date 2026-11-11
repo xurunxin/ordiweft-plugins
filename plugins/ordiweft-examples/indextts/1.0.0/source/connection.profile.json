@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "originCredential": "ITT_URL",
+  "headers": [
+    {
+      "name": "Authorization",
+      "credential": "ITT_API_KEY",
+      "prefix": "Bearer "
+    },
+    {
+      "name": "Idempotency-Key",
+      "jobId": true
+    }
+  ],
+  "operations": {
+    "audio": {
+      "method": "GET",
+      "path": "/v1/jobs",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 41943040,
+      "receiptPath": {
+        "ref": "original-submit",
+        "pointer": "/job/id",
+        "suffix": "/audio"
+      }
+    },
+    "capabilities": {
+      "method": "GET",
+      "path": "/v1/capabilities",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536
+    },
+    "generate-audio": {
+      "method": "POST",
+      "path": "/v1/jobs",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-audio",
+        "digest": "8519bceb18bfe710e9239a85982b65a2b893a30dd9244671635088c191509cf1"
+      }
+    },
+    "generate-auto": {
+      "method": "POST",
+      "path": "/v1/jobs",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-auto",
+        "digest": "cded22ab175eebe3ee883cd420921299b2d5802601c8157b3952cdc67d356801"
+      }
+    },
+    "generate-speaker": {
+      "method": "POST",
+      "path": "/v1/jobs",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-speaker",
+        "digest": "458156160160ddf271b24a0b6d4bf3850e6afbe4a0845c0899446686cb4e32f5"
+      }
+    },
+    "generate-text": {
+      "method": "POST",
+      "path": "/v1/jobs",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-text",
+        "digest": "88f5b018dccd9e5aac569b04e4626d5927d675d69efc698ab7205d03bb537c6d"
+      }
+    },
+    "generate-vector": {
+      "method": "POST",
+      "path": "/v1/jobs",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-vector",
+        "digest": "578700118a077c56ff27471fa8f20810f58541674e181222e64a1e5a767e55f9"
+      }
+    },
+    "observe": {
+      "method": "GET",
+      "path": "/v1/jobs",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536,
+      "receiptPath": {
+        "ref": "original-submit",
+        "pointer": "/job/id"
+      }
+    },
+    "status": {
+      "method": "GET",
+      "path": "/v1/status",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536
+    },
+    "upload-emotion": {
+      "method": "POST",
+      "path": "/v1/assets",
+      "effect": "upload",
+      "slot": "upload-emotion",
+      "contentType": "application/octet-stream",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 41943040,
+      "maxResponseBytes": 65536,
+      "inputBody": {
+        "index": 0,
+        "role": "emotion_audio"
+      }
+    },
+    "upload-speaker": {
+      "method": "POST",
+      "path": "/v1/assets",
+      "effect": "upload",
+      "slot": "upload-speaker",
+      "contentType": "application/octet-stream",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 41943040,
+      "maxResponseBytes": 65536,
+      "inputBody": {
+        "index": 0,
+        "role": "speaker"
+      }
+    }
+  },
+  "maxRuntimeMs": 900000,
+  "waits": {
+    "result": {
+      "operation": "observe",
+      "statePointer": "/state",
+      "pending": [
+        "queued",
+        "running"
+      ],
+      "succeeded": [
+        "succeeded"
+      ],
+      "failed": [
+        "failed",
+        "interrupted",
+        "cancelled"
+      ],
+      "intervalMs": 1000,
+      "maxAttempts": 900,
+      "timeoutMs": 900000
+    }
+  }
+}

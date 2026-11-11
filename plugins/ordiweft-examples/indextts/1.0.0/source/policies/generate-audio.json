@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "models": {
+    "IndexTTS-2.5": "IndexTeam/IndexTTS-2.5"
+  },
+  "fixedModel": "IndexTeam/IndexTTS-2.5",
+  "singleOutput": true,
+  "body": {
+    "text": {
+      "$host": "prompt"
+    },
+    "speaker": {
+      "$host": "receipt",
+      "ref": "original-upload-speaker",
+      "pointer": "/id"
+    },
+    "lang": {
+      "$host": "parameter",
+      "name": "lang",
+      "optional": true
+    },
+    "emotion_alpha": {
+      "$host": "parameter",
+      "name": "emotion_alpha",
+      "optional": true
+    },
+    "emotion_random": {
+      "$host": "parameter",
+      "name": "emotion_random",
+      "optional": true
+    },
+    "duration_factor": {
+      "$host": "parameter",
+      "name": "duration_factor",
+      "optional": true
+    },
+    "seed": {
+      "$host": "parameter",
+      "name": "seed",
+      "optional": true
+    },
+    "max_text_tokens_per_segment": {
+      "$host": "parameter",
+      "name": "max_text_tokens_per_segment",
+      "optional": true
+    },
+    "interval_silence": {
+      "$host": "parameter",
+      "name": "interval_silence",
+      "optional": true
+    },
+    "text_normalization": {
+      "$host": "parameter",
+      "name": "text_normalization",
+      "optional": true
+    },
+    "num_beams": {
+      "$host": "parameter",
+      "name": "num_beams",
+      "optional": true
+    },
+    "temperature": {
+      "$host": "parameter",
+      "name": "temperature",
+      "optional": true
+    },
+    "top_p": {
+      "$host": "parameter",
+      "name": "top_p",
+      "optional": true
+    },
+    "top_k": {
+      "$host": "parameter",
+      "name": "top_k",
+      "optional": true
+    },
+    "max_mel_tokens": {
+      "$host": "parameter",
+      "name": "max_mel_tokens",
+      "optional": true
+    },
+    "emotion_audio": {
+      "$host": "receipt",
+      "ref": "original-upload-emotion_audio",
+      "pointer": "/id"
+    }
+  }
+}
