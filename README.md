@@ -33,7 +33,7 @@ go build -trimpath -o <仓外CLI路径> ./cmd/ordiweft-plugin
 node scripts/registry.mjs build <CLI绝对路径> <CLI的SHA256> <仓外新目录>
 ```
 
-输出 ZIP 与 build-proof.json。v2证明分别记录实际制品SHA/字节数、宿主release digest、选择的CLI摘要/配置的工具源码提交，以及逐包原源码位置/提交和配方字节SHA；新工具可以打包旧原源码，不把旧源码错误标为工具提交。prepare重新核对原配方来源和ZIP。retainedHostSources用于读取历史证明；缺逐包来源的v1证明不能声称不同源码提交，其提案仅保留原共享工具提交的来源范围，不补造原路径或配方指纹。
+输出 ZIP 与 build-proof.json。v3证明分别记录实际制品SHA/字节数、宿主release digest、选择的CLI摘要/配置的工具源码提交，以及逐包原源码位置/提交和配方JSON序列化摘要recipeDigest；JSON.parse后JSON.stringify的UTF-8字节参与摘要，避免CRLF/LF差异。新工具可以打包旧原源码，不把旧源码错误标为工具提交。prepare重新核对原配方来源和ZIP；v2仍按原配方字节SHA读取，不改写历史证明。retainedHostSources用于读取历史证明；缺逐包来源的v1证明不能声称不同源码提交，其提案仅保留原共享工具提交的来源范围，不补造原路径或配方指纹。
 
 这些是待复核的构建记录，不是签名、命名空间授权或构建证明服务；配置的工具提交不能单凭文件自称得到认证，维护者仍须独立确认所提供CLI摘要与真实构建来源。所有输出不覆盖已有文件，失败保留现场供检查。文件完整性以真实宿主CLI为准，不在这里复制另一份release摘要算法。
 

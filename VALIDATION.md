@@ -24,3 +24,7 @@ build-proof v2分别保存工具来源与逐包源码/配方SHA，prepare重验�
 - EXPECTED_FAIL：临时跳过逐包原源码比较，原集成主检查在错误来源提案被接受处断言失败（actual=0，3.704秒）；精确恢复后3项全通过5.134秒。随后仅收窄v1来源声明，最终再次通过5.003秒。
 
 仓外制品与原证明位于plugin-platform-live-20261110/community-build-action-24a9024。实际沙箱、业务采用及停止证明属于Ordiweft主仓相应阶段，本仓打包不会重新执行；无费用、激活或正式发布。独立干净clone读取与打包在推送后另外记录。
+
+9166469远程干净克隆的9包check/verify/pack通过，但完整构建证明对比FAIL：原4配方工作区CRLF与Git克隆LF使recipeSHA256不同。这是可移植证明的实际缺口，未将其记录成完整独立交付PASS；旧源码/ZIP未修改。
+
+新增v3证明以JSON.parse后JSON.stringify的UTF-8字节生成recipeDigest，逐包原源码提交和真实ZIP SHA仍独立保存；v2继续读取真实原字节指纹，v1不补造来源。主集成扩展为两次构建之间只在临时副本转换配方CRLF→LF，并要求完整proof及9个ZIP相同，最终3项4.927秒PASS、零SKIP。新v3构建记录保存在community-build-v3-action-24a9024，不覆盖先前v2或v1记录。

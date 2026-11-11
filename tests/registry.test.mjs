@@ -32,9 +32,19 @@ test('portable repository checks without executing packages or requiring credent
 test('real host packing and catalog proposals preserve immutable original bytes', {skip:!tool||!toolSHA?'explicit trusted host CLI and SHA-256 required':false}, async t=>{
  const {repo,dir}=await fixture(t)
  const first=path.join(dir,'build-one'),second=path.join(dir,'build-two')
- for(const output of [first,second]){const result=run(repo,['build',tool,toolSHA,output]);assert.equal(result.status,0,result.stderr)}
+ for(const output of [first,second]){
+  if(output===second){
+   const config=JSON.parse(await fs.readFile(path.join(repo,'repository.json')))
+   for(const key of config.packages){
+    const recipe=path.join(repo,'plugins',key,'recipe.json')
+    await fs.writeFile(recipe,(await fs.readFile(recipe,'utf8')).replaceAll('\r\n','\n'))
+   }
+  }
+  const result=run(repo,['build',tool,toolSHA,output]);assert.equal(result.status,0,result.stderr)
+ }
  const proofPath=path.join(first,'build-proof.json'),proofBody=await fs.readFile(proofPath),proof=JSON.parse(proofBody)
- assert.equal(proof.version,2)
+ assert.equal(proof.version,3)
+ assert.deepEqual(JSON.parse(await fs.readFile(path.join(second,'build-proof.json'))),proof,'recipe line endings changed portable provenance')
  assert.equal(proof.artifacts.length,9)
  assert.ok(proof.artifacts.some(item=>item.source.commit!==proof.hostSource.commit),'mixed original sources lost their provenance')
  for(const artifact of proof.artifacts){
@@ -53,7 +63,7 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  assert.equal(candidate.trust,'unsigned');assert.equal(candidate.publication,'not_run');assert.equal(candidate.tufSigning,'not_run')
  assert.equal(candidate.entries[0].releaseDigest,original.releaseDigest)
  assert.deepEqual(candidate.entries[0].source,original.source)
- assert.equal(candidate.entries[0].recipeSHA256,original.recipeSHA256)
+ assert.equal(candidate.entries[0].recipeDigest,original.recipeDigest)
  const wrongProvenance=structuredClone(proof)
  wrongProvenance.artifacts[0].source.commit='0'.repeat(40)
  const wrongProofPath=path.join(first,'wrong-provenance.json'),wrongSelectionPath=path.join(dir,'wrong-selection.json')
@@ -64,7 +74,7 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  assert.notEqual(result.status,0);assert.match(result.stderr,/Original recipe provenance changed/)
  const legacy=structuredClone(proof)
  legacy.version=1;legacy.hostSource={repository:original.source.repository,commit:original.source.commit}
- for(const item of legacy.artifacts){delete item.source;delete item.recipeSHA256}
+ for(const item of legacy.artifacts){delete item.source;delete item.recipeDigest}
  const legacyPath=path.join(first,'legacy-proof.json'),legacySelectionPath=path.join(dir,'legacy-selection.json')
  let legacyBody=Buffer.from(JSON.stringify(legacy))
  await fs.writeFile(legacyPath,legacyBody)
@@ -73,6 +83,7 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  const legacyCandidate=JSON.parse(await fs.readFile(path.join(dir,'legacy-candidate.json')))
  assert.equal(legacyCandidate.entries[0].source.path,undefined,'legacy proof invented an original source path')
  assert.equal(legacyCandidate.entries[0].recipeSHA256,undefined,'legacy proof invented an original recipe fingerprint')
+ assert.equal(legacyCandidate.entries[0].recipeDigest,undefined,'legacy proof invented a new recipe fingerprint')
  assert.equal(legacyCandidate.entries[0].sourceEvidence,'legacy-tool-source')
  const newer=proof.artifacts.find(item=>item.source.commit!==original.source.commit)
  await fs.writeFile(legacySelectionPath,JSON.stringify({...selection,expectedBuildSHA256:sha(legacyBody),decisions:[{key:newer.key,state:'candidate',reason:'must not attribute newer source to legacy tool'}]}))
