@@ -23,10 +23,22 @@ async function fixture(t){
  return {repo,dir}
 }
 
-test('portable repository checks without executing packages or requiring credentials',()=>{
+test('portable repository checks without executing packages or requiring credentials',async()=>{
  const result=run(root,['check'])
  assert.equal(result.status,0,result.stderr)
- assert.deepEqual(JSON.parse(result.stdout),{status:'checked',packages:10,execution:'not_run',publication:'not_run'})
+ assert.deepEqual(JSON.parse(result.stdout),{status:'checked',packages:JSON.parse(await fs.readFile(path.join(root,'repository.json'),'utf8')).packages.length,execution:'not_run',publication:'not_run'})
+})
+
+test('static process metadata requires an immutable sandbox image without running the package',async t=>{
+ const {repo}=await fixture(t)
+ const configPath=path.join(repo,'repository.json'),config=JSON.parse(await fs.readFile(configPath))
+ const key='ordiweft-examples/go-host-generation/1.0.0'
+ config.packages=[key];await fs.writeFile(configPath,JSON.stringify(config))
+ const recipePath=path.join(repo,'plugins',key,'recipe.json'),recipe=JSON.parse(await fs.readFile(recipePath))
+ delete recipe.runtimeImage;await fs.writeFile(recipePath,JSON.stringify(recipe))
+ const result=run(repo,['check'])
+ assert.notEqual(result.status,0)
+ assert.match(result.stderr,/Executable runtime image must be immutable/)
 })
 
 test('real host packing and catalog proposals preserve immutable original bytes', {skip:!tool||!toolSHA?'explicit trusted host CLI and SHA-256 required':false}, async t=>{
@@ -45,7 +57,7 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  const proofPath=path.join(first,'build-proof.json'),proofBody=await fs.readFile(proofPath),proof=JSON.parse(proofBody)
  assert.equal(proof.version,3)
  assert.deepEqual(JSON.parse(await fs.readFile(path.join(second,'build-proof.json'))),proof,'recipe line endings changed portable provenance')
- assert.equal(proof.artifacts.length,10)
+ assert.equal(proof.artifacts.length,JSON.parse(await fs.readFile(path.join(repo,'repository.json'),'utf8')).packages.length)
  assert.ok(proof.artifacts.some(item=>item.source.commit!==proof.hostSource.commit),'mixed original sources lost their provenance')
  for(const artifact of proof.artifacts){
   const bytes=await fs.readFile(path.join(first,artifact.filename))

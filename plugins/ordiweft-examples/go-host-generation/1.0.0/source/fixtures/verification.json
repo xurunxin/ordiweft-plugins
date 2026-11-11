@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "generation": {
+    "provider": "go-host-generation",
+    "capability": "image.generate",
+    "model": "demo",
+    "prompt": "fixture",
+    "parameters": {}
+  },
+  "inputs": [],
+  "exchanges": [
+    {
+      "callId": "original-submit",
+      "operation": "generate",
+      "status": 200,
+      "body": "eyJkYXRhIjpbeyJiNjRfanNvbiI6ImlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFBSUFBQUFDQ0FZQUFBQnl0ZzBrQUFBQUgwbEVRVlI0bkFBU0FPMy9BZ0FBQUFBQUFBQUFBZ0FBQUFBQUFBQUFBd0FBU0FBRmQxNkdQUUFBQUFCSlJVNUVya0pnZ2c9PSJ9XX0="
+    }
+  ],
+  "outputSha256": "7fbe3086e4c6aa8998c0d51c7c89622b00b712b7344393e38e38befe67acb456"
+}

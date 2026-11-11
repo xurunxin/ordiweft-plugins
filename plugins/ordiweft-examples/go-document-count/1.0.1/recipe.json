@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/go-document-count",
+  "releaseVersion": "1.0.1",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "cfcf2dd01d145bad1d2d3b33ffd9fcdb820e0e12",
+    "path": "examples/plugin-go/document-count"
+  },
+  "runtimeImage": "sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c"
+}

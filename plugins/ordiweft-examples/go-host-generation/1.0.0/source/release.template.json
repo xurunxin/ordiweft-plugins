@@ -1,0 +1,72 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/go-host-generation",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "go-host-generation",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "decode",
+        "release"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "go-host-generation",
+    "name": "Go 宿主图片供应商示例",
+    "version": "1.0.0",
+    "runtime": "process",
+    "secrets": [
+      "API_KEY"
+    ],
+    "models": [
+      {
+        "id": "demo",
+        "capability": "image.generate",
+        "fields": {},
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 1
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 1,
+      "maxQueued": 2
+    }
+  },
+  "files": []
+}
