@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "type": "director-models",
+  "name": "织序原创几何样本",
+  "license": "Apache-2.0",
+  "attribution": "Copyright 2026 Ordiweft contributors",
+  "models": [
+    {
+      "id": "triangle",
+      "name": "原创三角面",
+      "category": "基础几何",
+      "tags": [
+        "original",
+        "sample"
+      ],
+      "file": "models/triangle.glb"
+    }
+  ]
+}

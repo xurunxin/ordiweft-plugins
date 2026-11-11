@@ -5,9 +5,17 @@
   "publication": "manual-tuf",
   "hostSource": {
     "repository": "https://github.com/xurunxin/Ordiweft",
-    "commit": "cfcf2dd01d145bad1d2d3b33ffd9fcdb820e0e12"
+    "commit": "ac78e2871220579e67c94892ac87e5c2f26c5e86"
   },
   "retainedHostSources": [
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "7ced9ac288474bc53dd7f0474b25efeba6538448"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "cfcf2dd01d145bad1d2d3b33ffd9fcdb820e0e12"
+    },
     {
       "repository": "https://github.com/xurunxin/Ordiweft",
       "commit": "b11ef92bc471c4b725f1aeb9c781feb9a449e6f2"
@@ -33,6 +41,7 @@
     "ordiweft-examples/document-normalize/1.0.0",
     "ordiweft-examples/document-normalize/1.0.1",
     "ordiweft-examples/go-host-generation/1.0.0",
-    "ordiweft-examples/go-document-count/1.0.1"
+    "ordiweft-examples/go-document-count/1.0.1",
+    "ordiweft-examples/director-models/1.0.1"
   ]
 }
