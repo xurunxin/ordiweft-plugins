@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "id": "render-png",
+  "kind": "worker",
+  "action": {
+    "label": "外部色块渲染",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "title": "宽度（像素）",
+          "minimum": 1,
+          "maximum": 64,
+          "default": 32
+        },
+        "height": {
+          "type": "integer",
+          "title": "高度（像素）",
+          "minimum": 1,
+          "maximum": 64,
+          "default": 16
+        },
+        "color": {
+          "type": "string",
+          "title": "颜色",
+          "enum": [
+            "red",
+            "blue"
+          ],
+          "default": "red"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "color"
+      ],
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "title": "实际宽度"
+        },
+        "height": {
+          "type": "integer",
+          "title": "实际高度"
+        },
+        "pixels": {
+          "type": "integer",
+          "title": "实际像素数"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "pixels"
+      ],
+      "additionalProperties": false
+    },
+    "resources": {
+      "minInputs": 0,
+      "maxInputs": 0,
+      "maxInputBytes": 0,
+      "minOutputs": 1,
+      "maxOutputs": 1,
+      "maxOutputBytes": 65536,
+      "maxRuntimeMs": 10000
+    }
+  }
+}

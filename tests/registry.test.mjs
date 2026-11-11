@@ -29,6 +29,18 @@ test('portable repository checks without executing packages or requiring credent
  assert.deepEqual(JSON.parse(result.stdout),{status:'checked',packages:JSON.parse(await fs.readFile(path.join(root,'repository.json'),'utf8')).packages.length,execution:'not_run',publication:'not_run'})
 })
 
+test('declarative worker recipes cannot supply deployment images or endpoints',async t=>{
+ const {repo}=await fixture(t)
+ const configPath=path.join(repo,'repository.json'),config=JSON.parse(await fs.readFile(configPath))
+ const key='ordiweft-examples/png-renderer/1.0.0'
+ config.packages=[key];await fs.writeFile(configPath,JSON.stringify(config))
+ const recipePath=path.join(repo,'plugins',key,'recipe.json'),recipe=JSON.parse(await fs.readFile(recipePath))
+ for(const [extra,message]of [[{runtimeImage:'sha256:'+'a'.repeat(64)},/Declarative recipe cannot select a runtime image/],[{origin:'http://127.0.0.1:49010'},/Unexpected metadata field/]]){
+  await fs.writeFile(recipePath,JSON.stringify({...recipe,...extra}))
+  const result=run(repo,['check']);assert.notEqual(result.status,0);assert.match(result.stderr,message)
+ }
+})
+
 test('static process metadata requires an immutable sandbox image without running the package',async t=>{
  const {repo}=await fixture(t)
  const configPath=path.join(repo,'repository.json'),config=JSON.parse(await fs.readFile(configPath))

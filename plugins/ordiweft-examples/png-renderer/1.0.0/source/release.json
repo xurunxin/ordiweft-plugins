@@ -1,0 +1,40 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/png-renderer",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "worker",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "render-png",
+      "kind": "worker"
+    }
+  ],
+  "requirements": [],
+  "definitions": {
+    "render-png": "definitions/render-png.json"
+  },
+  "files": [
+    {
+      "path": "definitions/render-png.json",
+      "bytes": 1529,
+      "sha256": "91a68353b80c979f5406f247e592631f9c80a40d9929f2dff45fbb72942d1a3a"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 204,
+      "sha256": "992de5b3f5163e63317f7a1f102b31e1f07f4e4e212e529a28331df44126ca66"
+    },
+    {
+      "path": "README.md",
+      "bytes": 750,
+      "sha256": "cffe0b166b1e74c4d45a60c4a9eb2a522f7e4ab56dd89dffd3c8385030b54368"
+    }
+  ]
+}
