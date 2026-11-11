@@ -28,3 +28,5 @@ build-proof v2分别保存工具来源与逐包源码/配方SHA，prepare重验�
 9166469远程干净克隆的9包check/verify/pack通过，但完整构建证明对比FAIL：原4配方工作区CRLF与Git克隆LF使recipeSHA256不同。这是可移植证明的实际缺口，未将其记录成完整独立交付PASS；旧源码/ZIP未修改。
 
 新增v3证明以JSON.parse后JSON.stringify的UTF-8字节生成recipeDigest，逐包原源码提交和真实ZIP SHA仍独立保存；v2继续读取真实原字节指纹，v1不补造来源。主集成扩展为两次构建之间只在临时副本转换配方CRLF→LF，并要求完整proof及9个ZIP相同，最终3项4.927秒PASS、零SKIP。新v3构建记录保存在community-build-v3-action-24a9024，不覆盖先前v2或v1记录。
+
+PASS：远程干净克隆5f3938658ba507546553d89cc8df106718f704c4，用同一可信CLI实际生成9包；9份ZIP及完整v3 proof与开发工作区逐字节/字段一致。另用真实原v1/v2 build-proof和原ZIP准备未签名候选，原证明字节不变。记录位于community-clean-v3-action及独立clone目录plugin-community-clone-v3-action。未运行插件、模型、签名或部署。
