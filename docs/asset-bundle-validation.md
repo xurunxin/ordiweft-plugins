@@ -17,3 +17,5 @@
 真实CLI门控下4项仓库测试全部PASS、0 SKIP（9.450s）：离线元数据、静态process镜像固定、实际打包/候选与不可变输出、源文件篡改及错误CLI摘要拒绝。十三份ZIP全部实际打包；原十二份ZIP、releaseDigest、来源和recipeDigest逐项保持相同。新素材包releaseDigest为 `c4e95ddffd21442a6fe4bdc49a953509e9af316677bd03467f4c0808b8b60d01`，ZIP 6831字节、SHA-256 `b1b191bc340ca243f69d716741e896e093481ef9f96e00981dce4876bf56a39b`。
 
 `prepare` 只为这个新版本生成1条candidate状态的unsigned proposal，未生成稳定或签名目录，未安装到任何部署。CLI构建来源仍需维护者独立复核；证明中的工具提交和摘要不授予信任根或发行资格。
+
+从远端全新克隆固定社区提交 `13ea9fb661b55a975954308846cfe75778c09dc0`，重新打包全部十三个包；十三份ZIP及整个v3 build-proof与原构建逐字节相同，未复制工作树缓存、凭据、生成物或原构建证明作为输入。
