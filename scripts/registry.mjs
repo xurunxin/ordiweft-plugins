@@ -23,11 +23,18 @@ async function anchored(relative){
 }
 async function json(relative){return JSON.parse((await regular(await anchored(relative),256<<10)).toString('utf8'))}
 function exact(value,keys){requireValue(value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).every(key=>keys.includes(key)),'Unexpected metadata field')}
+function pinnedHost(value){
+ exact(value,['repository','commit'])
+ requireValue(value.repository==='https://github.com/xurunxin/Ordiweft'&&/^[a-f0-9]{40}$/.test(value.commit),'Pinned host source required')
+}
+function sameSource(a,b){return a?.repository===b?.repository&&a?.commit===b?.commit&&a?.path===b?.path}
 async function repository(){
  const config=await json('repository.json')
- exact(config,['formatVersion','status','license','publication','hostSource','packages'])
+ exact(config,['formatVersion','status','license','publication','hostSource','retainedHostSources','packages'])
  requireValue(config.formatVersion===1&&config.status==='unpublished'&&config.publication==='manual-tuf'&&config.license==='Apache-2.0','Unsupported repository policy')
- requireValue(config.hostSource?.repository==='https://github.com/xurunxin/Ordiweft'&&/^[a-f0-9]{40}$/.test(config.hostSource.commit),'Pinned host source required')
+ pinnedHost(config.hostSource)
+ requireValue(config.retainedHostSources===undefined||Array.isArray(config.retainedHostSources)&&config.retainedHostSources.length<=32,'Invalid retained tool sources')
+ for(const source of config.retainedHostSources??[])pinnedHost(source)
  requireValue(Array.isArray(config.packages)&&config.packages.length<=10000&&new Set(config.packages).size===config.packages.length,'Invalid package index')
  const packages=[]
  for(const key of config.packages){
@@ -36,18 +43,19 @@ async function repository(){
   const owner=await json(`publishers/${publisher}/owner.json`)
   exact(owner,['version','publisher','repositoryOwner','status'])
   requireValue(owner.version===1&&owner.publisher===publisher&&owner.status==='pending'&&owner.repositoryOwner==='xurunxin','Invalid pending namespace record')
-  const recipe=await json(`plugins/${key}/recipe.json`)
+  const recipeBody=await regular(await anchored(`plugins/${key}/recipe.json`),256<<10),recipe=JSON.parse(recipeBody.toString('utf8'))
   exact(recipe,['version','packageId','releaseVersion','mode','source','runtimeImage'])
   requireValue(recipe.version===1&&recipe.mode==='portable-pack'&&recipe.packageId===`${publisher}/${name}`&&recipe.releaseVersion===version,'Invalid portable recipe')
   exact(recipe.source,['repository','commit','path'])
-  requireValue(recipe.source?.repository===config.hostSource.repository&&recipe.source.commit===config.hostSource.commit&&typeof recipe.source.path==='string'&&recipe.source.path.startsWith('examples/')&&!recipe.source.path.includes('..'),'Unpinned source recipe')
+  requireValue(recipe.source?.repository===config.hostSource.repository&&/^[a-f0-9]{40}$/.test(recipe.source.commit)&&typeof recipe.source.path==='string'&&recipe.source.path.startsWith('examples/')&&recipe.source.path.split('/').every(part=>part&&part!=='.'&&part!=='..'&&!part.includes('\\')),'Unpinned source recipe')
   const source=await anchored(`plugins/${key}/source`)
   const descriptor=JSON.parse((await regular(path.join(source,'release.json'),256<<10)).toString('utf8'))
   requireValue(descriptor.packageId===recipe.packageId&&descriptor.version===version&&descriptor.license==='Apache-2.0','Recipe and package differ')
   requireValue(['data','node'].includes(descriptor.runtime),'Runtime not installed by portable recipes')
   if(descriptor.runtime==='node')requireValue(typeof recipe.runtimeImage==='string'&&/^sha256:[a-f0-9]{64}$/.test(recipe.runtimeImage),'Node runtime image must be immutable')
   else requireValue(recipe.runtimeImage===undefined,'Data recipe cannot select a runtime')
-  packages.push({key,recipe,source})
+  const recipeSHA256=sha(recipeBody)
+  packages.push({key,recipe,recipeSHA256,source})
  }
  return {config,packages}
 }
@@ -80,9 +88,9 @@ async function build(tool,expected,target){
   const packed=host(tool,['pack','-root',entry.source,'-out',file])
   requireValue(packed.digest===verified.digest,'Packing changed release')
   const bytes=await regular(file)
-  artifacts.push({key:entry.key,packageId:verified.packageId,version:verified.version,releaseDigest:verified.digest,filename,sha256:sha(bytes),bytes:bytes.length,runtimeImage:entry.recipe.runtimeImage??null})
+  artifacts.push({key:entry.key,packageId:verified.packageId,version:verified.version,releaseDigest:verified.digest,filename,sha256:sha(bytes),bytes:bytes.length,runtimeImage:entry.recipe.runtimeImage??null,source:entry.recipe.source,recipeSHA256:entry.recipeSHA256})
  }
- const proof={version:1,hostSource:config.hostSource,hostToolSHA256:expected,artifacts,execution:'not_run',trust:'unsigned',publication:'not_run'}
+ const proof={version:2,hostSource:config.hostSource,hostToolSHA256:expected,artifacts,execution:'not_run',trust:'unsigned',publication:'not_run'}
  await fs.writeFile(path.join(destination,'build-proof.json'),JSON.stringify(proof,null,2)+'\n',{flag:'wx',mode:0o600})
  return proof
 }
@@ -91,8 +99,8 @@ async function prepare(proofPath,selectionPath,target){
  const selection=JSON.parse((await regular(path.resolve(selectionPath),256<<10)).toString('utf8'))
  exact(selection,['version','expectedBuildSHA256','decisions'])
  requireValue(selection.version===1&&selection.expectedBuildSHA256===sha(proofBody)&&Array.isArray(selection.decisions)&&selection.decisions.length<=10000,'Selection must bind original build proof')
- const {config}=await repository()
- requireValue(proof.version===1&&proof.trust==='unsigned'&&proof.execution==='not_run'&&proof.hostSource?.commit===config.hostSource.commit&&Array.isArray(proof.artifacts),'Invalid original build proof')
+ const {config,packages}=await repository()
+ requireValue([1,2].includes(proof.version)&&proof.trust==='unsigned'&&proof.execution==='not_run'&&hex.test(proof.hostToolSHA256)&&[config.hostSource,...config.retainedHostSources??[]].some(source=>sameSource(source,proof.hostSource))&&Array.isArray(proof.artifacts),'Invalid original build proof')
  const seen=new Set(),entries=[]
  for(const decision of selection.decisions){
   exact(decision,['key','state','reason'])
@@ -100,10 +108,16 @@ async function prepare(proofPath,selectionPath,target){
   seen.add(decision.key)
   const artifact=proof.artifacts.find(item=>item.key===decision.key)
   requireValue(artifact&&config.packages.includes(decision.key)&&hex.test(artifact.sha256)&&hex.test(artifact.releaseDigest)&&Number.isSafeInteger(artifact.bytes),'Original built artifact required')
+  requireValue(proof.artifacts.filter(item=>item.key===decision.key).length===1,'Ambiguous original artifact')
+  const entry=packages.find(item=>item.key===decision.key)
+  requireValue(artifact.packageId===entry.recipe.packageId&&artifact.version===entry.recipe.releaseVersion&&(artifact.runtimeImage??null)===(entry.recipe.runtimeImage??null),'Original recipe identity changed')
+  if(proof.version===2)requireValue(sameSource(artifact.source,entry.recipe.source)&&artifact.recipeSHA256===entry.recipeSHA256,'Original recipe provenance changed')
+  else requireValue(artifact.source===undefined&&artifact.recipeSHA256===undefined&&entry.recipe.source.repository===proof.hostSource.repository&&entry.recipe.source.commit===proof.hostSource.commit,'Legacy proof cannot claim a different source')
   requireValue(path.basename(artifact.filename)===artifact.filename,'Invalid artifact name')
   const bytes=await regular(path.join(path.dirname(path.resolve(proofPath)),artifact.filename))
   requireValue(bytes.length===artifact.bytes&&sha(bytes)===artifact.sha256,'Artifact bytes changed after build')
-  entries.push({...artifact,state:decision.state,reason:decision.reason})
+  const provenance=proof.version===2?{source:artifact.source,recipeSHA256:artifact.recipeSHA256}:{source:{repository:proof.hostSource.repository,commit:proof.hostSource.commit},sourceEvidence:'legacy-tool-source'}
+  entries.push({...artifact,...provenance,state:decision.state,reason:decision.reason})
  }
  entries.sort((a,b)=>a.key.localeCompare(b.key,'en'))
  const proposal={version:1,kind:'unsigned-catalog-proposal',buildSHA256:sha(proofBody),entries,trust:'unsigned',publisherApproval:'required',tufSigning:'not_run',publication:'not_run'}

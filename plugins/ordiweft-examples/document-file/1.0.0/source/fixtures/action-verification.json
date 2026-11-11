@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "portId": "document-file",
+  "arguments": {
+    "title": "Title",
+    "paragraphs": [
+      "Body"
+    ]
+  },
+  "inputs": [],
+  "expectedValue": {
+    "characters": 11,
+    "paragraphCount": 1
+  },
+  "expectedOutputs": [
+    {
+      "kind": "document",
+      "sha256": "45777c14d90fa79dc6ce71ceb6f81cced62c929c472199547cfd939a54e954c6",
+      "bytes": 11,
+      "mime": "text/plain"
+    }
+  ]
+}

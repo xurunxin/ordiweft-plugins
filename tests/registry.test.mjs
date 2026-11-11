@@ -26,7 +26,7 @@ async function fixture(t){
 test('portable repository checks without executing packages or requiring credentials',()=>{
  const result=run(root,['check'])
  assert.equal(result.status,0,result.stderr)
- assert.deepEqual(JSON.parse(result.stdout),{status:'checked',packages:4,execution:'not_run',publication:'not_run'})
+ assert.deepEqual(JSON.parse(result.stdout),{status:'checked',packages:9,execution:'not_run',publication:'not_run'})
 })
 
 test('real host packing and catalog proposals preserve immutable original bytes', {skip:!tool||!toolSHA?'explicit trusted host CLI and SHA-256 required':false}, async t=>{
@@ -34,7 +34,9 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  const first=path.join(dir,'build-one'),second=path.join(dir,'build-two')
  for(const output of [first,second]){const result=run(repo,['build',tool,toolSHA,output]);assert.equal(result.status,0,result.stderr)}
  const proofPath=path.join(first,'build-proof.json'),proofBody=await fs.readFile(proofPath),proof=JSON.parse(proofBody)
- assert.equal(proof.artifacts.length,4)
+ assert.equal(proof.version,2)
+ assert.equal(proof.artifacts.length,9)
+ assert.ok(proof.artifacts.some(item=>item.source.commit!==proof.hostSource.commit),'mixed original sources lost their provenance')
  for(const artifact of proof.artifacts){
   const bytes=await fs.readFile(path.join(first,artifact.filename))
   assert.equal(sha(bytes),artifact.sha256)
@@ -50,6 +52,32 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  assert.equal(candidate.kind,'unsigned-catalog-proposal')
  assert.equal(candidate.trust,'unsigned');assert.equal(candidate.publication,'not_run');assert.equal(candidate.tufSigning,'not_run')
  assert.equal(candidate.entries[0].releaseDigest,original.releaseDigest)
+ assert.deepEqual(candidate.entries[0].source,original.source)
+ assert.equal(candidate.entries[0].recipeSHA256,original.recipeSHA256)
+ const wrongProvenance=structuredClone(proof)
+ wrongProvenance.artifacts[0].source.commit='0'.repeat(40)
+ const wrongProofPath=path.join(first,'wrong-provenance.json'),wrongSelectionPath=path.join(dir,'wrong-selection.json')
+ const wrongBody=Buffer.from(JSON.stringify(wrongProvenance))
+ await fs.writeFile(wrongProofPath,wrongBody)
+ await fs.writeFile(wrongSelectionPath,JSON.stringify({...selection,expectedBuildSHA256:sha(wrongBody)}))
+ result=run(repo,['prepare',wrongProofPath,wrongSelectionPath,path.join(dir,'wrong-source-proposal.json')])
+ assert.notEqual(result.status,0);assert.match(result.stderr,/Original recipe provenance changed/)
+ const legacy=structuredClone(proof)
+ legacy.version=1;legacy.hostSource={repository:original.source.repository,commit:original.source.commit}
+ for(const item of legacy.artifacts){delete item.source;delete item.recipeSHA256}
+ const legacyPath=path.join(first,'legacy-proof.json'),legacySelectionPath=path.join(dir,'legacy-selection.json')
+ let legacyBody=Buffer.from(JSON.stringify(legacy))
+ await fs.writeFile(legacyPath,legacyBody)
+ await fs.writeFile(legacySelectionPath,JSON.stringify({...selection,expectedBuildSHA256:sha(legacyBody)}))
+ result=run(repo,['prepare',legacyPath,legacySelectionPath,path.join(dir,'legacy-candidate.json')]);assert.equal(result.status,0,result.stderr)
+ const legacyCandidate=JSON.parse(await fs.readFile(path.join(dir,'legacy-candidate.json')))
+ assert.equal(legacyCandidate.entries[0].source.path,undefined,'legacy proof invented an original source path')
+ assert.equal(legacyCandidate.entries[0].recipeSHA256,undefined,'legacy proof invented an original recipe fingerprint')
+ assert.equal(legacyCandidate.entries[0].sourceEvidence,'legacy-tool-source')
+ const newer=proof.artifacts.find(item=>item.source.commit!==original.source.commit)
+ await fs.writeFile(legacySelectionPath,JSON.stringify({...selection,expectedBuildSHA256:sha(legacyBody),decisions:[{key:newer.key,state:'candidate',reason:'must not attribute newer source to legacy tool'}]}))
+ result=run(repo,['prepare',legacyPath,legacySelectionPath,path.join(dir,'false-legacy-source.json')])
+ assert.notEqual(result.status,0);assert.match(result.stderr,/Legacy proof cannot claim a different source/)
  const before=await fs.readFile(proposalPath)
  result=run(repo,['prepare',proofPath,selectionPath,proposalPath]);assert.notEqual(result.status,0)
  assert.deepEqual(await fs.readFile(proposalPath),before,'existing proposal overwritten')

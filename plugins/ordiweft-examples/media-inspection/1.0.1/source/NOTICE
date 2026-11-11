@@ -1,0 +1,11 @@
+Ordiweft media inspection example
+Copyright 2026 Ordiweft contributors
+Licensed under Apache-2.0.
+
+Includes the vendored @ordiweft/plugin-host SDK 0.1.3:
+
+Ordiweft plugin Host Services SDK
+Copyright 2026 Ordiweft contributors
+
+This SDK distribution is licensed under the Apache License, Version 2.0.
+It has no runtime npm dependencies and does not include Morpheus.

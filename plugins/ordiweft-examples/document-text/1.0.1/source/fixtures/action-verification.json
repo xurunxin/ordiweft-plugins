@@ -1,0 +1,16 @@
+{
+  "arguments": {
+    "paragraphs": [
+      "Body"
+    ],
+    "title": "Title"
+  },
+  "expectedValue": {
+    "characters": 11,
+    "paragraphCount": 1,
+    "text": "Title\n\nBody"
+  },
+  "inputs": [],
+  "portId": "document-text",
+  "version": 1
+}

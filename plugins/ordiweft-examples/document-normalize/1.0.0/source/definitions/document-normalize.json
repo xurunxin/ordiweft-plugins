@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "id": "document-normalize",
+  "kind": "processor",
+  "action": {
+    "label": "UTF-8换行归一化",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    },
+    "resultSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "characters": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576
+        },
+        "lines": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048577
+        },
+        "sourceSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "characters",
+        "lines",
+        "sourceSha256"
+      ]
+    },
+    "resources": {
+      "minInputs": 1,
+      "maxInputs": 1,
+      "minOutputs": 1,
+      "maxOutputs": 1,
+      "maxInputBytes": 1048576,
+      "maxOutputBytes": 4194304,
+      "maxRuntimeMs": 60000
+    }
+  }
+}

@@ -12,3 +12,15 @@ NOT_RUN：通用依赖编译、TS/npm 隔离构建、真实供应商、生产、
 源码闭包以 `.gitattributes` 的 `-text` 保持原字节，避免跨 Windows/Linux checkout 改变清单 SHA。仓库工具只准备未签名提案，不把本文件或可编辑 build-proof 当作独立可信审阅证明。
 
 首次差异检查将保留的原 CRLF 当作尾随空白而 FAIL；已仅对不可变源码闭包声明 `cr-at-eol`，保留其他空白检查，不改写原发行字节。
+
+## 文档/表单样本与来源分离增量
+
+新增5份固定源码：form-node 1.0.0、document-text 1.0.1、media-inspection 1.0.1、document-file 1.0.0、document-normalize 1.0.0，来源均为Ordiweft 24a9024214700a743ccbdd4ea78f78215450dc28。原4份源码/配方继续固定732f0b，不改写旧版本。仍无依赖安装、插件执行或签名。
+
+build-proof v2分别保存工具来源与逐包源码/配方SHA，prepare重验实际原来源；v1历史证明继续按旧共享提交范围读取，不补造原路径或配方指纹。配置的源码提交本身不认证CLI来源，维护者仍须独立检查真实构建及所给工具SHA。
+
+- PASS：固定24a9024归档源码构建可信CLI，SHA256 f5ed2d2efe01cfa7912c997d31b18110764ebc188b5b3ed8c6c123c91a5ba52a；9包实际verify/pack成功，两次ZIP逐字节相同。与原community-clean-build的4个ZIP逐字节对比保持相同，并由原v1 build-proof准备4项历史提案，未改写旧证明。
+- PASS：最终真实CLI集成3项，5.003秒，零SKIP。除原拒绝条件外，覆盖改源码提交后重新绑定选择SHA仍拒绝、混合新旧来源、v1历史读取与不能冒称较新源码，以及v1提案不补造路径/配方指纹。
+- EXPECTED_FAIL：临时跳过逐包原源码比较，原集成主检查在错误来源提案被接受处断言失败（actual=0，3.704秒）；精确恢复后3项全通过5.134秒。随后仅收窄v1来源声明，最终再次通过5.003秒。
+
+仓外制品与原证明位于plugin-platform-live-20261110/community-build-action-24a9024。实际沙箱、业务采用及停止证明属于Ordiweft主仓相应阶段，本仓打包不会重新执行；无费用、激活或正式发布。独立干净clone读取与打包在推送后另外记录。
