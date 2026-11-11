@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "id": "analysis",
+  "kind": "node",
+  "node": {
+    "label": "文本分析",
+    "version": 1,
+    "renderer": "form",
+    "fieldsSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "节点文本",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "defaults": {
+      "text": "Hello 织序 world"
+    },
+    "ports": [],
+    "actions": [
+      "analyze-text"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "id": "analyze-text",
+  "kind": "processor",
+  "action": {
+    "label": "统计文本",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "原文本",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "type": "object",
+      "properties": {
+        "characters": {
+          "type": "integer",
+          "title": "字符数",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "words": {
+          "type": "integer",
+          "title": "词数",
+          "minimum": 0,
+          "maximum": 2000
+        }
+      },
+      "required": [
+        "characters",
+        "words"
+      ],
+      "additionalProperties": false
+    },
+    "resources": {
+      "maxInputs": 0,
+      "maxOutputs": 0,
+      "maxInputBytes": 0,
+      "maxOutputBytes": 64000,
+      "maxRuntimeMs": 60000
+    }
+  }
+}
