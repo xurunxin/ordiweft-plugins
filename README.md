@@ -6,7 +6,7 @@
 
 ## 当前可用范围
 
-九个无依赖示例分别固定原 Ordiweft 源码提交：JSON 内容、可填提示词模板、显式 Skill、表单节点、离线固定图片 Node 适配器，以及结构文本、素材检查、私有文档文件、原文档换行规范化处理器。源码及 release.json 的完整文件清单一起保存。它们保留原 package/provider ID，未经命名空间审核的示例不会自称官方适配器。原四份配方及制品字节不改写。
+十份无依赖包分别固定原 Ordiweft 源码提交：JSON 内容、可填提示词模板、显式 Skill、表单节点、离线固定图片 Node 适配器，以及结构文本、素材检查、私有文档文件、原文档换行规范化处理器。规范化同时保留1.0.0和声明原素材用途的1.0.1，用于同包升级与独立版本撤回。源码及 release.json 的完整文件清单一起保存。它们保留原 package/provider ID，未经命名空间审核的示例不会自称官方适配器。原九份源码、配方及制品字节不改写。
 
 `portable-pack` 仅校验和打包预构建字节，不执行插件、npm 脚本、依赖安装或模型请求。它不是通用 TypeScript/npm 编译沙箱。所需 Node 运行镜像另固定摘要，安装时仍由部署管理员决定是否具备相应运行器。
 
@@ -61,4 +61,4 @@ node scripts/registry.mjs prepare <build-proof.json> <selection.json> <仓外新
 
 `ORDIWEFT_PLUGIN_CLI` 和 `ORDIWEFT_PLUGIN_CLI_SHA256` 仅用于显式启用真实 CLI 打包/提案集成测试；未设置时相应测试 SKIP。无需模型 Key、Docker、Git 写 Token或 Morpheus。测试使用自己创建的临时副本，破坏性反例不修改仓内源码。
 
-当前消费协议与完整平台计划见 [Ordiweft 插件契约](https://github.com/xurunxin/Ordiweft/blob/732f0bafb581a05adab6ac8fd3cb28595b19f7fd/docs/reference/plugin-release-contract.md)。完整编译构建、社区审阅自动化、正式签名运维与官方稳定发布仍在实施。
+当前消费协议与完整平台计划见 [Ordiweft 插件契约](https://github.com/xurunxin/Ordiweft/blob/b11ef92bc471c4b725f1aeb9c781feb9a449e6f2/docs/reference/plugin-release-contract.md)。新角色声明需要支持inputRoles的宿主；旧宿主严格拒绝未知字段，不忽略限制。完整编译构建、社区审阅自动化、正式签名运维与官方稳定发布仍在实施；本仓portable-pack不执行Go或TS编译。

@@ -3,8 +3,20 @@
   "status": "unpublished",
   "license": "Apache-2.0",
   "publication": "manual-tuf",
-  "hostSource": {"repository": "https://github.com/xurunxin/Ordiweft", "commit": "24a9024214700a743ccbdd4ea78f78215450dc28"},
-  "retainedHostSources": [{"repository": "https://github.com/xurunxin/Ordiweft", "commit": "732f0bafb581a05adab6ac8fd3cb28595b19f7fd"}],
+  "hostSource": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "b11ef92bc471c4b725f1aeb9c781feb9a449e6f2"
+  },
+  "retainedHostSources": [
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "24a9024214700a743ccbdd4ea78f78215450dc28"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "732f0bafb581a05adab6ac8fd3cb28595b19f7fd"
+    }
+  ],
   "packages": [
     "ordiweft-examples/typed-content/1.0.0",
     "ordiweft-examples/motion-templates/1.0.0",
@@ -14,6 +26,7 @@
     "ordiweft-examples/document-text/1.0.1",
     "ordiweft-examples/media-inspection/1.0.1",
     "ordiweft-examples/document-file/1.0.0",
-    "ordiweft-examples/document-normalize/1.0.0"
+    "ordiweft-examples/document-normalize/1.0.0",
+    "ordiweft-examples/document-normalize/1.0.1"
   ]
 }

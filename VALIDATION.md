@@ -30,3 +30,11 @@ build-proof v2分别保存工具来源与逐包源码/配方SHA，prepare重验�
 新增v3证明以JSON.parse后JSON.stringify的UTF-8字节生成recipeDigest，逐包原源码提交和真实ZIP SHA仍独立保存；v2继续读取真实原字节指纹，v1不补造来源。主集成扩展为两次构建之间只在临时副本转换配方CRLF→LF，并要求完整proof及9个ZIP相同，最终3项4.927秒PASS、零SKIP。新v3构建记录保存在community-build-v3-action-24a9024，不覆盖先前v2或v1记录。
 
 PASS：远程干净克隆5f3938658ba507546553d89cc8df106718f704c4，用同一可信CLI实际生成9包；9份ZIP及完整v3 proof与开发工作区逐字节/字段一致。另用真实原v1/v2 build-proof和原ZIP准备未签名候选，原证明字节不变。记录位于community-clean-v3-action及独立clone目录plugin-community-clone-v3-action。未运行插件、模型、签名或部署。
+
+## 同包角色升级与原版本保留
+
+新增document-normalize 1.0.1，固定Ordiweft源码8b26c7ab71cfe8acd0ca08a5053ce3ad060a818a的document-normalize-roles目录，原7文件字节及许可保留。原1.0.0和其他九份旧源码/配方不改写。工具源码更新为b11ef92bc471c4b725f1aeb9c781feb9a449e6f2，24a9024和732f0b继续用于历史证明读取。
+
+- PASS：实际固定b11ef92归档源码编译CLI，SHA256 3be0fa6f46107d788becb8c7b27e20f185c2a02f6f16eb381564d51b461814b1；十包check/verify/pack，原九份ZIP与community-build-v3-action-24a9024逐字节一致。新旧规范化release分别为cff274a7…ad38b与2ea14881…14020。
+- PASS：真实CLI集成3项，6.061秒、零SKIP，继续完整proof/ZIP跨CRLF/LF一致、旧证明/错误来源/错误CLI/损坏源码/制品及禁止覆盖检查；新增同一包两版本同时准备候选、独立撤回1.0.0而1.0.1保持原候选摘要，原1.0.0ZIP仍逐字节不变。
+- 本轮不执行插件、Go/TS编译、依赖安装、模型、签名或部署。来源记录及源码包不替代宿主功能/权限/恢复验证，inputRoles需支持该声明的宿主。实际产物保留在community-build-ten-b11ef92；远程干净克隆在推送后另记。

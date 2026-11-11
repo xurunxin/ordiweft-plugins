@@ -26,7 +26,7 @@ async function fixture(t){
 test('portable repository checks without executing packages or requiring credentials',()=>{
  const result=run(root,['check'])
  assert.equal(result.status,0,result.stderr)
- assert.deepEqual(JSON.parse(result.stdout),{status:'checked',packages:9,execution:'not_run',publication:'not_run'})
+ assert.deepEqual(JSON.parse(result.stdout),{status:'checked',packages:10,execution:'not_run',publication:'not_run'})
 })
 
 test('real host packing and catalog proposals preserve immutable original bytes', {skip:!tool||!toolSHA?'explicit trusted host CLI and SHA-256 required':false}, async t=>{
@@ -45,7 +45,7 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  const proofPath=path.join(first,'build-proof.json'),proofBody=await fs.readFile(proofPath),proof=JSON.parse(proofBody)
  assert.equal(proof.version,3)
  assert.deepEqual(JSON.parse(await fs.readFile(path.join(second,'build-proof.json'))),proof,'recipe line endings changed portable provenance')
- assert.equal(proof.artifacts.length,9)
+ assert.equal(proof.artifacts.length,10)
  assert.ok(proof.artifacts.some(item=>item.source.commit!==proof.hostSource.commit),'mixed original sources lost their provenance')
  for(const artifact of proof.artifacts){
   const bytes=await fs.readFile(path.join(first,artifact.filename))
@@ -64,6 +64,22 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  assert.equal(candidate.entries[0].releaseDigest,original.releaseDigest)
  assert.deepEqual(candidate.entries[0].source,original.source)
  assert.equal(candidate.entries[0].recipeDigest,original.recipeDigest)
+ const versions=proof.artifacts.filter(item=>item.packageId==='ordiweft-examples/document-normalize').sort((a,b)=>a.version.localeCompare(b.version))
+ assert.deepEqual(versions.map(item=>item.version),['1.0.0','1.0.1'])
+ assert.notEqual(versions[0].releaseDigest,versions[1].releaseDigest)
+ assert.notDeepEqual(versions[0].source,versions[1].source)
+ const versionSelection=path.join(dir,'version-selection.json'),versionCandidate=path.join(dir,'version-candidate.json')
+ await fs.writeFile(versionSelection,JSON.stringify({...selection,decisions:versions.map(item=>({key:item.key,state:'candidate',reason:'synthetic original and upgrade review'}))}))
+ result=run(repo,['prepare',proofPath,versionSelection,versionCandidate]);assert.equal(result.status,0,result.stderr)
+ assert.deepEqual(JSON.parse(await fs.readFile(versionCandidate)).entries.map(item=>item.releaseDigest),versions.map(item=>item.releaseDigest))
+ const retainedOld=await fs.readFile(path.join(first,versions[0].filename))
+ await fs.writeFile(versionSelection,JSON.stringify({...selection,decisions:[{key:versions[0].key,state:'withdrawn',reason:'synthetic old version withdrawal; new candidate unchanged'},{key:versions[1].key,state:'candidate',reason:'synthetic reviewed upgrade'}]}))
+ const versionWithdrawal=path.join(dir,'version-withdrawal.json')
+ result=run(repo,['prepare',proofPath,versionSelection,versionWithdrawal]);assert.equal(result.status,0,result.stderr)
+ const versionStates=JSON.parse(await fs.readFile(versionWithdrawal)).entries
+ assert.deepEqual(versionStates.map(item=>item.state),['withdrawn','candidate'])
+ assert.equal(versionStates[1].sha256,versions[1].sha256)
+ assert.deepEqual(await fs.readFile(path.join(first,versions[0].filename)),retainedOld,'withdrawing the old version rewrote its immutable original')
  const wrongProvenance=structuredClone(proof)
  wrongProvenance.artifacts[0].source.commit='0'.repeat(40)
  const wrongProofPath=path.join(first,'wrong-provenance.json'),wrongSelectionPath=path.join(dir,'wrong-selection.json')

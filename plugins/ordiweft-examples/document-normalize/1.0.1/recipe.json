@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/document-normalize",
+  "releaseVersion": "1.0.1",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "8b26c7ab71cfe8acd0ca08a5053ce3ad060a818a",
+    "path": "examples/plugin-node/document-normalize-roles"
+  },
+  "runtimeImage": "sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c"
+}
