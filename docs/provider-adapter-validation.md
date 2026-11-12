@@ -84,3 +84,5 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 宿主开发包11模型/89条实际Linux HTTP/SQLite/Docker队列路径PASS1339.09秒（63成功、26异常unknown、76媒体）；固定包86份运行文件和入口逐字节相同，只有来源证明与release描述不同，开发矩阵不冒充固定包矩阵。固定包另在8c8841b7完整嵌入式应用中同原数据消费：原15任务/设置保留，generation1→2，凭据不重设，9条新原任务/10份实际PNG/SVG/GIF通过；同二进制PID19→154重启后原15+新9可读，旧供应商仍15、新供应商仍9、invalid/duplicate0。安装报告变量异常保留，以GET原验证/激活回执恢复，不重跑安装或生成。
 
 详见[宿主2系列证据](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-gptimage2-20261112.md)。高容量组合/并发峰值与真实供应商仍未完成，不自动切换实际部署或关闭整项迁移。全部仍为unsigned/unpublished候选，无正式信任根、合并、发布或部署；Morpheus不在本分发闭包。
+
+远端全新clone ff89cc44b757d62b998665a9887c7f163bc60756实际重建25 ZIP及完整v3 proof，逐字节相同；clone保持干净，proof SHA256仍aa02e4a87a7464db800762fc96f322a9c342c0864fcf3366a58293c1f8acb941。单项候选选择另绑定该原证明准备unsigned proposal，不晋级stable或发布。
