@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "models": {
+    "seed-audio-1.0": "seed-audio-1.0"
+  },
+  "body": {
+    "model": {
+      "$host": "model"
+    },
+    "text_prompt": {
+      "$host": "prompt"
+    },
+    "audio_config": {
+      "format": {
+        "$host": "parameter",
+        "name": "format"
+      },
+      "sample_rate": {
+        "$host": "parameter",
+        "name": "sample_rate"
+      },
+      "speech_rate": {
+        "$host": "parameter",
+        "name": "speech_rate"
+      },
+      "loudness_rate": {
+        "$host": "parameter",
+        "name": "loudness_rate"
+      },
+      "pitch_rate": {
+        "$host": "parameter",
+        "name": "pitch_rate"
+      }
+    },
+    "watermark": {
+      "aigc_watermark": {
+        "$host": "parameter",
+        "name": "aigc_watermark"
+      },
+      "aigc_metadata": {
+        "enable": {
+          "$host": "parameter",
+          "name": "metadata_watermark"
+        }
+      }
+    }
+  },
+  "modelPointer": "/model",
+  "singleOutput": true
+}

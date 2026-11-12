@@ -52,3 +52,11 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 1.0.2在原256MiB子容器中完成67,108,860字节、192kHz双声道32bit WAV，SHA256 `a1c62d8a676feb653ef88fce59c24141c652a9518c14af24d9f0ade682466c93`，实际JobResult43690ms、原派生来源和画布写回正确。一次原提交、重放无额外调用、其他用户404，PASS64.25秒。宿主验证进程限2GiB，峰值内存未测量；音频输出上限仍64MiB。四条常规PCM/规范化WAV/实际公网URL/错误回执又在新包通过（84.84秒）。旧1.0.1大响应反例和测试夹具限额/时长断言失败均保留，不把反例或修正前断言算PASS。
 
 实际check/build22包，新两包与宿主固定ZIP相同，旧20包metadata/ZIP逐字节相同。真实CLI的五项测试全部PASS、0 SKIP，17.312秒；仓库构建仍只打包已有字节，不安装依赖、不执行插件、不读取账号、不发布。宿主[容量及原任务证据](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-seedaudio-adapter-20261112.md)和[包间更新](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-package-hot-update-20261112.md)负责实际运行证明。完整独立新宿主、真实供应商与整体迁移继续分别验收；Apache-2.0不授予模型/账号/素材许可。
+
+## 显式容量协商与原生编码兼容
+
+新增1.0.3，固定源码ac3b7225c95a8289183712004111ad7d255d117b、公开SDKff4ef41a28532c453224f73dbde7ae3336efbbbe；release `741dd3ad36d1c15442228f1f9812af73e2580f515d9f28eba5708c7772b58a1b`，ZIP SHA256 `e5c4da871f3dae58c2bc4e20ce6f28cb6e622dbf0c137d1d91b93b295f4524b9`。每次audio解析显式给出maxSourceBytes=96MiB及json-base64-lenient，原严格调用保持严格；新路径只额外接受原生解析允许的CR/LF和非零padding bits，其他格式/字符/超限仍拒绝。旧8934478干净宿主在独立小fixture的assets.decode按预期拒绝、未激活或提交普通生成，47.79秒；避免小fixture误通过后大响应才失败。
+
+新固定宿主实际七条PCM/WAV规范化/换行base64/非零padding/公网URL/真实自有MP3/错误路径PASS181.85秒，每任务一次提交、真实SHA/时长、原TraceID、版本、重放和404保持。MP3为仓外自有440Hz合成音，ffmpeg9.0.2生成，ffprobe识别44.1kHz单声道/8777字节/0.548563秒，业务时长按原口径548ms，SHA256 `c02bf0a1f8cba5f97a74dc9b94dbd3f36cbc46897d8f37041200f432c5dd49b4`；包内不再分发ffmpeg、其代码或该外部验证文件。近64MiB路径再次PASS70.81秒；原1.0.2不加新字段的固定包在新宿主也PASS70.67秒，保留缺省字段兼容。
+
+仓库现23包，旧22份metadata/ZIP逐字节保留，新一包等于宿主固定ZIP；真实CLI五项PASS、0 SKIP，18.042秒。只做portable-pack，不执行插件或安装依赖；合成宿主更换二进制后保留原五任务/unknown/凭据与模型开关，新包原验证和generation1→2激活通过，完整八条路径及重启继续由宿主独立验收。许可与未签名/未发布范围保持，整体计划继续实施。
