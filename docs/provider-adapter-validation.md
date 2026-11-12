@@ -1,6 +1,6 @@
 # 公开供应商预构建候选
 
-本次共18包，仍为私有开发仓库、未签名/未发布候选。新加IndexTTS和百炼Wan，原16包的236份源码/配方文件及全部原ZIP逐字节保留；没有覆盖版本或改写历史证明。publisher仍pending，不因本记录成为官方身份。Morpheus及其依赖不在分发闭包。
+首批供应商候选共18包，仍为私有开发仓库、未签名/未发布候选。加入IndexTTS和百炼Wan时，原16包的236份源码/配方文件及全部原ZIP逐字节保留；没有覆盖版本或改写历史证明。publisher仍pending，不因本记录成为官方身份。Morpheus及其依赖不在分发闭包。后续GPT Image的第19包证据见下节。
 
 | 包 | 固定源码 | release digest | ZIP SHA256 |
 | --- | --- | --- | --- |
@@ -22,3 +22,13 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 固定 f568d0a951a9d322947eb7984859b35737e5eabe 从远程全新clone，使用原可信CLI重建18 ZIP与v3 build-proof，均逐字节相等；证明SHA256 `a34837bdb043e204466e9744258f85cef4c8073a48ab49d8e8842d4ada7822c8`。`community-eighteen-clean-clone-report.json` PASS，未执行包代码或发布。
 
 完整Ordiweft宿主 e3912fe9b9e9ec5dc9e4b066fcaaf4b3b59f791e 从干净归档执行完整web构建并内嵌Linux二进制，以全新合成数据实例安装原Wan ZIP。原生ID显式授权、普通导入暂存、策略/连接、独立原验证和启用通过。原普通队列上传1/提交1/查询2，真实公开PNG 288×288/7789字节与固定SHA一致；标题/未知字段及一个版本保留，跨用户404，同原任务重放无新上游调用。首次容器缺席观察超时导致unknown，确认缺席后显式采用同原本地产物；没有新生成。随后同一二进制重启，原任务/画布只读恢复，计数不增。这是含显式原结果恢复的完整应用消费，不能写成首次无协调完成或真实百炼推理。产品与证据见宿主百炼候选文档。
+
+## GPT Image与19包不可变重建
+
+`ordiweft-examples/gpt-image/1.0.0`来源固定`21a80a4a52da18479f027c1c7f43cbc1ec9b4591`，公开SDK固定`ff65702dd5bf7cc9c3af2c660e15a373a092b2fc`，80份描述文件包含Apache-2.0/Go许可及干净构建证明。release为`51ca50593f0c09845d96ff5a863ce9b5ce51a0ae6763a4ecf2b27b9a1d248751`；ZIP 4560496字节，SHA256 `2c65d7491c30ac3b0cdac366c57be07a2159ad845a756cf44cbee03b4ba38d11`。
+
+新可信CLI同样从21a80a4干净归档构建，SHA256 `9e458b09248247b2ce7f0133817c478a0b0d2240e1f7661bc5613592b6507b2d`。实际check/build共19 ZIP，旧18份与前轮独立clone的制品逐字节相同；5项真实CLI测试PASS、0 SKIP，14.133秒。构建只读取/打包预构建字节，不执行插件、安装依赖或发布。
+
+宿主固定源码的实际Linux HTTP/SQLite/沙箱验证PASS120.02秒，覆盖同步/SSE/multipart、遮罩、同内容多输出以及异常SSE不重提。完整内嵌应用也实际安装本仓构建的ZIP：显式授权/原验证/激活后，五个普通原任务各提交一次，返回原17×13 PNG字节，标题/未知字段、结果数和版本数正确；重放没有额外调用，其他用户404。同一二进制重启后原任务/画布只读恢复，上游计数仍5。无宿主源码、开发依赖、Morpheus或真实账号挂载到运行应用；Docker控制仅在受信宿主，插件维持自己的无网络沙箱。不是整个GPT渠道、真实OpenAI调用或整体平台验收。
+
+当前宿主证据：[GPT Image候选](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-gptimage-adapter-20261112.md)。全部候选仍未签名/未发布，不生成正式信任根或自动启用其他部署。

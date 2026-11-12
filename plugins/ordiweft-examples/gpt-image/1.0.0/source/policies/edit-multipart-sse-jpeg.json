@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "models": {
+    "gpt-image-1.5": "gpt-image-1.5"
+  },
+  "body": {
+    "model": {
+      "$host": "model"
+    },
+    "prompt": {
+      "$host": "prompt"
+    },
+    "n": {
+      "$host": "count"
+    },
+    "size": {
+      "$host": "parameter",
+      "name": "size"
+    },
+    "quality": {
+      "$host": "parameter",
+      "name": "quality"
+    },
+    "background": "opaque",
+    "output_format": {
+      "$host": "parameter",
+      "name": "output_format"
+    },
+    "output_compression": {
+      "$host": "parameter",
+      "name": "output_compression",
+      "optional": true
+    },
+    "moderation": {
+      "$host": "parameter",
+      "name": "moderation"
+    },
+    "stream": {
+      "$host": "parameter",
+      "name": "stream"
+    },
+    "partial_images": {
+      "$host": "parameter",
+      "name": "partial_images",
+      "optional": true
+    },
+    "safety_identifier": {
+      "$host": "first-text",
+      "parameters": [
+        "safety_identifier",
+        "user"
+      ],
+      "fallback": "actor-hash"
+    },
+    "user": {
+      "$host": "parameter",
+      "name": "user",
+      "optional": true
+    },
+    "input_fidelity": {
+      "$host": "parameter",
+      "name": "input_fidelity"
+    }
+  },
+  "modelPointer": "/model",
+  "countPointer": "/n",
+  "whenAny": [
+    {
+      "/parameters/stream": [
+        true
+      ],
+      "/parameters/output_format": [
+        "jpeg"
+      ],
+      "/inputCount": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "/count": [
+        1
+      ]
+    },
+    {
+      "/parameters/stream": [
+        true
+      ],
+      "/parameters/output_format": [
+        "jpeg"
+      ],
+      "/inputCount": [
+        17
+      ],
+      "/count": [
+        1
+      ]
+    }
+  ]
+}
