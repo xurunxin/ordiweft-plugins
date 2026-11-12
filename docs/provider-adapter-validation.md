@@ -69,4 +69,8 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 
 原生适配器实际拦截请求与三份公开 schema/八种受审映射的 24 组对照通过，包括同步/SSE、JPEG opaque、multipart 原参考图与遮罩、匿名身份及 mini 保真度。固定 cda532a51218ec2bb88c6b57fa737a903e441a08 Linux HTTP/SQLite/Docker 消费者对本包三模型共 21 条普通路径 PASS478.61 秒：15 个成功任务、6 个异常 SSE unknown，实际 18 份 PNG 输出、原提交一次、原字段/版本/回执重放/跨用户404保持。资源观察告警保留，不能据此关闭全部故障或性能门。
 
-完整应用及旧实例未知检查的保留另由宿主记录。本包不替换现有完整渠道，不声称 GPT Image 2 系列、GIF/SVG/markup、大容量组合或真实供应商已完成迁移。全部仍为 unsigned/unpublished 候选，SDK/模板 Apache-2.0 与 Morpheus 原有许可边界保持。
+远端全新克隆9567d3f85e45d6bc3149b82f08af46bdbc5a2773重建24 ZIP及完整v3 proof均逐字节相同，proof SHA256 `d7cb77e4312b7ad272cec2cefb99f5980793e99b5ce25f85d16360b241537f70`，克隆保持干净。未签名单项候选提案绑定该原证明，不晋级stable或发布。
+
+全新ac3b722完整内嵌应用从本仓同一ZIP安装，授权/原验证/激活阶段供应商提交0；三模型共15条同步/SSE/multipart/双图任务保存18份实际17×13 PNG，原字段/版本/回执/404通过，同二进制PID19→223重启后提交仍15、invalid/duplicate0。初次脚本在第14条遇到过长合成jobId的400；原13条没有重跑，确认未入队/未提交后只修正剩余两条标识，原失败与意图保留。另一旧实例的原验证缺独立判定，继续unknown，不换命令重跑；原五任务/设置、generation1、PID101及原供应商提交5保持。两实例证据不互相覆盖，见[宿主固定证据](https://github.com/xurunxin/Ordiweft/blob/6043693923c686ad7c0928636c2a5970a3fcd295/docs/evidence/plugin-gptimage-family-20261112.md)。
+
+本包不替换现有完整渠道，不声称 GPT Image 2 系列、GIF/SVG/markup、大容量组合或真实供应商已完成迁移。全部仍为 unsigned/unpublished 候选，SDK/模板 Apache-2.0 与 Morpheus 原有许可边界保持。
