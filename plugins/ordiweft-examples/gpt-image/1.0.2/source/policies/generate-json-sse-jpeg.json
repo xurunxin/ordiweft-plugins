@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "models": {
+    "gpt-image-1.5": "gpt-image-1.5",
+    "gpt-image-1-mini": "gpt-image-1-mini",
+    "chatgpt-image-latest": "chatgpt-image-latest"
+  },
+  "body": {
+    "model": {
+      "$host": "model"
+    },
+    "prompt": {
+      "$host": "prompt"
+    },
+    "n": {
+      "$host": "count"
+    },
+    "size": {
+      "$host": "parameter",
+      "name": "size"
+    },
+    "quality": {
+      "$host": "parameter",
+      "name": "quality"
+    },
+    "background": "opaque",
+    "output_format": {
+      "$host": "parameter",
+      "name": "output_format"
+    },
+    "output_compression": {
+      "$host": "parameter",
+      "name": "output_compression",
+      "optional": true
+    },
+    "moderation": {
+      "$host": "parameter",
+      "name": "moderation"
+    },
+    "stream": {
+      "$host": "parameter",
+      "name": "stream"
+    },
+    "partial_images": {
+      "$host": "parameter",
+      "name": "partial_images",
+      "optional": true
+    },
+    "safety_identifier": {
+      "$host": "first-text",
+      "parameters": [
+        "safety_identifier",
+        "user"
+      ],
+      "fallback": "actor-hash"
+    },
+    "user": {
+      "$host": "parameter",
+      "name": "user",
+      "optional": true
+    }
+  },
+  "modelPointer": "/model",
+  "countPointer": "/n",
+  "whenAny": [
+    {
+      "/parameters/stream": [
+        true
+      ],
+      "/parameters/output_format": [
+        "jpeg"
+      ],
+      "/inputCount": [
+        0
+      ],
+      "/count": [
+        1
+      ]
+    }
+  ]
+}

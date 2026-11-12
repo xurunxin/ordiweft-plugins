@@ -1,0 +1,6 @@
+Ordiweft plugin release and Host Services Go SDK
+Copyright 2026 Ordiweft contributors
+
+The source files in this directory are licensed under the Apache License,
+Version 2.0. The only non-standard-library dependency is the separately
+licensed Ordiweft pkg/aigc SDK. This grant does not cover host internals.
