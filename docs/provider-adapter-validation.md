@@ -16,3 +16,9 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 实际执行由宿主另验：IndexTTS五种模式、原票据与真实PCM；固定宿主6dc986a完整嵌入式应用完成显式停止/重启只读观察/原结果一次采用；Wan固定6b46ba0 HTTP消费者PASS62.38秒，原策略1/上传1/提交1/查询2，实际HTTPS PNG 288×288/7789字节、SHA不变、原字段和版本1保留。Wan使用独立协议模拟器及公开下载夹具，没有真实百炼推理；不是完整渠道/全应用部署或真实供应商验收。原生ID导入仍需部署方明确授权，模型关闭不会自动打开。
 
 宿主当前证据：[IndexTTS](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-indextts-adapter-20261111.md)、[原任务只读恢复](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-readonly-recovery-20261112.md)、[百炼候选](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-dashscope-wan-20261112.md)。软件Apache-2.0不包含模型、音色、账号、素材或供应商服务许可；临时OSS仅按官方开发测试前提使用。完整供应商迁移、签名运维与整体平台仍在实施。
+
+## 新检出与完整应用消费
+
+固定 f568d0a951a9d322947eb7984859b35737e5eabe 从远程全新clone，使用原可信CLI重建18 ZIP与v3 build-proof，均逐字节相等；证明SHA256 `a34837bdb043e204466e9744258f85cef4c8073a48ab49d8e8842d4ada7822c8`。`community-eighteen-clean-clone-report.json` PASS，未执行包代码或发布。
+
+完整Ordiweft宿主 e3912fe9b9e9ec5dc9e4b066fcaaf4b3b59f791e 从干净归档执行完整web构建并内嵌Linux二进制，以全新合成数据实例安装原Wan ZIP。原生ID显式授权、普通导入暂存、策略/连接、独立原验证和启用通过。原普通队列上传1/提交1/查询2，真实公开PNG 288×288/7789字节与固定SHA一致；标题/未知字段及一个版本保留，跨用户404，同原任务重放无新上游调用。首次容器缺席观察超时导致unknown，确认缺席后显式采用同原本地产物；没有新生成。随后同一二进制重启，原任务/画布只读恢复，计数不增。这是含显式原结果恢复的完整应用消费，不能写成首次无协调完成或真实百炼推理。产品与证据见宿主百炼候选文档。
