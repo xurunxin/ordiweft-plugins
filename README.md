@@ -6,11 +6,9 @@
 
 ## 当前可用范围
 
-十八份无外部依赖的预构建包分别固定原 Ordiweft 源码提交：JSON 内容、可填提示词模板、显式 Skill、表单节点、离线固定图片 Node 适配器，以及结构文本、素材检查、私有文档文件、原文档换行规范化处理器。规范化同时保留1.0.0和声明原素材用途的1.0.1，用于同包升级与独立版本撤回。源码及 release.json 的完整文件清单一起保存。它们保留原 package/provider ID，未经命名空间审核的示例不会自称官方适配器。静态Go文档处理器1.0.1和Host Services图片供应商1.0.0另包含固定公开SDK、Go运行时许可和原构建证明；新增片场素材包携带原创Apache-2.0三角面，成员显式导入个人/团队模型库，环境预设另提供既有灯光和地面设置的显式套用，保留背景与场景值快照；新增文本分析动作节点固定同包原处理器，显式打开共享试参表单；更新不改原节点或原任务，新增PNG worker包只分发无素材输入的声明式ActionSpec，固定部署端点、实现及凭据引用由宿主管理员另行绑定；它不携带独立服务、运行镜像或启动命令。原十六份源码、配方及制品字节不改写。
+仓库保存26个不可变版本，覆盖内容/提示词模板/显式Skill、声明式表单与动作节点、文档/素材处理器、片场素材与环境预设、外部worker声明，以及IndexTTS、百炼Wan图片、GPT Image和SeedAudio代表候选。每个版本携带固定来源、配方、完整文件清单与LICENSE/NOTICE；静态Go包另保存公开SDK、Go许可、预构建入口和原构建证明。它们保留原package/provider/model ID与旧版本，不自动替换完整渠道或已有节点/任务。具体能力和验收范围以各固定记录为准。
 
-IndexTTS、百炼Wan、GPT Image 1.5及SeedAudio候选保留各自独立公开SDK、Go许可、固定预构建入口和原宿主验证fixture。新增SeedAudio后共20包，旧19份ZIP逐字节保留。它们保留旧provider/model ID，仅代表已验证范围，不能替换未完成迁移的完整渠道。接入需宿主管理员审查连接、原生ID所有权和当前模型开关，不携带实际端点、Key、生产文件或Morpheus。
-
-GPT Image 1.1.0另提供当前11模型的同步/SSE、GIF/SVG及标注候选；仓库共25份不可变版本，旧24份ZIP与metadata逐字节保留。固定包经过同原数据完整应用验收，范围及容量限制见供应商验证；并非整个渠道或平台已完成。
+GPT Image 1.1.4逐张流式解码当前图片字段，显式请求64MiB临时盘并移交输出buffer。它需要支持sandbox.scratchBytes和outputs.stage-buffer的宿主，旧严格工具拒绝新字段。原25个版本的源码/配方和制品保持；整个渠道的大输入组合、真实账号、完整平台与正式发行并未由这些代表路径自动完成。
 
 `portable-pack` 仅校验和打包预构建字节，不执行插件、npm 脚本、依赖安装或模型请求。它不是通用 TypeScript/npm 编译沙箱。Node与静态process包所需的隔离运行镜像另固定摘要，安装时仍由部署管理员决定是否具备相应运行器。worker配方不能选择运行镜像或端点，服务部署和隔离另行管理。
 
@@ -67,4 +65,5 @@ node scripts/registry.mjs prepare <build-proof.json> <selection.json> <仓外新
 
 `ORDIWEFT_PLUGIN_CLI` 和 `ORDIWEFT_PLUGIN_CLI_SHA256` 仅用于显式启用真实 CLI 打包/提案集成测试；未设置时相应测试 SKIP。无需模型 Key、Docker、Git 写 Token或 Morpheus。测试使用自己创建的临时副本，破坏性反例不修改仓内源码。
 
-当前消费协议与完整平台计划见 [Ordiweft 插件契约](https://github.com/xurunxin/Ordiweft/blob/bd2e58919594d0c9aafabc357cedc95d2ef5039e/docs/reference/plugin-release-contract.md)。新角色声明需要支持inputRoles的宿主；旧宿主严格拒绝未知字段，不忽略限制。静态process供应商需要支持该Host Services路径的宿主；包内源码由维护者受限示例构建器生成，portable-pack只打包其预构建字节。片场素材包需要支持director-models profile的宿主；旧宿主拒绝安装，不把GLB当JSON或执行入口。完整不受信编译构建、社区审阅自动化、正式签名运维与官方稳定发布仍在实施；本仓portable-pack不执行Go或TS编译。
+当前消费协议与完整平台计划见 [Ordiweft 插件契约](https://github.com/xurunxin/Ordiweft/blob/bd8bf8b417786cc8fe8bae3bd8fea79898be6cc8/docs/reference/plugin-release-contract.md)。新角色声明需要支持inputRoles的宿主；旧宿主严格拒绝未知字段，不忽略限制。静态process供应商需要支持该Host Services路径的宿主；包内源码由维护者受限示例构建器生成，portable-pack只打包其预构建字节。片场素材包需要支持director-models profile的宿主；旧宿主拒绝安装，不把GLB当JSON或执行入口。完整不受信编译构建、社区审阅自动化、正式签名运维与官方稳定发布仍在实施；本仓portable-pack不执行Go或TS编译。
+

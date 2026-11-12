@@ -86,3 +86,11 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 详见[宿主2系列证据](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-gptimage2-20261112.md)。高容量组合/并发峰值与真实供应商仍未完成，不自动切换实际部署或关闭整项迁移。全部仍为unsigned/unpublished候选，无正式信任根、合并、发布或部署；Morpheus不在本分发闭包。
 
 远端全新clone ff89cc44b757d62b998665a9887c7f163bc60756实际重建25 ZIP及完整v3 proof，逐字节相同；clone保持干净，proof SHA256仍aa02e4a87a7464db800762fc96f322a9c342c0864fcf3366a58293c1f8acb941。单项候选选择另绑定该原证明准备unsigned proposal，不晋级stable或发布。
+
+## GPT Image 1.1.4 与第26个候选
+
+固定源码b49db592c2c6d2dc3c00b0e995a67fddd218008c、公开SDK/可信CLI bd8bf8b417786cc8fe8bae3bd8fea79898be6cc8、固定Node24镜像。91文件预构建包release326c789a85688a70f4e1eab6dd71b31e1b2f8c2f98605697fe2a358139837160，ZIP SHA2569da0db9e344b776e765326564165993b6f31123123b731c70a60799fe6df2482，4,777,147字节。新包要求显式sandbox.scratchBytes和outputs.stage-buffer；旧严格宿主/CLI拒绝，不默默忽略资源声明。
+
+实际完整宿主18609153通过三张各50MiB同步PNG与单张50MiB SSE（150.23秒），原一次提交/真实SHA/像素/字节/版本与404保持；36MiB的同步/SSE/multipart四路径另在1.1.3通过，不能拿其PASS覆盖原50MiB OOM。1.1.4同原完整应用保留24条旧任务/设置，新增9路径10份媒体、PID19→152重启后均保持；同PID的包指针generation3→4→5回退/恢复保留33条任务/文档，旧命令重读不改变当前指针。回退未生成旧包新任务，不宣称GPT在途窗口。原供应商计数15+9+9不变，真实供应商未调用。旧unknown/32MiB暂存失败/1.1.3 OOM各保留原记录。固定[完整范围](https://github.com/xurunxin/Ordiweft/blob/66aa1944/docs/evidence/plugin-gptimage-streaming-20261112.md)与[迁移盘点](https://github.com/xurunxin/Ordiweft/blob/66aa1944/docs/reference/plugin-migration-inventory.md)继续区分全部原生多输入/高像素遮罩、并发与真实账号未验收。
+
+本仓实际CLI五项PASS/零SKIP（30.114秒），首次启动器替换错误导致3PASS/2SKIP的日志保留，不拿跳过当集成通过。新可信CLI SHA256ac7a9a07840404763380590f9df93ccbd74ca5d12845fb069d63c55575ae37af实际验证并打包26份；与原25份逐项比较，artifact JSON序列化和ZIP字节均相同。新v3 proof SHA256d7eb89f74ef6c41fca3914960b17b0ec8b1908bda402b8c110fef825714de2ac；继承原1.1.0候选决定，只追加1.1.4，生成2项unsigned提案，没有改旧决定或签名根。远端冷clone验证另行记录，尚未在此计PASS。

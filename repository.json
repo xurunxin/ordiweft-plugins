@@ -5,7 +5,7 @@
   "publication": "manual-tuf",
   "hostSource": {
     "repository": "https://github.com/xurunxin/Ordiweft",
-    "commit": "8934478d93dd2d1b71af61e27ab468c7774b1664"
+    "commit": "bd8bf8b417786cc8fe8bae3bd8fea79898be6cc8"
   },
   "retainedHostSources": [
     {
@@ -55,6 +55,10 @@
     {
       "repository": "https://github.com/xurunxin/Ordiweft",
       "commit": "eaf0d34be10c3aa9cb2e97451c56fbcee9462846"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "8934478d93dd2d1b71af61e27ab468c7774b1664"
     }
   ],
   "packages": [
@@ -82,6 +86,7 @@
     "ordiweft-examples/doubao-audio/1.0.2",
     "ordiweft-examples/doubao-audio/1.0.3",
     "ordiweft-examples/gpt-image/1.0.2",
-    "ordiweft-examples/gpt-image/1.1.0"
+    "ordiweft-examples/gpt-image/1.1.0",
+    "ordiweft-examples/gpt-image/1.1.4"
   ]
 }
