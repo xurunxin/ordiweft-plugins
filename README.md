@@ -66,4 +66,3 @@ node scripts/registry.mjs prepare <build-proof.json> <selection.json> <仓外新
 `ORDIWEFT_PLUGIN_CLI` 和 `ORDIWEFT_PLUGIN_CLI_SHA256` 仅用于显式启用真实 CLI 打包/提案集成测试；未设置时相应测试 SKIP。无需模型 Key、Docker、Git 写 Token或 Morpheus。测试使用自己创建的临时副本，破坏性反例不修改仓内源码。
 
 当前消费协议与完整平台计划见 [Ordiweft 插件契约](https://github.com/xurunxin/Ordiweft/blob/bd8bf8b417786cc8fe8bae3bd8fea79898be6cc8/docs/reference/plugin-release-contract.md)。新角色声明需要支持inputRoles的宿主；旧宿主严格拒绝未知字段，不忽略限制。静态process供应商需要支持该Host Services路径的宿主；包内源码由维护者受限示例构建器生成，portable-pack只打包其预构建字节。片场素材包需要支持director-models profile的宿主；旧宿主拒绝安装，不把GLB当JSON或执行入口。完整不受信编译构建、社区审阅自动化、正式签名运维与官方稳定发布仍在实施；本仓portable-pack不执行Go或TS编译。
-
