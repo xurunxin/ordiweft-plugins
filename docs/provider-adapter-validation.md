@@ -32,3 +32,13 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 宿主固定源码的实际Linux HTTP/SQLite/沙箱验证PASS120.02秒，覆盖同步/SSE/multipart、遮罩、同内容多输出以及异常SSE不重提。完整内嵌应用也实际安装本仓构建的ZIP：显式授权/原验证/激活后，五个普通原任务各提交一次，返回原17×13 PNG字节，标题/未知字段、结果数和版本数正确；重放没有额外调用，其他用户404。同一二进制重启后原任务/画布只读恢复，上游计数仍5。无宿主源码、开发依赖、Morpheus或真实账号挂载到运行应用；Docker控制仅在受信宿主，插件维持自己的无网络沙箱。不是整个GPT渠道、真实OpenAI调用或整体平台验收。
 
 当前宿主证据：[GPT Image候选](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-gptimage-adapter-20261112.md)。全部候选仍未签名/未发布，不生成正式信任根或自动启用其他部署。
+
+## SeedAudio与20包
+
+新增ordiweft-examples/doubao-audio/1.0.0，源码固定eaf0d34be10c3aa9cb2e97451c56fbcee9462846，SDK固定ff65702，73份描述文件含公开SDK和Go/Apache许可。release 241fe84cee887a950c6a0435297e101a04018c5237c392f389ccda52c5541d0a；ZIP SHA256 b9d9df7bc95c2933292a4db555b943482a0613f70405e5930cf6e78f33d22e14。只迁移当前纯文本模型，不新增原生未提供的参考素材/音色。
+
+可信CLI从eaf0d34干净归档构建，SHA256与前轮相同（9e458b09248247b2ce7f0133817c478a0b0d2240e1f7661bc5613592b6507b2d），实际重建20包，旧19份ZIP逐字节相等。五项真实CLI测试PASS、0 SKIP，15.414秒；不执行插件、安装依赖或发布。
+
+固定Linux HTTP/SQLite/Docker消费者四项PASS97.54秒，覆盖PCM、显式WAV规范化来源、实际公网原URL音频和错误回执。完整独立内嵌应用也消费本仓原ZIP：授权/原验证/激活后四个原任务各提交一次，三项成功写入原字节和一个版本，错误保留unknown/零版本；标题/未知字段、原任务重放和其他用户404均通过。实际500ms自有PCM及203ms公网WAV以真实文件测量，不采信模拟上游时长。相同二进制PID19→90重启后，三份完成结果和原unknown仍可读，计数仍4、duplicate/invalid0。没有真实SeedAudio推理。
+
+完整96MiB响应/64MiB音频组合、原追踪metadata及全渠道迁移仍未闭合，本候选不自动切换现有部署。公网音频只作仓外验证输入，未复制进包；包内fixture为自有合成PCM。宿主证据：[SeedAudio候选](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-seedaudio-adapter-20261112.md)。全部仍未签名/未发布，整体计划继续实施。
