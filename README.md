@@ -61,7 +61,7 @@ node scripts/registry.mjs prepare <build-proof.json> <selection.json> <仓外新
 
 ## 验证
 
-新增Go预构建包的固定来源、原十包字节保留和实际宿主验收见[验证记录](docs/prebuilt-go-validation.md)；原创素材包的格式、权限和快照行为见[素材包验证](docs/asset-bundle-validation.md)。环境预设的字段和场景保存验证见[预设验证](docs/environment-preset-validation.md)。文本分析节点的固定版本及热更新验收见[节点动作验证](docs/node-action-validation.md)。外部worker包的固定来源和独立公开SDK消费者见[worker验证](docs/external-worker-validation.md)。[供应商候选验证](docs/provider-adapter-validation.md)记录23包的来源、旧制品保留和与宿主实际执行证据的分工。这些记录不授予签名或发布权。
+新增Go预构建包的固定来源、原十包字节保留和实际宿主验收见[验证记录](docs/prebuilt-go-validation.md)；原创素材包的格式、权限和快照行为见[素材包验证](docs/asset-bundle-validation.md)。环境预设的字段和场景保存验证见[预设验证](docs/environment-preset-validation.md)。文本分析节点的固定版本及热更新验收见[节点动作验证](docs/node-action-validation.md)。外部worker包的固定来源和独立公开SDK消费者见[worker验证](docs/external-worker-validation.md)。[供应商候选验证](docs/provider-adapter-validation.md)记录24包的来源、旧制品保留和与宿主实际执行证据的分工。这些记录不授予签名或发布权。
 
 `ORDIWEFT_PLUGIN_CLI` 和 `ORDIWEFT_PLUGIN_CLI_SHA256` 仅用于显式启用真实 CLI 打包/提案集成测试；未设置时相应测试 SKIP。无需模型 Key、Docker、Git 写 Token或 Morpheus。测试使用自己创建的临时副本，破坏性反例不修改仓内源码。
 

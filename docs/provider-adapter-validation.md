@@ -60,3 +60,13 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 新固定宿主实际七条PCM/WAV规范化/换行base64/非零padding/公网URL/真实自有MP3/错误路径PASS181.85秒，每任务一次提交、真实SHA/时长、原TraceID、版本、重放和404保持。MP3为仓外自有440Hz合成音，ffmpeg9.0.2生成，ffprobe识别44.1kHz单声道/8777字节/0.548563秒，业务时长按原口径548ms，SHA256 `c02bf0a1f8cba5f97a74dc9b94dbd3f36cbc46897d8f37041200f432c5dd49b4`；包内不再分发ffmpeg、其代码或该外部验证文件。近64MiB路径再次PASS70.81秒；原1.0.2不加新字段的固定包在新宿主也PASS70.67秒，保留缺省字段兼容。
 
 仓库现23包，旧22份metadata/ZIP逐字节保留，新一包等于宿主固定ZIP；真实CLI五项PASS、0 SKIP，18.042秒。只做portable-pack，不执行插件或安装依赖；合成宿主更换二进制后保留原五任务/unknown/凭据与模型开关，新包原验证和generation1→2激活通过，完整八条路径及重启继续由宿主独立验收。许可与未签名/未发布范围保持，整体计划继续实施。
+
+## GPT Image 1 系列与 24 包
+
+新增不可变 `ordiweft-examples/gpt-image/1.0.2`，源码固定 `04ada2a0762dd33ccd36d224e5ffb5bf10ed0872`，公开 SDK 固定 `ff4ef41a28532c453224f73dbde7ae3336efbbbe`。包含原 gpt-image-1.5、gpt-image-1-mini 和 chatgpt-image-latest 三个模型；mini 继续只接受 low input_fidelity。八份 JSON 映射和连接引用同时固定摘要，继续共用原 generate 效果槽。原 1.0.0 保持；本地 1.0.1 因连接仍引用旧映射摘要被安装前检查拦住，保留原失败包，不收录为可安装候选。
+
+新 release 为 `cc26d117c608e7d695ca85a5377f1f18e8e592943777f73c0aa51d5559a9713d`，ZIP SHA256 `640dd3d5e1530f1665d4cf54ee37b5b21a4eeca99153a9ec51aeb71e185e5079`。实际重建 24 ZIP，旧 23 份制品及 metadata 与 d8d0b46 的原证明逐字节相同，新 ZIP 与宿主固定包相同；可信 CLI 保持原 8934478 来源及既有摘要。五项真实 CLI 集成测试 PASS、0 SKIP，25.637 秒，没有执行插件、安装依赖或发布。
+
+原生适配器实际拦截请求与三份公开 schema/八种受审映射的 24 组对照通过，包括同步/SSE、JPEG opaque、multipart 原参考图与遮罩、匿名身份及 mini 保真度。固定 cda532a51218ec2bb88c6b57fa737a903e441a08 Linux HTTP/SQLite/Docker 消费者对本包三模型共 21 条普通路径 PASS478.61 秒：15 个成功任务、6 个异常 SSE unknown，实际 18 份 PNG 输出、原提交一次、原字段/版本/回执重放/跨用户404保持。资源观察告警保留，不能据此关闭全部故障或性能门。
+
+完整应用及旧实例未知检查的保留另由宿主记录。本包不替换现有完整渠道，不声称 GPT Image 2 系列、GIF/SVG/markup、大容量组合或真实供应商已完成迁移。全部仍为 unsigned/unpublished 候选，SDK/模板 Apache-2.0 与 Morpheus 原有许可边界保持。
