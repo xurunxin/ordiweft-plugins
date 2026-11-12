@@ -42,3 +42,13 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 固定Linux HTTP/SQLite/Docker消费者四项PASS97.54秒，覆盖PCM、显式WAV规范化来源、实际公网原URL音频和错误回执。完整独立内嵌应用也消费本仓原ZIP：授权/原验证/激活后四个原任务各提交一次，三项成功写入原字节和一个版本，错误保留unknown/零版本；标题/未知字段、原任务重放和其他用户404均通过。实际500ms自有PCM及203ms公网WAV以真实文件测量，不采信模拟上游时长。相同二进制PID19→90重启后，三份完成结果和原unknown仍可读，计数仍4、duplicate/invalid0。没有真实SeedAudio推理。
 
 完整96MiB响应/64MiB音频组合、原追踪metadata及全渠道迁移仍未闭合，本候选不自动切换现有部署。公网音频只作仓外验证输入，未复制进包；包内fixture为自有合成PCM。宿主证据：[SeedAudio候选](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-seedaudio-adapter-20261112.md)。全部仍未签名/未发布，整体计划继续实施。
+
+## SeedAudio原TraceID、容量和22包
+
+新增不可变1.0.1与1.0.2；1.0.0及其余旧20份recipe/descriptor/ZIP逐字节保留。1.0.1固定源码84cb1eba7179dffc2cb42468e8ec0ed1c7a16e82、SDK8934478；ZIP SHA256 `8ae33ae32500f4337d4c7cb6444c05fd0975ffda27f43b76a7f405d4d5f49200`。1.0.2固定源码fde4f302c926bbd87e220b6c169525b4bc89de07、SDKf037588；release `d6299168609d27e645317dc0ed3966d33abbc6d633fca67b79f0c661229c5d1d`，ZIP SHA256 `de87aa6074e246ab4f8662320b5db6d42f53cd68473b61b8ea8f7c953bfc67c7`。新可信CLI来自8934478干净归档，SHA256 `7f06c29a4d235a8a95bdd2b96acb7ceb2cd4fecdf2e362e73285a69b1b2d2bc6`；旧CLI严格拒绝不认识的jobs.context，没有回退到非隔离执行。
+
+宿主实际Linux HTTP/SQLite/受限Docker已验证1.0.0↔1.0.1活动generation1→2→3：六个原任务各一次提交，在途任务与等待隔离槽的已准入任务沿原release执行，unknown回执、凭据/模型开关、历史版本和其他用户404保留，旧激活命令重放不复活旧指针（PASS112.86秒）。这是等待物理执行槽，不冒充队列API的queued状态。保留Docker资源观察警告，异常资源终止故障门仍另验。
+
+1.0.2在原256MiB子容器中完成67,108,860字节、192kHz双声道32bit WAV，SHA256 `a1c62d8a676feb653ef88fce59c24141c652a9518c14af24d9f0ade682466c93`，实际JobResult43690ms、原派生来源和画布写回正确。一次原提交、重放无额外调用、其他用户404，PASS64.25秒。宿主验证进程限2GiB，峰值内存未测量；音频输出上限仍64MiB。四条常规PCM/规范化WAV/实际公网URL/错误回执又在新包通过（84.84秒）。旧1.0.1大响应反例和测试夹具限额/时长断言失败均保留，不把反例或修正前断言算PASS。
+
+实际check/build22包，新两包与宿主固定ZIP相同，旧20包metadata/ZIP逐字节相同。真实CLI的五项测试全部PASS、0 SKIP，17.312秒；仓库构建仍只打包已有字节，不安装依赖、不执行插件、不读取账号、不发布。宿主[容量及原任务证据](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-seedaudio-adapter-20261112.md)和[包间更新](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-package-hot-update-20261112.md)负责实际运行证明。完整独立新宿主、真实供应商与整体迁移继续分别验收；Apache-2.0不授予模型/账号/素材许可。

@@ -1,0 +1,162 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/doubao-audio",
+  "version": "1.0.1",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "doubao-audio",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "read",
+        "decode",
+        "release"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    },
+    {
+      "service": "transfers",
+      "version": 1,
+      "operations": [
+        "download"
+      ]
+    },
+    {
+      "service": "media",
+      "version": 1,
+      "operations": [
+        "derive"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "context",
+        "checkpoint"
+      ]
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "doubao-audio",
+    "name": "豆包 SeedAudio",
+    "version": "1.0.1",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY"
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 20,
+      "cancelable": false
+    },
+    "nodes": [
+      {
+        "id": "audio",
+        "label": "SeedAudio 音频生成",
+        "capability": "music.generate",
+        "model": "seed-audio-1.0"
+      }
+    ],
+    "models": [
+      {
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "音频创作描述",
+          "placeholder": "用自然语言描述对白、语气、背景音乐、音效与环境音，也可指定时间轴与总时长（最长 120 秒）。",
+          "required": true,
+          "maxLength": 3000
+        },
+        "id": "seed-audio-1.0",
+        "label": "SeedAudio 1.0 · 全要素音频",
+        "capability": "music.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "aigc_watermark": {
+            "section": "advanced",
+            "type": "boolean",
+            "label": "结尾声音标识",
+            "default": false
+          },
+          "format": {
+            "type": "string",
+            "label": "文件格式",
+            "default": "mp3",
+            "enum": [
+              "mp3",
+              "wav"
+            ]
+          },
+          "loudness_rate": {
+            "type": "integer",
+            "label": "音量（0 正常）",
+            "default": 0,
+            "minimum": -50,
+            "maximum": 100
+          },
+          "metadata_watermark": {
+            "section": "advanced",
+            "type": "boolean",
+            "label": "文件元数据标识",
+            "default": true
+          },
+          "pitch_rate": {
+            "type": "integer",
+            "label": "音调",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "sample_rate": {
+            "type": "integer",
+            "label": "采样率",
+            "default": 48000,
+            "enum": [
+              8000,
+              16000,
+              24000,
+              32000,
+              44100,
+              48000
+            ]
+          },
+          "speech_rate": {
+            "type": "integer",
+            "label": "语速（0 正常）",
+            "default": 0,
+            "minimum": -50,
+            "maximum": 100
+          }
+        }
+      }
+    ]
+  },
+  "files": []
+}
