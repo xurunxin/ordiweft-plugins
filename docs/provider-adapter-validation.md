@@ -74,3 +74,13 @@ portable-pack使用干净归档6b46ba08854c3040f52237d2447fcb238a33cce8构建的
 全新ac3b722完整内嵌应用从本仓同一ZIP安装，授权/原验证/激活阶段供应商提交0；三模型共15条同步/SSE/multipart/双图任务保存18份实际17×13 PNG，原字段/版本/回执/404通过，同二进制PID19→223重启后提交仍15、invalid/duplicate0。初次脚本在第14条遇到过长合成jobId的400；原13条没有重跑，确认未入队/未提交后只修正剩余两条标识，原失败与意图保留。另一旧实例的原验证缺独立判定，继续unknown，不换命令重跑；原五任务/设置、generation1、PID101及原供应商提交5保持。两实例证据不互相覆盖，见[宿主固定证据](https://github.com/xurunxin/Ordiweft/blob/6043693923c686ad7c0928636c2a5970a3fcd295/docs/evidence/plugin-gptimage-family-20261112.md)。
 
 本包不替换现有完整渠道，不声称 GPT Image 2 系列、GIF/SVG/markup、大容量组合或真实供应商已完成迁移。全部仍为 unsigned/unpublished 候选，SDK/模板 Apache-2.0 与 Morpheus 原有许可边界保持。
+
+## GPT Image 2与25包
+
+新增不可变1.1.0，源码e766c033678bcd8939d0568a08bffe6b55f2ea62，公开SDK 0.1.13固定8c8841b79c59cd40e9aadc9f7b27fa24ba46aeaf，87份描述文件保留Apache-2.0/Go许可。release ebf3b7559fc15cc3eafdb57d3022a2b12ee0b6cb142dd3e7d58f93a9414a25b2，ZIP SHA256 708db99c9f342b5cc3007b028715e3cb5b3ca65afa6d334145c4e39520b6c999，4641194字节。13份受审映射覆盖当前11模型、56项预设、同步/SSE及SVG/GIF/标注；单底图标注保留image字段，多底图保留image[]。原1.0.0/1.0.2与其余历史版本不覆盖。
+
+实际check/build25包，原24份ZIP/metadata与原证明逐字节相同，新的ZIP等于宿主固定包。完整v3 proof SHA256 aa02e4a87a7464db800762fc96f322a9c342c0864fcf3366a58293c1f8acb941；CLI继续使用8934478固定来源/既有摘要。五项实际CLI反例与不可变打包测试PASS、0 SKIP，27.898秒。本仓没有安装依赖或执行包代码。
+
+宿主开发包11模型/89条实际Linux HTTP/SQLite/Docker队列路径PASS1339.09秒（63成功、26异常unknown、76媒体）；固定包86份运行文件和入口逐字节相同，只有来源证明与release描述不同，开发矩阵不冒充固定包矩阵。固定包另在8c8841b7完整嵌入式应用中同原数据消费：原15任务/设置保留，generation1→2，凭据不重设，9条新原任务/10份实际PNG/SVG/GIF通过；同二进制PID19→154重启后原15+新9可读，旧供应商仍15、新供应商仍9、invalid/duplicate0。安装报告变量异常保留，以GET原验证/激活回执恢复，不重跑安装或生成。
+
+详见[宿主2系列证据](https://github.com/xurunxin/Ordiweft/blob/codex/plugin-platform-plan/docs/evidence/plugin-gptimage2-20261112.md)。高容量组合/并发峰值与真实供应商仍未完成，不自动切换实际部署或关闭整项迁移。全部仍为unsigned/unpublished候选，无正式信任根、合并、发布或部署；Morpheus不在本分发闭包。
