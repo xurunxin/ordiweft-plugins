@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "id": "brief",
+  "kind": "node",
+  "node": {
+    "label": "创作说明",
+    "version": 1,
+    "renderer": "form",
+    "fieldsSchema": {
+      "type": "object",
+      "properties": {
+        "caption": {"type": "string", "title": "创作说明", "maxLength": 2000},
+        "tone": {"type": "string", "title": "表达风格", "enum": ["温暖", "简洁", "活泼"]},
+        "count": {"type": "integer", "title": "参考数量", "minimum": 1, "maximum": 8},
+        "enabled": {"type": "boolean", "title": "启用说明"}
+      },
+      "required": ["caption", "tone", "count", "enabled"],
+      "additionalProperties": false
+    },
+    "defaults": {"caption": "", "tone": "温暖", "count": 1, "enabled": true},
+    "ports": [],
+    "actions": []
+  }
+}

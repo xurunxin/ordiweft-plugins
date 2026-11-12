@@ -1,0 +1,8 @@
+node_modules/
+.output/
+*.zip
+*.exe
+*.log
+.env
+*.pem
+*.key

@@ -1,0 +1,65 @@
+{
+  "formatVersion": 1,
+  "packageId": "example/offline-image",
+  "version": "1.0.1",
+  "license": "Apache-2.0",
+  "runtime": "node",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "isolated-image",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [],
+  "files": [
+    {
+      "path": "adapter.mjs",
+      "sha256": "18d3946b148eefab09192e316c5cea9bc8712c23e9f5624725a5e01666918e93",
+      "bytes": 726
+    },
+    {
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "path": "LICENSE"
+    },
+    {
+      "bytes": 236,
+      "sha256": "f0e452700ea2c91e1db56432fbae82671cb4d204e88dca95f12ea5a782c169b3",
+      "path": "NOTICE"
+    }
+  ],
+  "generation": {
+    "secrets": [],
+    "id": "isolated-image",
+    "models": [
+      {
+        "maxInputs": 0,
+        "inputKinds": [],
+        "fields": {},
+        "label": "固定一像素",
+        "capability": "image.generate",
+        "id": "pixel"
+      }
+    ],
+    "nodes": [
+      {
+        "capability": "image.generate",
+        "model": "pixel",
+        "id": "image",
+        "label": "离线图片"
+      }
+    ],
+    "apiVersion": 2,
+    "name": "隔离离线示例",
+    "runtime": "process",
+    "scheduling": {
+      "maxQueued": 2,
+      "cancelable": true,
+      "independent": true,
+      "concurrency": 1
+    },
+    "auth": "none",
+    "version": "1.0.1"
+  }
+}

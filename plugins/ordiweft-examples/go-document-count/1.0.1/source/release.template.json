@@ -1,0 +1,12 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/go-document-count",
+  "version": "1.0.1",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [{"id":"document-count","kind":"processor"}],
+  "requirements": [{"service":"assets","version":1,"operations":["read"]}],
+  "definitions": {"document-count":"definitions/document-count.json"},
+  "files": []
+}

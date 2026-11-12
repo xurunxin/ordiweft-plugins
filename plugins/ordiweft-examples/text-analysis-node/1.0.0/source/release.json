@@ -1,0 +1,65 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/text-analysis-node",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "node",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "analyze-text",
+      "kind": "processor"
+    },
+    {
+      "id": "analysis",
+      "kind": "node"
+    }
+  ],
+  "definitions": {
+    "analyze-text": "definitions/analyze-text.json",
+    "analysis": "definitions/analysis.json"
+  },
+  "requirements": [],
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 211,
+      "sha256": "6ebe89b6e9bdb279256115789dba07c7151a7261df2a724eae17bb61ed9b3ec1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 863,
+      "sha256": "a30c9f5f3fb80a37d26489bf88f94576f6eee4761df227f0786cc47c1bc37f5d"
+    },
+    {
+      "path": "adapter.mjs",
+      "bytes": 356,
+      "sha256": "07e4e6c52dc870905a9c199da8100831a0b4e140c84dd08d0e5e3b862616b3a3"
+    },
+    {
+      "path": "definitions/analysis.json",
+      "bytes": 549,
+      "sha256": "e8c8f0f391b625f59a161f82d604d6ed84cb4fe68594892b6452cb75d56c851d"
+    },
+    {
+      "path": "definitions/analyze-text.json",
+      "bytes": 1018,
+      "sha256": "94cc6869ac8b07e07a80589b60af52333b0adca0ebebc1c8ea62d3945e7a35c3"
+    },
+    {
+      "path": "fixtures/action-verification.json",
+      "bytes": 181,
+      "sha256": "561f0a66a5beeae3abe1816b54b28117d2bab50d19efa6984b616ebd7a3ed5a7"
+    },
+    {
+      "path": "host.mjs",
+      "bytes": 14636,
+      "sha256": "773abad257563c6ba06b3aef5ad3f07375f24edc10b29d7c8fcffa3b8c4f488d"
+    }
+  ]
+}

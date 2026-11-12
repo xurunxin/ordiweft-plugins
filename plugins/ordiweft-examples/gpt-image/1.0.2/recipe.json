@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/gpt-image",
+  "releaseVersion": "1.0.2",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "04ada2a0762dd33ccd36d224e5ffb5bf10ed0872",
+    "path": "examples/plugin-go/gpt-image"
+  },
+  "runtimeImage": "sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c"
+}

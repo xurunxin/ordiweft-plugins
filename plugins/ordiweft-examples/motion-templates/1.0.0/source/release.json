@@ -1,0 +1,40 @@
+{
+  "definitions": {
+    "motion": "definitions/motion.json"
+  },
+  "formatVersion": 1,
+  "requirements": [],
+  "files": [
+    {
+      "sha256": "e6ec5392db27a586737408aa3adc5667bdc0b078a9b3e581d2d9faa219e44e85",
+      "path": "definitions/motion.json",
+      "bytes": 114
+    },
+    {
+      "sha256": "2f6b937fff604bfe07ecc1b2c420b4be91e2cfd8c0a7393b82bbbb1304e88c94",
+      "path": "templates/motion.json",
+      "bytes": 489
+    },
+    {
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "path": "LICENSE",
+      "bytes": 11358
+    },
+    {
+      "sha256": "f392c611c48d575ebf8b914a18ff49cc715e707983f3511a0205cbd6fa70636b",
+      "path": "NOTICE",
+      "bytes": 135
+    }
+  ],
+  "runtime": "data",
+  "hostProtocol": 1,
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "packageId": "ordiweft-examples/motion-templates",
+  "contributions": [
+    {
+      "kind": "content",
+      "id": "motion"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "id": "document-normalize",
+  "kind": "processor",
+  "action": {
+    "label": "UTF-8 文档规范化",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {},
+      "description": "选择一份 UTF-8 原文档，统一换行并保留原件。"
+    },
+    "resultSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "characters": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576,
+          "title": "字符数"
+        },
+        "lines": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048577,
+          "title": "行数"
+        },
+        "sourceSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "原文档摘要"
+        }
+      },
+      "required": [
+        "characters",
+        "lines",
+        "sourceSha256"
+      ]
+    },
+    "resources": {
+      "minInputs": 1,
+      "maxInputs": 1,
+      "minOutputs": 1,
+      "maxOutputs": 1,
+      "maxInputBytes": 1048576,
+      "maxOutputBytes": 4194304,
+      "maxRuntimeMs": 60000
+    },
+    "inputRoles": [
+      {
+        "id": "source",
+        "label": "原文档",
+        "kinds": [
+          "document"
+        ],
+        "mimeTypes": [
+          "text/plain"
+        ],
+        "min": 1,
+        "max": 1
+      }
+    ]
+  }
+}

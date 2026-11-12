@@ -1,0 +1,21 @@
+{
+  "body": "原版：围绕{{subject}}设计动画；保留真实文案，不编造承诺。输出{{seconds}}秒。",
+  "fields": [
+    {
+      "type": "text",
+      "id": "subject",
+      "label": "动画主题",
+      "default": "产品发布",
+      "required": true
+    },
+    {
+      "binding": "seconds",
+      "type": "integer",
+      "id": "seconds",
+      "label": "时长",
+      "default": "6"
+    }
+  ],
+  "target": "remotion-code",
+  "schemaVersion": 1
+}

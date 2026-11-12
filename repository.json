@@ -1,0 +1,92 @@
+{
+  "formatVersion": 1,
+  "status": "unpublished",
+  "license": "Apache-2.0",
+  "publication": "manual-tuf",
+  "hostSource": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "bd8bf8b417786cc8fe8bae3bd8fea79898be6cc8"
+  },
+  "retainedHostSources": [
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "bd2e58919594d0c9aafabc357cedc95d2ef5039e"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "866b7d035eae10d22d81b85bba0069426658b448"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "ac78e2871220579e67c94892ac87e5c2f26c5e86"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "7ced9ac288474bc53dd7f0474b25efeba6538448"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "cfcf2dd01d145bad1d2d3b33ffd9fcdb820e0e12"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "b11ef92bc471c4b725f1aeb9c781feb9a449e6f2"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "24a9024214700a743ccbdd4ea78f78215450dc28"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "732f0bafb581a05adab6ac8fd3cb28595b19f7fd"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "30c45ab14aa2867c61cd9660ebacfe38e8d12b82"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "6b46ba08854c3040f52237d2447fcb238a33cce8"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "21a80a4a52da18479f027c1c7f43cbc1ec9b4591"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "eaf0d34be10c3aa9cb2e97451c56fbcee9462846"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "8934478d93dd2d1b71af61e27ab468c7774b1664"
+    }
+  ],
+  "packages": [
+    "ordiweft-examples/typed-content/1.0.0",
+    "ordiweft-examples/motion-templates/1.0.0",
+    "ordiweft-examples/review-skill/1.0.0",
+    "example/offline-image/1.0.1",
+    "ordiweft-examples/form-node/1.0.0",
+    "ordiweft-examples/document-text/1.0.1",
+    "ordiweft-examples/media-inspection/1.0.1",
+    "ordiweft-examples/document-file/1.0.0",
+    "ordiweft-examples/document-normalize/1.0.0",
+    "ordiweft-examples/document-normalize/1.0.1",
+    "ordiweft-examples/go-host-generation/1.0.0",
+    "ordiweft-examples/go-document-count/1.0.1",
+    "ordiweft-examples/director-models/1.0.1",
+    "ordiweft-examples/environment-preset/1.0.0",
+    "ordiweft-examples/text-analysis-node/1.0.0",
+    "ordiweft-examples/png-renderer/1.0.0",
+    "ordiweft-examples/indextts/1.0.0",
+    "ordiweft-examples/dashscope-wan/1.0.0",
+    "ordiweft-examples/gpt-image/1.0.0",
+    "ordiweft-examples/doubao-audio/1.0.0",
+    "ordiweft-examples/doubao-audio/1.0.1",
+    "ordiweft-examples/doubao-audio/1.0.2",
+    "ordiweft-examples/doubao-audio/1.0.3",
+    "ordiweft-examples/gpt-image/1.0.2",
+    "ordiweft-examples/gpt-image/1.1.0",
+    "ordiweft-examples/gpt-image/1.1.4"
+  ]
+}

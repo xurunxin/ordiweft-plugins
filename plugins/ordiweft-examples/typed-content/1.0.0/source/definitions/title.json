@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "id": "title",
+  "kind": "content",
+  "content": { "type": "json", "entry": "title.json" }
+}

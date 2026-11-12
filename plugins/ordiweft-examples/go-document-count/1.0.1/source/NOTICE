@@ -1,0 +1,15 @@
+Ordiweft Go document-count processor sample
+Copyright 2026 Ordiweft contributors
+
+This original sample is licensed under the Apache License, Version 2.0.
+Includes the vendored SDK below; Morpheus is not included.
+
+Ordiweft public Go plugin SDK
+Copyright 2026 Ordiweft contributors
+
+This SDK distribution is licensed under the Apache License, Version 2.0.
+It contains only the public pkg/aigc and pkg/pluginhost source packages.
+It has no non-standard-library dependencies and does not include Morpheus.
+
+The compiled Go runtime and standard library retain their original license.
+The matching toolchain LICENSE and PATENTS are included under licenses/.

@@ -1,0 +1,309 @@
+{
+  "sourceCommit": "f03758800e8ea2f461e407a4e130a7f332f07faa",
+  "version": 1,
+  "goVersion": "1.27.0",
+  "sourceDirty": false,
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "sha256": "046cc5496f50c1d3b1f2caa344af31b9cda425d74d81c452cd0bab7e92d83c9d",
+      "path": ".ordiweft-go-sdk-export",
+      "bytes": 14
+    },
+    {
+      "sha256": "f759ce39bfcd976fa5da453e6b698637c776e6d08978a3f6a86627ba28b7f0b9",
+      "path": "go.mod",
+      "bytes": 47
+    },
+    {
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "path": "LICENSE",
+      "bytes": 11358
+    },
+    {
+      "sha256": "59f17e8af0291ec7cb607f8c10f93cf991b6d884bd98eadae8a06f1be4be483a",
+      "path": "NOTICE",
+      "bytes": 115
+    },
+    {
+      "sha256": "fbcf080f780362fcb2bec30d84badaa54c5340f939eac62bdaa49206fb178fca",
+      "path": "pkg/aigc/catalog.go",
+      "bytes": 2236
+    },
+    {
+      "sha256": "3bc48091cdc548334d57dbd0257a8ec27c8fdc73c6af0e0190c4a2fb80b1f389",
+      "path": "pkg/aigc/input_roles.go",
+      "bytes": 1964
+    },
+    {
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "path": "pkg/aigc/LICENSE",
+      "bytes": 11358
+    },
+    {
+      "sha256": "06f58a68d24cbe46029a090e3275b5147fb37026b1fed7ad5f07d52b5ef6c840",
+      "path": "pkg/aigc/NOTICE",
+      "bytes": 197
+    },
+    {
+      "sha256": "57e0c5e4952aaa2b988393c2e10edd8e77c39c8c78b7b1f475d68d4ad2516c55",
+      "path": "pkg/aigc/schema.go",
+      "bytes": 6489
+    },
+    {
+      "sha256": "1b27979f07d450704d346cb3494784a4482b904d3a1bdcb5036b767722c83bda",
+      "path": "pkg/aigc/sdk.go",
+      "bytes": 16759
+    },
+    {
+      "sha256": "7ade36de140f93e47139fb4cb264477ddcfda18ba349e4e20abeac932fa57f5c",
+      "path": "pkg/pluginhost/action_client.go",
+      "bytes": 1273
+    },
+    {
+      "sha256": "fd6306cd59abff713e4ec1dfe2f542a464e78119b1074e84ef949841abcc0073",
+      "path": "pkg/pluginhost/action_roles.go",
+      "bytes": 2577
+    },
+    {
+      "sha256": "0bfbdd45ffe4a42b500ff1bd3c2426c828840260bcf9f818567657a66add32d0",
+      "path": "pkg/pluginhost/action_runtime.go",
+      "bytes": 676
+    },
+    {
+      "sha256": "d65a523c30c76f855c8a21c0e50cdecbdfa9eafda3d60087c63915f57331ae23",
+      "path": "pkg/pluginhost/action_verification.go",
+      "bytes": 3437
+    },
+    {
+      "sha256": "2c09ad8475113c49d8e4d5e8b86498a18bc353937d89bed5717948b9d25b17df",
+      "path": "pkg/pluginhost/action.go",
+      "bytes": 4313
+    },
+    {
+      "sha256": "365f09881b1e66b152b283c2b58bcbfc05dd26ad31b2689f5bd48b1161fd0fea",
+      "path": "pkg/pluginhost/archive.go",
+      "bytes": 2410
+    },
+    {
+      "sha256": "cc43f480adc1c932ef551c83d0b3e2e2618fb3671dd0151e05622292d6ccbb33",
+      "path": "pkg/pluginhost/asset_bundle.go",
+      "bytes": 2269
+    },
+    {
+      "sha256": "5f465af9f135edcd2ca8613ef7db43ec4c1b74e7eec956a4a7c1748fd7152037",
+      "path": "pkg/pluginhost/asset_client.go",
+      "bytes": 1879
+    },
+    {
+      "sha256": "942493f7386984f5c56a71d7bd921941f6eac7ef2a10481c18162ec3178ef996",
+      "path": "pkg/pluginhost/asset_decode.go",
+      "bytes": 2054
+    },
+    {
+      "sha256": "59103edc2857aa538982b27bccd05ca1f4173ae9d29e4ae32093864eea0f1759",
+      "path": "pkg/pluginhost/channel.go",
+      "bytes": 1588
+    },
+    {
+      "sha256": "750b20bf8282906b6d00faa819d20b5628bd7a501e5d76c0887a2ab3489a8a3d",
+      "path": "pkg/pluginhost/client.go",
+      "bytes": 3179
+    },
+    {
+      "sha256": "bec041d3547c1c24963f619f71659a1d2606dfcbd35ec332f342fb1b10cb6cc0",
+      "path": "pkg/pluginhost/connection_policy.go",
+      "bytes": 13240
+    },
+    {
+      "sha256": "271a7411d16547f2f217a3a3be8c2c265f581023a6cc8cd3f82346aa50bdc8e4",
+      "path": "pkg/pluginhost/contract.go",
+      "bytes": 8482
+    },
+    {
+      "sha256": "4fcfb05d3b363df75c8b59687d5d398a15be36323534912f86e7284e79bc194f",
+      "path": "pkg/pluginhost/definition.go",
+      "bytes": 8116
+    },
+    {
+      "sha256": "4e88bce8181d405a0b76ccca3218d1137701fe7f0672d3a29d55827ec5116bf5",
+      "path": "pkg/pluginhost/download.go",
+      "bytes": 1372
+    },
+    {
+      "sha256": "e600665c83e07aba17e0757682c1c1292273df8b217cebcefc26cf4d6cd93afe",
+      "path": "pkg/pluginhost/execution.go",
+      "bytes": 1743
+    },
+    {
+      "sha256": "065ee2a6a80d5db72286ea438218dea22c6eedf2f53250038dc4b2b6eb3131d5",
+      "path": "pkg/pluginhost/files.go",
+      "bytes": 2528
+    },
+    {
+      "sha256": "3b7565f70f183284048adfbac9743726bcf2f7caf34228873ca817531e84c0a8",
+      "path": "pkg/pluginhost/generation_client.go",
+      "bytes": 1323
+    },
+    {
+      "sha256": "4de1e9334660219506189258dd5d922f886411a11288de7f725afbcc1a106d69",
+      "path": "pkg/pluginhost/input_body.go",
+      "bytes": 1387
+    },
+    {
+      "sha256": "0fdcba016957bcc90b1c0e1865d7adef46b5b542397c7f8d8f9a93cc66d855d8",
+      "path": "pkg/pluginhost/input_key.go",
+      "bytes": 2023
+    },
+    {
+      "sha256": "b9bf706c9cee8c33bb8d25a249946a5f598bf87488c44c01a676ae0ed396eef1",
+      "path": "pkg/pluginhost/job_context.go",
+      "bytes": 623
+    },
+    {
+      "sha256": "3ecbae436a09778eb535c6f5eaf53da5640977ad12b12e94d5e261f9024fc77e",
+      "path": "pkg/pluginhost/json_policy.go",
+      "bytes": 17135
+    },
+    {
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "path": "pkg/pluginhost/LICENSE",
+      "bytes": 11358
+    },
+    {
+      "sha256": "0b922a720b93e69d1167195c3593794891964880fd2693722980cc7c69e9a1a7",
+      "path": "pkg/pluginhost/media.go",
+      "bytes": 1011
+    },
+    {
+      "sha256": "494d5ff2dc88a920adb86a484d27b07435db84fd31ef9019108c366b81b006dc",
+      "path": "pkg/pluginhost/multipart_policy.go",
+      "bytes": 8979
+    },
+    {
+      "sha256": "a346e3e4b28b25eaa4fdcda28dbbaff699beb7b8f56e92f652463b48ef69c12a",
+      "path": "pkg/pluginhost/node_snapshot.go",
+      "bytes": 5408
+    },
+    {
+      "sha256": "2787b7a123d744afa70e06c9d1fbdfd7da9e1b4b46c5e67a23a476825e752e22",
+      "path": "pkg/pluginhost/NOTICE",
+      "bytes": 307
+    },
+    {
+      "sha256": "190f08ce689e37deeab83d498e446685a818bd780264518ad0b2499f02a02e1f",
+      "path": "pkg/pluginhost/output_client.go",
+      "bytes": 2191
+    },
+    {
+      "sha256": "bc1481431b2e0b7ca6f9d9cb6344e53754e451c59ba27329101c08a74f5f600d",
+      "path": "pkg/pluginhost/policy_set.go",
+      "bytes": 845
+    },
+    {
+      "sha256": "0f9a0dabcccee217c5bdd18d3f490515f8c833a6643de570840720b38767c16e",
+      "path": "pkg/pluginhost/preset.go",
+      "bytes": 1198
+    },
+    {
+      "sha256": "acfd97f34f164b144522c0874a686e39683a88e7666d5e6313a517553c0141b8",
+      "path": "pkg/pluginhost/private_client_channel.go",
+      "bytes": 1897
+    },
+    {
+      "sha256": "44d3cb8cf6a1900bee16c89539b4b3deeda2cac4febf70e2167da65db34191f5",
+      "path": "pkg/pluginhost/protocol.go",
+      "bytes": 3857
+    },
+    {
+      "sha256": "b56cb40ef774075753e67ce1bd65d06ebfe7d9d692533a7659471c2ec835f221",
+      "path": "pkg/pluginhost/provider_runtime.go",
+      "bytes": 465
+    },
+    {
+      "sha256": "d06508ef2b81f344306b2d50daa5727566062cb3960230f73a0aaebf7e654405",
+      "path": "pkg/pluginhost/query_policy.go",
+      "bytes": 940
+    },
+    {
+      "sha256": "b073cb50a90cf3dd856985b4c28573e998c58a5b0ca9e04f6fc55b8398ca755a",
+      "path": "pkg/pluginhost/receipt_target.go",
+      "bytes": 2451
+    },
+    {
+      "sha256": "6e81d4529c63798acfb4fb545514f9affec1a3a178cfcfda034607ccab3d7d9c",
+      "path": "pkg/pluginhost/request_conditions.go",
+      "bytes": 3953
+    },
+    {
+      "sha256": "ba266d49ae78c0dfa6be51de5d45e6de14e7229445a0706c74b7a3e1f233e85f",
+      "path": "pkg/pluginhost/request_input.go",
+      "bytes": 4657
+    },
+    {
+      "sha256": "9b0de026bd70841b8ce5bb1b47c0abc8fde53ca4bcc2953933e4f614a4491ebd",
+      "path": "pkg/pluginhost/stream_reader.go",
+      "bytes": 2313
+    },
+    {
+      "sha256": "b5c600a5a5c09a4f9ce099f4e1154b6073e8e64f47167ccb11140e34a0d87202",
+      "path": "pkg/pluginhost/stream.go",
+      "bytes": 357
+    },
+    {
+      "sha256": "10fab0e830d89ce224d9708d28d5579e5d0c83b8e2c2652ac2a24e509bb45638",
+      "path": "pkg/pluginhost/task_io.go",
+      "bytes": 1063
+    },
+    {
+      "sha256": "57d060d0ff01c6041c9738f29cd970d9de085beaaccaf86c59027549df6feaed",
+      "path": "pkg/pluginhost/task_runtime.go",
+      "bytes": 343
+    },
+    {
+      "sha256": "ceb31d5034b666545ec185d20bec18817353c65fe80a60781e7bae65809eb598",
+      "path": "pkg/pluginhost/task.go",
+      "bytes": 2818
+    },
+    {
+      "sha256": "8dd77d40c6288fc45021ff8961a1898a6a26d3761ebc3c21763080be10546187",
+      "path": "pkg/pluginhost/verification_context.go",
+      "bytes": 737
+    },
+    {
+      "sha256": "384687810b040d6603fd3246d7af955dde0b274d6a7eae6f29136b44a0d8d4d1",
+      "path": "pkg/pluginhost/verification.go",
+      "bytes": 4753
+    },
+    {
+      "sha256": "6312112e6a0b2cf12e65aed92b711ffcbb928a4b77495438210d50fbbd5df527",
+      "path": "pkg/pluginhost/wait_policy.go",
+      "bytes": 1959
+    },
+    {
+      "sha256": "ed32804b4e03e4e4e01d2378e6d510d84649d77a590649b52b299a065c59e46d",
+      "path": "pkg/pluginhost/worker_policy.go",
+      "bytes": 1666
+    },
+    {
+      "sha256": "ec9d44413cd46c0df40f897824a26bad0c2f5f2bd7dea85e7a10b4d7ab02805a",
+      "path": "pkg/pluginhost/worker.go",
+      "bytes": 7206
+    },
+    {
+      "sha256": "800a5c63aa80cbf15298ccdfb3cd172223efea068949f1cd289797e53dff5bad",
+      "path": "pkg/pluginhost/workspace_build.go",
+      "bytes": 2645
+    },
+    {
+      "sha256": "198bcf1fca0c40dea756e964aa9d3443faffa4edb8f94b046c4bcc6f60149fad",
+      "path": "pkg/pluginhost/workspace.go",
+      "bytes": 4427
+    },
+    {
+      "sha256": "88396dc14a04b3a40e5f09aba9d8f90e0e7649d166bf8c978fa6dca00ed2a091",
+      "path": "README.md",
+      "bytes": 923
+    }
+  ]
+}

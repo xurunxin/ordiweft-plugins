@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "id": "studio",
+  "kind": "content",
+  "content": {
+    "type": "preset",
+    "entry": "studio.json"
+  }
+}

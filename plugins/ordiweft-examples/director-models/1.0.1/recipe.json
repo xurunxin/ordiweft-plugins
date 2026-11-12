@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/director-models",
+  "releaseVersion": "1.0.1",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "ac78e2871220579e67c94892ac87e5c2f26c5e86",
+    "path": "examples/plugin-content/director-models"
+  }
+}
