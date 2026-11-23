@@ -15,6 +15,8 @@ import (
 	"gitea.nkit.top/xurx/Ordiweft/pkg/pluginhost"
 )
 
+var adapterVersion = "dev"
+
 type broker struct {
 	host     *pluginhost.Client
 	sequence int
@@ -149,7 +151,12 @@ func run(ctx context.Context) error {
 		}
 		outputs = append(outputs, staged.ID)
 	}
-	return task.Complete(outputs, result.Metadata)
+	var metadata map[string]any
+	if err := json.Unmarshal(result.Metadata, &metadata); err != nil || metadata == nil {
+		return pluginhost.ErrContract
+	}
+	metadata["adapterVersion"] = adapterVersion
+	return task.Complete(outputs, metadata)
 }
 
 func emitManifest(version string) error {
