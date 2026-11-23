@@ -11,13 +11,17 @@
 | 豆包语音 | [doubao-speech](../examples/plugin-go/doubao-speech) | `ordiweft-migrations/doubao-speech` | 官方语音 API Key 与宿主原任务流 |
 | Fish Audio | [fish-audio](../examples/plugin-go/fish-audio) | `ordiweft-migrations/fish-audio` | Fish Audio API Key、原音色目录和请求编码 |
 | 百炼万相 2.7 | [dashscope-wan](../examples/plugin-go/dashscope-wan) | `ordiweft-examples/dashscope-wan` | 百炼区域 API 连接和受审 OSS 上传策略 |
-| 百炼完整渠道 | [源码](../native/dashscope) · [发行配方](../plugins/ordiweft-migrations/dashscope/1.0.0/recipe.json) | `ordiweft-migrations/dashscope` | 支持 `dashscope-v1` 的宿主、原工作空间与账号配置 |
+| 百炼完整渠道 | [源码](../native/dashscope) · [发行配方](../plugins/ordiweft-migrations/dashscope/1.1.0/recipe.json) | `ordiweft-migrations/dashscope` | 支持 `dashscope-exec-v1` 的宿主、原工作空间与账号配置 |
 
 ## Go 适配器
 
-完整百炼使用独立维护的 Go 模块。宿主固定模块源码的提交与树摘要，用于提供 `dashscope-v1` 受信运行接口。渠道包可从签名目录安装后单独启用、升级和回退。包描述完整模型和节点，宿主提供按部署地域计算的定价、限流、工作空间、音色缓存及原票据查询。首次安装时保留原生回退记录。兼容的包版本可以更新模型展示名称和使用说明。新增模型协议、修改执行逻辑或计价规则需要更新宿主提供的运行接口。
+完整百炼包 1.1.0 的静态 Linux amd64 执行器从 [外仓入口](../executors/dashscope) 构建，隔离环境使用随包固定的二进制。新任务核对活动版本，原任务按原发行摘要与票据查询。宿主继续保管账号凭据、地域计费与原音色复刻缓存。数据型 1.0.0 继续用于历史回退。
 
-新包使用可信 `ordiweft-plugin bailian-manifest -version <版本>` 导出可分发模型声明，生成新的数据包版本。按仓库现有 `registry.mjs check`、`build`、`prepare` 流程核对并打包。万相 2.7 ZIP 保留为单独示例。
+```powershell
+pwsh.exe -NoProfile -File scripts/build-bailian-executor.ps1 -HostSource <受审宿主工作树> -Version 1.1.0 -Out <新仓外目录>
+```
+
+构建使用 Go 1.27，产出适配器、版本化模型清单和文件摘要。用可信宿主 CLI 打包并核对原 SHA-256，再按 `registry.mjs check`、`build`、`prepare` 收集候选审阅材料。万相 2.7 ZIP 保留为独立示例。
 
 准备从上述宿主提交导出的公开 Go SDK，核对 `sdk-export.json`，安装与快照一致的 Go。分别运行下列命令，构建器创建新的仓外目录，编译 Linux amd64 静态适配器，记录 SDK、源码、构建工具和制品摘要。
 
