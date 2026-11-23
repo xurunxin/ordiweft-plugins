@@ -87,6 +87,7 @@
     "ordiweft-examples/doubao-audio/1.0.3",
     "ordiweft-examples/gpt-image/1.0.2",
     "ordiweft-examples/gpt-image/1.1.0",
-    "ordiweft-examples/gpt-image/1.1.4"
+    "ordiweft-examples/gpt-image/1.1.4",
+    "ordiweft-migrations/dashscope/1.0.0"
   ]
 }

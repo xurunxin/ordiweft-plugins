@@ -1,0 +1,1200 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/dashscope",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "data",
+  "providerProfile": "dashscope-v1",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "dashscope",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [],
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 85,
+      "sha256": "08589a57abe9e5fc4fb0020229006dcbc774f0f4bd5b8461ae17646e94c75728"
+    },
+    {
+      "path": "README.md",
+      "bytes": 403,
+      "sha256": "5111f1b61b1631e95c64e6c298b9e02b4e2af096d7fc0f944195a202d989afe4"
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "dashscope",
+    "name": "阿里云百炼",
+    "version": "1.0.0",
+    "runtime": "builtin",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY",
+      "WORKSPACE_ID"
+    ],
+    "nodes": [
+      {
+        "id": "image",
+        "label": "百炼图片生成",
+        "capability": "image.generate",
+        "model": "qwen-image-2.1-turbo"
+      },
+      {
+        "id": "video",
+        "label": "百炼视频生成",
+        "capability": "video.generate",
+        "model": "wan3.0-video"
+      },
+      {
+        "id": "speech",
+        "label": "百炼语音合成",
+        "capability": "speech.generate",
+        "model": "qwen-audio-3.1-tts-flash"
+      },
+      {
+        "id": "voice-design",
+        "label": "百炼音色设计",
+        "capability": "voice.design",
+        "model": "voice-enrollment"
+      }
+    ],
+    "models": [
+      {
+        "queueLimit": {
+          "bucket": "qwen-image-3.0-pro",
+          "rpm": 5,
+          "intervalMs": 12000,
+          "concurrency": 64
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "qwen-image-3.0-pro",
+        "label": "qwen-image-3.0-pro",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 3,
+        "fields": {
+          "enable_thinking": {
+            "visibleWhen": {
+              "prompt_extend": true
+            },
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 6
+          },
+          "negative_prompt": {
+            "maxLength": 500,
+            "type": "string",
+            "label": "反向提示词",
+            "control": "textarea"
+          },
+          "prompt_extend": {
+            "type": "boolean",
+            "label": "优化提示词",
+            "default": true
+          },
+          "prompt_extend_mode": {
+            "optionLabels": {
+              "agent": "智能体增强（仅文生图）",
+              "direct": "直接增强"
+            },
+            "visibleWhen": {
+              "prompt_extend": true
+            },
+            "type": "string",
+            "label": "提示词优化方式",
+            "default": "direct",
+            "enum": [
+              "direct",
+              "agent"
+            ]
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出尺寸",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "1024*1024",
+              "1536*1024",
+              "1024*1536",
+              "2048*2048"
+            ]
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "qwen-image-3.0",
+          "rpm": 20,
+          "intervalMs": 3000,
+          "concurrency": 64
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "qwen-image-3.0",
+        "label": "qwen-image-3.0",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 3,
+        "fields": {
+          "enable_thinking": {
+            "visibleWhen": {
+              "prompt_extend": true
+            },
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 6
+          },
+          "negative_prompt": {
+            "maxLength": 500,
+            "type": "string",
+            "label": "反向提示词",
+            "control": "textarea"
+          },
+          "prompt_extend": {
+            "type": "boolean",
+            "label": "优化提示词",
+            "default": true
+          },
+          "prompt_extend_mode": {
+            "optionLabels": {
+              "agent": "智能体增强（仅文生图）",
+              "direct": "直接增强"
+            },
+            "visibleWhen": {
+              "prompt_extend": true
+            },
+            "type": "string",
+            "label": "提示词优化方式",
+            "default": "direct",
+            "enum": [
+              "direct",
+              "agent"
+            ]
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出尺寸",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "1024*1024",
+              "1536*1024",
+              "1024*1536",
+              "2048*2048"
+            ]
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "qwen-image-2.1-pro",
+          "rpm": 20,
+          "intervalMs": 3000,
+          "concurrency": 64
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "qwen-image-2.1-pro",
+        "label": "qwen-image-2.1-pro",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 10,
+        "fields": {
+          "enable_thinking": {
+            "visibleWhen": {
+              "prompt_extend": true
+            },
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 6
+          },
+          "prompt_extend": {
+            "type": "boolean",
+            "label": "优化提示词",
+            "default": true
+          },
+          "prompt_extend_mode": {
+            "optionLabels": {
+              "agent": "智能体增强（仅文生图）",
+              "direct": "直接增强"
+            },
+            "visibleWhen": {
+              "prompt_extend": true
+            },
+            "type": "string",
+            "label": "提示词优化方式",
+            "default": "direct",
+            "enum": [
+              "direct",
+              "agent"
+            ]
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出尺寸",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "1024*1024",
+              "1536*1024",
+              "1024*1536",
+              "2048*2048"
+            ]
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "qwen-image-2.1-turbo",
+          "rpm": 120,
+          "intervalMs": 500,
+          "concurrency": 64
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "qwen-image-2.1-turbo",
+        "label": "qwen-image-2.1-turbo",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 10,
+        "fields": {
+          "enable_thinking": {
+            "visibleWhen": {
+              "prompt_extend": true
+            },
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 6
+          },
+          "prompt_extend": {
+            "type": "boolean",
+            "label": "优化提示词",
+            "default": true
+          },
+          "prompt_extend_mode": {
+            "optionLabels": {
+              "agent": "智能体增强（仅文生图）",
+              "direct": "直接增强"
+            },
+            "visibleWhen": {
+              "prompt_extend": true
+            },
+            "type": "string",
+            "label": "提示词优化方式",
+            "default": "direct",
+            "enum": [
+              "direct",
+              "agent"
+            ]
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出尺寸",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "1024*1024",
+              "1536*1024",
+              "1024*1536",
+              "2048*2048"
+            ]
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "wan2.7-image-pro",
+          "rps": 5,
+          "intervalMs": 200,
+          "concurrency": 5
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 5000
+        },
+        "id": "wan2.7-image-pro",
+        "label": "wan2.7-image-pro",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "enable_sequential": {
+            "type": "boolean",
+            "label": "组图生成",
+            "default": false
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量上限",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 12
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出分辨率",
+            "default": "2K",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ]
+          },
+          "thinking_mode": {
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "wan2.7-image",
+          "rps": 5,
+          "intervalMs": 200,
+          "concurrency": 5
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 5000
+        },
+        "id": "wan2.7-image",
+        "label": "wan2.7-image",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "enable_sequential": {
+            "type": "boolean",
+            "label": "组图生成",
+            "default": false
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量上限",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 12
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出分辨率",
+            "default": "2K",
+            "enum": [
+              "1K",
+              "2K"
+            ]
+          },
+          "thinking_mode": {
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "wan3.0-video",
+          "rps": 5,
+          "intervalMs": 200,
+          "concurrency": 5
+        },
+        "prompt": {
+          "label": "视频描述",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "wan3.0-video",
+        "label": "wan3.0-video",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 10,
+        "fields": {
+          "audio": {
+            "type": "boolean",
+            "label": "生成声音",
+            "default": true
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "control": "duration",
+            "default": 5,
+            "minimum": 2,
+            "maximum": 30
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference": {
+                "intent": "reference",
+                "images": {
+                  "min": 0,
+                  "max": 10
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧（1张图）",
+              "first_last_frame": "首尾帧（2张图）",
+              "reference": "多图参考（可无图）"
+            },
+            "type": "string",
+            "label": "参考图用法",
+            "default": "reference",
+            "enum": [
+              "reference",
+              "first_frame",
+              "first_last_frame"
+            ]
+          },
+          "prompt_extend": {
+            "type": "boolean",
+            "label": "优化提示词",
+            "default": true
+          },
+          "ratio": {
+            "type": "string",
+            "label": "画面比例",
+            "default": "adaptive",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "720P",
+            "enum": [
+              "480P",
+              "720P",
+              "1080P"
+            ]
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "wan3.0-video-prime",
+          "rps": 5,
+          "intervalMs": 200,
+          "concurrency": 5
+        },
+        "prompt": {
+          "label": "视频描述",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "wan3.0-video-prime",
+        "label": "wan3.0-video-prime",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 10,
+        "fields": {
+          "audio": {
+            "type": "boolean",
+            "label": "生成声音",
+            "default": true
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "control": "duration",
+            "default": 5,
+            "minimum": 2,
+            "maximum": 30
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference": {
+                "intent": "reference",
+                "images": {
+                  "min": 0,
+                  "max": 10
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧（1张图）",
+              "first_last_frame": "首尾帧（2张图）",
+              "reference": "多图参考（可无图）"
+            },
+            "type": "string",
+            "label": "参考图用法",
+            "default": "reference",
+            "enum": [
+              "reference",
+              "first_frame",
+              "first_last_frame"
+            ]
+          },
+          "prompt_extend": {
+            "type": "boolean",
+            "label": "优化提示词",
+            "default": true
+          },
+          "ratio": {
+            "type": "string",
+            "label": "画面比例",
+            "default": "adaptive",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "720P",
+            "enum": [
+              "480P",
+              "720P",
+              "1080P"
+            ]
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "qwen3-tts-flash",
+          "rpm": 180,
+          "intervalMs": 334,
+          "concurrency": 64
+        },
+        "prompt": {
+          "label": "合成文本",
+          "required": true,
+          "maxLength": 600
+        },
+        "id": "qwen3-tts-flash",
+        "label": "Qwen3-TTS-Flash（系统音色）",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "language_type": {
+            "type": "string",
+            "label": "语言",
+            "default": "Auto",
+            "enum": [
+              "Auto",
+              "Chinese",
+              "English",
+              "German",
+              "Italian",
+              "Portuguese",
+              "Spanish",
+              "Japanese",
+              "Korean",
+              "French",
+              "Russian"
+            ]
+          },
+          "voice": {
+            "maxLength": 128,
+            "type": "string",
+            "label": "系统音色 ID",
+            "control": "voice",
+            "default": "Cherry",
+            "required": true
+          }
+        }
+      },
+      {
+        "hidden": true,
+        "prompt": {
+          "label": "合成文本",
+          "required": true,
+          "maxLength": 600
+        },
+        "id": "qwen3-tts-vd-2026-01-26",
+        "label": "qwen3-tts-vd-2026-01-26",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "language_type": {
+            "type": "string",
+            "label": "语言",
+            "default": "Auto",
+            "enum": [
+              "Auto",
+              "Chinese",
+              "English",
+              "German",
+              "Italian",
+              "Portuguese",
+              "Spanish",
+              "Japanese",
+              "Korean",
+              "French",
+              "Russian"
+            ]
+          },
+          "voice": {
+            "maxLength": 256,
+            "type": "string",
+            "label": "音色 ID（或连接音色输出）",
+            "control": "voice"
+          }
+        }
+      },
+      {
+        "hidden": true,
+        "prompt": {
+          "label": "合成文本",
+          "required": true,
+          "maxLength": 600
+        },
+        "id": "qwen3-tts-vc-2026-01-22",
+        "label": "qwen3-tts-vc-2026-01-22",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "language_type": {
+            "type": "string",
+            "label": "语言",
+            "default": "Auto",
+            "enum": [
+              "Auto",
+              "Chinese",
+              "English",
+              "German",
+              "Italian",
+              "Portuguese",
+              "Spanish",
+              "Japanese",
+              "Korean",
+              "French",
+              "Russian"
+            ]
+          },
+          "voice": {
+            "maxLength": 256,
+            "type": "string",
+            "label": "音色 ID（或连接音色输出）",
+            "control": "voice"
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "qwen-audio-3.1-tts-flash",
+          "rpm": 180,
+          "intervalMs": 334,
+          "concurrency": 64
+        },
+        "inputRoles": {
+          "speaker": {
+            "kind": "audio",
+            "label": "音色参考（自动复刻）",
+            "description": "建议 10–20 秒清晰人声，至少 5 秒连续朗读；最多 60 秒、10MB。"
+          }
+        },
+        "prompt": {
+          "label": "合成文本",
+          "required": true,
+          "maxLength": 600
+        },
+        "id": "qwen-audio-3.1-tts-flash",
+        "label": "Qwen-Audio-3.1-TTS-Flash",
+        "capability": "speech.generate",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "fields": {
+          "instruction": {
+            "maxLength": 500,
+            "type": "string",
+            "label": "语气 / 方言指令",
+            "control": "textarea"
+          },
+          "voice": {
+            "maxLength": 256,
+            "type": "string",
+            "label": "音色 ID（或连接音色输出）",
+            "control": "voice",
+            "default": "longanhuan_v3.1"
+          }
+        }
+      },
+      {
+        "inputRoles": {
+          "speaker": {
+            "kind": "audio",
+            "label": "音色参考（自动复刻）",
+            "description": "建议 10–20 秒清晰人声，至少 5 秒连续朗读；最多 60 秒、10MB。"
+          }
+        },
+        "prompt": {
+          "label": "合成文本",
+          "required": true,
+          "maxLength": 600
+        },
+        "id": "qwen-audio-3.0-tts-plus",
+        "label": "Qwen-Audio-3.0-TTS-Plus",
+        "capability": "speech.generate",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "fields": {
+          "instruction": {
+            "maxLength": 500,
+            "type": "string",
+            "label": "语气 / 方言指令",
+            "control": "textarea"
+          },
+          "voice": {
+            "maxLength": 256,
+            "type": "string",
+            "label": "音色 ID（或连接音色输出）",
+            "control": "voice",
+            "default": "longanhuan_v3.6"
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "voice-enrollment",
+          "rps": 10,
+          "intervalMs": 100,
+          "concurrency": 64
+        },
+        "prompt": {
+          "label": "音色描述",
+          "required": true,
+          "maxLength": 500
+        },
+        "id": "voice-enrollment",
+        "label": "Qwen-Audio 音色设计",
+        "capability": "voice.design",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "language": {
+            "type": "string",
+            "label": "试听语言",
+            "default": "zh",
+            "enum": [
+              "zh",
+              "en"
+            ]
+          },
+          "prefix": {
+            "maxLength": 10,
+            "type": "string",
+            "label": "音色名称前缀",
+            "default": "canvas",
+            "required": true
+          },
+          "preview_text": {
+            "maxLength": 200,
+            "type": "string",
+            "label": "试听文本（15至200字符）",
+            "control": "textarea",
+            "default": "你好，欢迎收听这段声音试听，希望你喜欢我的声音。",
+            "required": true
+          },
+          "target_model": {
+            "type": "string",
+            "label": "驱动 TTS 模型",
+            "default": "qwen-audio-3.1-tts-flash",
+            "enum": [
+              "qwen-audio-3.1-tts-flash",
+              "qwen-audio-3.0-tts-plus"
+            ]
+          }
+        }
+      },
+      {
+        "hidden": true,
+        "queueLimit": {
+          "bucket": "voice-enrollment",
+          "rps": 10,
+          "intervalMs": 100,
+          "concurrency": 64
+        },
+        "prompt": {
+          "label": "备注（不参与复刻）",
+          "required": false
+        },
+        "id": "voice-enrollment-clone",
+        "label": "Qwen-Audio 音色复刻",
+        "capability": "voice.design",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "fields": {
+          "prefix": {
+            "maxLength": 10,
+            "type": "string",
+            "label": "音色名称前缀",
+            "default": "canvas",
+            "required": true
+          },
+          "target_model": {
+            "type": "string",
+            "label": "驱动 TTS 模型",
+            "default": "qwen-audio-3.1-tts-flash",
+            "enum": [
+              "qwen-audio-3.1-tts-flash",
+              "qwen-audio-3.0-tts-plus"
+            ]
+          }
+        }
+      },
+      {
+        "hidden": true,
+        "prompt": {
+          "label": "音色描述",
+          "required": true,
+          "maxLength": 2048
+        },
+        "id": "qwen-voice-design",
+        "label": "Qwen 音色设计",
+        "capability": "voice.design",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "language": {
+            "type": "string",
+            "label": "试听语言",
+            "default": "zh",
+            "enum": [
+              "zh",
+              "en",
+              "de",
+              "it",
+              "pt",
+              "es",
+              "ja",
+              "ko",
+              "fr",
+              "ru"
+            ]
+          },
+          "preferred_name": {
+            "maxLength": 16,
+            "type": "string",
+            "label": "音色名称前缀",
+            "default": "canvas",
+            "required": true
+          },
+          "preview_text": {
+            "maxLength": 1024,
+            "type": "string",
+            "label": "试听文本",
+            "control": "textarea",
+            "default": "你好，欢迎收听这段声音试听，希望你喜欢我的声音。",
+            "required": true
+          },
+          "target_model": {
+            "type": "string",
+            "label": "驱动 TTS 模型",
+            "default": "qwen3-tts-vd-2026-01-26",
+            "enum": [
+              "qwen3-tts-vd-2026-01-26"
+            ]
+          }
+        }
+      },
+      {
+        "hidden": true,
+        "queueLimit": {
+          "bucket": "qwen-voice-enrollment",
+          "rpm": 180,
+          "intervalMs": 334,
+          "concurrency": 64
+        },
+        "prompt": {
+          "label": "备注（不参与复刻）",
+          "required": false,
+          "maxLength": 600
+        },
+        "id": "qwen-voice-enrollment",
+        "label": "Qwen 音色复刻（音频输入）",
+        "capability": "voice.design",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "fields": {
+          "preferred_name": {
+            "maxLength": 16,
+            "type": "string",
+            "label": "音色名称前缀",
+            "default": "canvas",
+            "required": true
+          },
+          "target_model": {
+            "type": "string",
+            "label": "驱动 TTS 模型",
+            "default": "qwen3-tts-vc-2026-01-22",
+            "enum": [
+              "qwen3-tts-vc-2026-01-22"
+            ]
+          }
+        }
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 100,
+      "cancelable": false
+    }
+  }
+}
