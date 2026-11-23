@@ -29,6 +29,9 @@ func audioSample(b []byte) (string, string, error) {
 	return mime, ext, nil
 }
 func (p *Plugin) uploadAudio(ctx context.Context, base, key, model string, b []byte) (string, error) {
+	if p.managed != nil {
+		return p.managed.UploadAudio(ctx, model, b)
+	}
 	_, ext, err := audioSample(b)
 	if err != nil {
 		return "", err

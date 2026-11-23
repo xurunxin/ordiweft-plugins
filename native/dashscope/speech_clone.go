@@ -49,6 +49,13 @@ func (p *Plugin) cloneForSpeech(ctx context.Context, base string, g aigc.Generat
 		p.voiceCache = map[string]*aigc.Voice{}
 	}
 	voice := p.voiceCache[key]
+	if voice == nil && p.managed != nil {
+		var err error
+		voice, err = p.managed.LookupClone(ctx, target)
+		if err != nil {
+			return nil, err
+		}
+	}
 	if voice == nil && p.VoiceCacheDir != "" {
 		b, err := os.ReadFile(filepath.Join(p.VoiceCacheDir, key+".json"))
 		if err == nil {
@@ -89,6 +96,11 @@ func (p *Plugin) cloneForSpeech(ctx context.Context, base string, g aigc.Generat
 			return nil, err
 		}
 		if err = os.Rename(path+".tmp", path); err != nil {
+			return nil, err
+		}
+	}
+	if p.managed != nil {
+		if err = p.managed.RememberClone(ctx, target, *voice); err != nil {
 			return nil, err
 		}
 	}

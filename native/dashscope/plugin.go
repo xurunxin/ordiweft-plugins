@@ -28,6 +28,7 @@ var regions = map[string]bool{"cn-beijing": true, "ap-southeast-1": true, "us-ea
 
 type Plugin struct {
 	VoiceCacheDir string
+	managed       *ManagedRuntime
 	voiceMu       sync.Mutex
 	voiceCache    map[string]*aigc.Voice
 	rateMu        sync.Mutex
