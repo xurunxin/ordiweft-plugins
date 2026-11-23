@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "models": {
+    "wan2.7-image-pro": "oss-upload",
+    "wan2.7-image": "oss-upload"
+  },
+  "fixedModel": "oss-upload",
+  "uploadOnly": true,
+  "whenAny": [
+    {
+      "/inputs/3/mime": [
+        "image/png"
+      ]
+    }
+  ],
+  "body": {
+    "OSSAccessKeyId": {
+      "$host": "receipt",
+      "ref": "original-policy",
+      "pointer": "/data/oss_access_key_id"
+    },
+    "policy": {
+      "$host": "receipt",
+      "ref": "original-policy",
+      "pointer": "/data/policy"
+    },
+    "Signature": {
+      "$host": "receipt",
+      "ref": "original-policy",
+      "pointer": "/data/signature"
+    },
+    "key": {
+      "$host": "input-key",
+      "ref": "original-policy",
+      "pointer": "/data/upload_dir",
+      "index": 3,
+      "extensionsByMime": {
+        "image/png": ".png",
+        "image/jpeg": ".jpg",
+        "image/webp": ".webp"
+      }
+    },
+    "x-oss-object-acl": {
+      "$host": "receipt",
+      "ref": "original-policy",
+      "pointer": "/data/x_oss_object_acl"
+    },
+    "x-oss-forbid-overwrite": {
+      "$host": "receipt",
+      "ref": "original-policy",
+      "pointer": "/data/x_oss_forbid_overwrite"
+    },
+    "success_action_status": "200"
+  }
+}

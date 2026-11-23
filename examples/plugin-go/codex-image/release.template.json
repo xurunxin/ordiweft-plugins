@@ -1,0 +1,291 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/codex",
+  "version": "2.0.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "codex",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "read",
+        "release"
+      ]
+    },
+    {
+      "service": "media",
+      "version": 1,
+      "operations": [
+        "inspect"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "begin",
+        "write",
+        "stage-buffer"
+      ]
+    },
+    {
+      "service": "diagnostics",
+      "version": 1,
+      "operations": [
+        "report"
+      ]
+    }
+  ],
+  "compatibility": {
+    "version": 1,
+    "host": [
+      {
+        "id": "runtime.negotiation",
+        "version": 1
+      },
+      {
+        "id": "connections.codex-profile",
+        "version": 1
+      }
+    ],
+    "sdk": {
+      "minimumVersion": "0.1.15",
+      "capabilities": [
+        {
+          "id": "invocation.negotiate",
+          "version": 1
+        }
+      ]
+    }
+  },
+  "sandbox": {
+    "scratchBytes": 67108864
+  },
+  "generation": {
+    "apiVersion": 2,
+    "id": "codex",
+    "name": "Codex 订阅",
+    "version": "2.0.0",
+    "runtime": "process",
+    "auth": "codex-profile",
+    "secrets": [],
+    "nodes": [
+      {
+        "id": "gen",
+        "label": "图片生成（订阅）",
+        "capability": "image.generate",
+        "model": "gpt-image-2"
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 1,
+      "maxQueued": 20,
+      "cancelable": false
+    },
+    "models": [
+      {
+        "id": "gpt-image-2",
+        "label": "Images 2.6 · 订阅自动路由",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 5,
+        "fields": {
+          "ratio": {
+            "type": "string",
+            "label": "画面比例",
+            "enum": [
+              "auto",
+              "1:1",
+              "2:1",
+              "4:3",
+              "3:4",
+              "5:4",
+              "4:5",
+              "3:2",
+              "2:3",
+              "360",
+              "16:9",
+              "9:16",
+              "21:9",
+              "9:21"
+            ],
+            "default": "auto",
+            "description": "通过提示词约束构图比例，不指定输出像素；实际尺寸以上游返回为准。"
+          },
+          "style": {
+            "type": "string",
+            "label": "风格",
+            "default": "",
+            "control": "style"
+          },
+          "background": {
+            "type": "string",
+            "label": "背景",
+            "enum": [
+              "auto",
+              "opaque",
+              "transparent"
+            ],
+            "default": "auto",
+            "optionLabels": {
+              "auto": "自动",
+              "opaque": "不透明",
+              "transparent": "透明"
+            }
+          }
+        },
+        "prompt": {
+          "label": "图片描述",
+          "required": true,
+          "maxLength": 20000
+        }
+      },
+      {
+        "id": "gpt-image-2.5-flare",
+        "label": "历史请求：GPT Image 2.5 Flare",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 5,
+        "fields": {
+          "ratio": {
+            "type": "string",
+            "label": "画面比例",
+            "enum": [
+              "auto",
+              "1:1",
+              "2:1",
+              "4:3",
+              "3:4",
+              "5:4",
+              "4:5",
+              "3:2",
+              "2:3",
+              "360",
+              "16:9",
+              "9:16",
+              "21:9",
+              "9:21"
+            ],
+            "default": "auto",
+            "description": "通过提示词约束构图比例，不指定输出像素；实际尺寸以上游返回为准。"
+          },
+          "style": {
+            "type": "string",
+            "label": "风格",
+            "default": "",
+            "control": "style"
+          },
+          "background": {
+            "type": "string",
+            "label": "背景",
+            "enum": [
+              "auto",
+              "opaque",
+              "transparent"
+            ],
+            "default": "auto",
+            "optionLabels": {
+              "auto": "自动",
+              "opaque": "不透明",
+              "transparent": "透明"
+            }
+          }
+        },
+        "hidden": true,
+        "prompt": {
+          "label": "图片描述",
+          "required": true,
+          "maxLength": 20000
+        }
+      },
+      {
+        "id": "gpt-image-2.5-sunburst",
+        "label": "历史请求：GPT Image 2.5 Sunburst",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 5,
+        "fields": {
+          "ratio": {
+            "type": "string",
+            "label": "画面比例",
+            "enum": [
+              "auto",
+              "1:1",
+              "2:1",
+              "4:3",
+              "3:4",
+              "5:4",
+              "4:5",
+              "3:2",
+              "2:3",
+              "360",
+              "16:9",
+              "9:16",
+              "21:9",
+              "9:21"
+            ],
+            "default": "auto",
+            "description": "通过提示词约束构图比例，不指定输出像素；实际尺寸以上游返回为准。"
+          },
+          "style": {
+            "type": "string",
+            "label": "风格",
+            "default": "",
+            "control": "style"
+          },
+          "background": {
+            "type": "string",
+            "label": "背景",
+            "enum": [
+              "auto",
+              "opaque",
+              "transparent"
+            ],
+            "default": "auto",
+            "optionLabels": {
+              "auto": "自动",
+              "opaque": "不透明",
+              "transparent": "透明"
+            }
+          }
+        },
+        "hidden": true,
+        "prompt": {
+          "label": "图片描述",
+          "required": true,
+          "maxLength": 20000
+        }
+      }
+    ]
+  },
+  "files": []
+}

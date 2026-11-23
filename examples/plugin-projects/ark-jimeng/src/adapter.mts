@@ -1,0 +1,30 @@
+import {openTask,readAsset,type AssetHandle,type MediaInfo,type PrivateReadable,type PrivateWritable} from '@ordiweft/plugin-host';
+import {channelResult} from './response.mjs';
+import {validateInputs} from './preflight.mjs';
+declare const process:{stdin:PrivateReadable;stdout:PrivateWritable};
+const task=await openTask(process.stdin,process.stdout,{requires:[{id:'runtime.negotiation',version:1},{id:'channel.negotiation',version:1}]});
+const facts:MediaInfo[]=[];
+for(const [i,input] of task.inputs.entries())facts.push(await task.host.call('original-inspect-'+i,'media','inspect',{id:input.asset.id}) as unknown as MediaInfo);
+validateInputs(task.generation,task.inputs,facts);
+type Response={status:number;body:AssetHandle};
+const submitted=await task.host.call('original-submit','connections','request',{operation:'generate'}) as unknown as Response;
+if(submitted.status!==202)throw Error('Original channel acceptance unconfirmed');
+const original=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(await readAsset(task.host,'original-submit-body',submitted.body,65536))) as {id:string};
+if(typeof original.id!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(original.id))throw Error('Original channel identity missing');
+await task.host.call('original-checkpoint','jobs','checkpoint',{metadata:{originalCall:'original-submit'}});
+const waited=await task.host.call('original-observation','jobs','wait',{name:'result'}) as unknown as {response:Response;receipt:{callId:string}};
+if(waited.response.status!==200)throw Error('Original channel observation unconfirmed');
+const body=await readAsset(task.host,'original-observation-body',waited.response.body,1048576);
+const expected=task.generation.capability==='video.generate'?'video':'image';
+const result=channelResult(JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(body)),original.id,expected);
+const outputs:string[]=[];
+for(let i=0;i<result.media.length;i++){
+ if(result.media[i].kind!==expected)throw Error('Original media kind mismatch');
+ const downloaded=await task.host.call('original-download-'+i,'transfers','download',{name:'media-'+i,callId:waited.receipt.callId}) as unknown as {asset:AssetHandle};
+ const staged=await task.host.call('original-stage-'+i,'outputs','stage',{id:downloaded.asset.id}) as unknown as {output:AssetHandle};
+ outputs.push(staged.output.id);
+ await task.host.call('original-release-'+i,'assets','release',{id:downloaded.asset.id});
+}
+await task.host.call('original-release-response','assets','release',{id:waited.response.body.id});
+await task.host.call('original-release-submit','assets','release',{id:submitted.body.id});
+await task.complete(outputs,{...result.metadata,channel:result.route,channelJob:result.id,draft:result.draft,transport:'host-services'});

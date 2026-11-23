@@ -1,0 +1,205 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/dashscope-wan",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "dashscope",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "transfers",
+      "version": 1,
+      "operations": [
+        "upload",
+        "download"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "decode",
+        "read"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint",
+        "wait"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "dashscope",
+    "name": "阿里云百炼",
+    "version": "1.0.0",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY",
+      "WORKSPACE_ID",
+      "DASHSCOPE_URL"
+    ],
+    "nodes": [
+      {
+        "id": "image",
+        "label": "百炼万相图片生成",
+        "capability": "image.generate",
+        "model": "wan2.7-image"
+      }
+    ],
+    "models": [
+      {
+        "queueLimit": {
+          "bucket": "wan2.7-image-pro",
+          "rps": 5,
+          "intervalMs": 200,
+          "concurrency": 5
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 5000
+        },
+        "id": "wan2.7-image-pro",
+        "label": "wan2.7-image-pro",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "enable_sequential": {
+            "type": "boolean",
+            "label": "组图生成",
+            "default": false
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量上限",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 12
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出分辨率",
+            "default": "2K",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ]
+          },
+          "thinking_mode": {
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "queueLimit": {
+          "bucket": "wan2.7-image",
+          "rps": 5,
+          "intervalMs": 200,
+          "concurrency": 5
+        },
+        "prompt": {
+          "label": "图像描述 / 编辑指令",
+          "required": true,
+          "maxLength": 5000
+        },
+        "id": "wan2.7-image",
+        "label": "wan2.7-image",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "enable_sequential": {
+            "type": "boolean",
+            "label": "组图生成",
+            "default": false
+          },
+          "n": {
+            "type": "integer",
+            "label": "图片数量上限",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 12
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子（留空随机）",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "size": {
+            "type": "string",
+            "label": "输出分辨率",
+            "default": "2K",
+            "enum": [
+              "1K",
+              "2K"
+            ]
+          },
+          "thinking_mode": {
+            "type": "boolean",
+            "label": "思考模式",
+            "default": true
+          },
+          "watermark": {
+            "type": "boolean",
+            "label": "添加水印",
+            "default": false
+          }
+        }
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 100,
+      "cancelable": false
+    }
+  },
+  "files": []
+}

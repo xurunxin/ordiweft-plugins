@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "generation": {
+    "provider": "dashscope",
+    "capability": "image.generate",
+    "model": "wan2.7-image",
+    "prompt": "Preserve the original subject",
+    "parameters": {
+      "enable_sequential": false,
+      "n": 1,
+      "size": "2K",
+      "thinking_mode": true,
+      "watermark": false
+    }
+  },
+  "inputs": [
+    {
+      "kind": "image",
+      "role": "",
+      "data": "iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAFbElEQVR4nOzTMREAIAwEQYZBB8IiMSpTRcM3e9UZ2Perj6RcdwdCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgijCId9OhgAAABAIOZv3SOMG8QghBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghjCM8QgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgjjCI8QQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQwjjCIxx7dSwAAAAAIMzfOo2OUYyEJCQhCUlIQhKSkIQkJCEJSUhCEpKQhCQkIQlJSEISkpCEJCQhCUlIQhL+JWwAeTYDfR6jmesAAAAASUVORK5CYII="
+    }
+  ],
+  "exchanges": [
+    {
+      "callId": "original-policy",
+      "operation": "upload-policy",
+      "status": 200,
+      "body": "eyJkYXRhIjp7Im9zc19hY2Nlc3Nfa2V5X2lkIjoic3ludGhldGljLXVwbG9hZC1rZXkiLCJwb2xpY3kiOiJzeW50aGV0aWMtcG9saWN5Iiwic2lnbmF0dXJlIjoic3ludGhldGljLXNpZ25hdHVyZSIsInVwbG9hZF9kaXIiOiJ0ZW5hbnQvb3JpZ2luYWwiLCJ1cGxvYWRfaG9zdCI6Imh0dHBzOi8vZml4dHVyZS5vc3MtY24tYmVpamluZy5hbGl5dW5jcy5jb20vIiwieF9vc3NfZm9yYmlkX292ZXJ3cml0ZSI6InRydWUiLCJ4X29zc19vYmplY3RfYWNsIjoicHJpdmF0ZSJ9fQ=="
+    },
+    {
+      "callId": "original-upload-0",
+      "operation": "upload-0-png",
+      "status": 200,
+      "body": ""
+    },
+    {
+      "callId": "original-submit",
+      "operation": "generate-1",
+      "status": 200,
+      "body": "eyJvdXRwdXQiOnsidGFza19pZCI6Indhbi1vcmlnaW5hbC10aWNrZXQiLCJ0YXNrX3N0YXR1cyI6IlBFTkRJTkcifX0="
+    },
+    {
+      "callId": "original-observation",
+      "operation": "observe",
+      "status": 200,
+      "body": "eyJvdXRwdXQiOnsidGFza19pZCI6Indhbi1vcmlnaW5hbC10aWNrZXQiLCJ0YXNrX3N0YXR1cyI6IlJVTk5JTkcifX0=",
+      "waitAttempt": 0
+    },
+    {
+      "callId": "original-observation",
+      "operation": "observe",
+      "status": 200,
+      "body": "eyJvdXRwdXQiOnsidGFza19pZCI6Indhbi1vcmlnaW5hbC10aWNrZXQiLCJ0YXNrX3N0YXR1cyI6IlNVQ0NFRURFRCIsImNob2ljZXMiOlt7Im1lc3NhZ2UiOnsiY29udGVudCI6W3sidHlwZSI6ImltYWdlIiwiaW1hZ2UiOiJodHRwczovL2Rhc2hzY29wZS1yZXN1bHQtYmoub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tL29yaWdpbmFsLXJlc3VsdC5wbmcifV19fV19fQ==",
+      "waitAttempt": 1
+    }
+  ],
+  "outputSha256": "9fd47a8889a1a9b87e1ec83b9fb024c54f9484cbb7bb991509051e46b70b890b",
+  "downloads": [
+    {
+      "callId": "original-download-0",
+      "name": "image-0",
+      "sourceWaitId": "original-observation",
+      "status": 200,
+      "body": "iVBORw0KGgoAAAANSUhEUgAAABEAAAANCAIAAADAGxJNAAAAGUlEQVR4nGLZ5ybHQCJggjFG9YzqoYMewAApNQE/mxPKjQAAAABJRU5ErkJggg=="
+    }
+  ]
+}

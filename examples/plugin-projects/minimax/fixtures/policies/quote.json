@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "models": {
+    "speech-2.8-hd": "speech-2.8-hd",
+    "speech-2.8-hd-auto": "speech-2.8-hd-auto",
+    "speech-2.8-turbo": "speech-2.8-turbo",
+    "speech-2.8-turbo-auto": "speech-2.8-turbo-auto",
+    "speech-2.6-hd": "speech-2.6-hd",
+    "speech-2.6-hd-auto": "speech-2.6-hd-auto",
+    "speech-2.6-turbo": "speech-2.6-turbo",
+    "speech-2.6-turbo-auto": "speech-2.6-turbo-auto",
+    "music-3.0": "music-3.0",
+    "music-3.0-auto": "music-3.0-auto",
+    "voice-design": "voice-design",
+    "voice-design-auto": "voice-design-auto",
+    "MiniMax-H3-Image": "MiniMax-H3-Image",
+    "MiniMax-H3-Image-auto": "MiniMax-H3-Image-auto",
+    "MiniMax-H3-Image-Highspeed": "MiniMax-H3-Image-Highspeed",
+    "MiniMax-H3-Image-Highspeed-auto": "MiniMax-H3-Image-Highspeed-auto",
+    "MiniMax-H3": "MiniMax-H3",
+    "MiniMax-H3-auto": "MiniMax-H3-auto",
+    "MiniMax-H3-Highspeed": "MiniMax-H3-Highspeed",
+    "MiniMax-H3-Highspeed-auto": "MiniMax-H3-Highspeed-auto",
+    "MiniMax-H3-Lite": "MiniMax-H3-Lite",
+    "MiniMax-H3-Lite-auto": "MiniMax-H3-Lite-auto",
+    "MiniMax-H3-Max": "MiniMax-H3-Max",
+    "MiniMax-H3-Max-auto": "MiniMax-H3-Max-auto",
+    "MiniMax-H3-Regeneration": "MiniMax-H3-Regeneration",
+    "nano_banana_2_flash": "nano_banana_2_flash",
+    "nano_banana_2": "nano_banana_2",
+    "midjourney-8.2": "midjourney-8.2",
+    "elevenlabs-music-v2": "elevenlabs-music-v2",
+    "asr-1.0": "asr-1.0"
+  },
+  "modelPointer": "/model",
+  "countPointer": "/count",
+  "body": {
+    "jobId": {
+      "$host": "job"
+    },
+    "actor": {
+      "$host": "actor-hash"
+    },
+    "model": {
+      "$host": "model"
+    },
+    "prompt": {
+      "$host": "prompt"
+    },
+    "count": {
+      "$host": "count"
+    },
+    "channel": {
+      "$host": "parameter",
+      "name": "access",
+      "optional": true
+    },
+    "parameters": {
+      "bitrate": {
+        "$host": "parameter",
+        "name": "bitrate",
+        "optional": true
+      },
+      "channel": {
+        "$host": "parameter",
+        "name": "channel",
+        "optional": true
+      },
+      "emotion": {
+        "$host": "parameter",
+        "name": "emotion",
+        "optional": true
+      },
+      "format": {
+        "$host": "parameter",
+        "name": "format",
+        "optional": true
+      },
+      "language_boost": {
+        "$host": "parameter",
+        "name": "language_boost",
+        "optional": true
+      },
+      "pitch": {
+        "$host": "parameter",
+        "name": "pitch",
+        "optional": true
+      },
+      "pronunciation": {
+        "$host": "parameter",
+        "name": "pronunciation",
+        "optional": true
+      },
+      "sample_rate": {
+        "$host": "parameter",
+        "name": "sample_rate",
+        "optional": true
+      },
+      "speed": {
+        "$host": "parameter",
+        "name": "speed",
+        "optional": true
+      },
+      "text_normalization": {
+        "$host": "parameter",
+        "name": "text_normalization",
+        "optional": true
+      },
+      "voice_id": {
+        "$host": "parameter",
+        "name": "voice_id",
+        "optional": true
+      },
+      "voice_modify": {
+        "$host": "parameter",
+        "name": "voice_modify",
+        "optional": true
+      },
+      "vol": {
+        "$host": "parameter",
+        "name": "vol",
+        "optional": true
+      },
+      "is_instrumental": {
+        "$host": "parameter",
+        "name": "is_instrumental",
+        "optional": true
+      },
+      "lyrics": {
+        "$host": "parameter",
+        "name": "lyrics",
+        "optional": true
+      },
+      "lyrics_optimizer": {
+        "$host": "parameter",
+        "name": "lyrics_optimizer",
+        "optional": true
+      },
+      "preview_text": {
+        "$host": "parameter",
+        "name": "preview_text",
+        "optional": true
+      },
+      "aigc_watermark": {
+        "$host": "parameter",
+        "name": "aigc_watermark",
+        "optional": true
+      },
+      "area": {
+        "$host": "parameter",
+        "name": "area",
+        "optional": true
+      },
+      "aspect_ratio": {
+        "$host": "parameter",
+        "name": "aspect_ratio",
+        "optional": true
+      },
+      "disable_prompt_enhanced": {
+        "$host": "parameter",
+        "name": "disable_prompt_enhanced",
+        "optional": true
+      },
+      "n": {
+        "$host": "parameter",
+        "name": "n",
+        "optional": true
+      },
+      "output_compression": {
+        "$host": "parameter",
+        "name": "output_compression",
+        "optional": true
+      },
+      "output_format": {
+        "$host": "parameter",
+        "name": "output_format",
+        "optional": true
+      },
+      "size": {
+        "$host": "parameter",
+        "name": "size",
+        "optional": true
+      },
+      "duration": {
+        "$host": "parameter",
+        "name": "duration",
+        "optional": true
+      },
+      "input_mode": {
+        "$host": "parameter",
+        "name": "input_mode",
+        "optional": true
+      },
+      "ratio": {
+        "$host": "parameter",
+        "name": "ratio",
+        "optional": true
+      },
+      "reference_ratio": {
+        "$host": "parameter",
+        "name": "reference_ratio",
+        "optional": true
+      },
+      "resolution": {
+        "$host": "parameter",
+        "name": "resolution",
+        "optional": true
+      },
+      "prompt_expansion_mode": {
+        "$host": "parameter",
+        "name": "prompt_expansion_mode",
+        "optional": true
+      },
+      "regeneration_draft": {
+        "$host": "parameter",
+        "name": "regeneration_draft",
+        "optional": true
+      },
+      "clarity": {
+        "$host": "parameter",
+        "name": "clarity",
+        "optional": true
+      },
+      "stylize": {
+        "$host": "parameter",
+        "name": "stylize",
+        "optional": true
+      },
+      "chaos": {
+        "$host": "parameter",
+        "name": "chaos",
+        "optional": true
+      },
+      "weird": {
+        "$host": "parameter",
+        "name": "weird",
+        "optional": true
+      },
+      "language": {
+        "$host": "parameter",
+        "name": "language",
+        "optional": true
+      },
+      "source_duration_ms": {
+        "$host": "parameter",
+        "name": "source_duration_ms",
+        "optional": true
+      }
+    },
+    "inputs": {
+      "image": {
+        "$host": "inputs",
+        "kind": "image",
+        "encoding": "public-url"
+      },
+      "audio": {
+        "$host": "inputs",
+        "kind": "audio",
+        "encoding": "public-url"
+      },
+      "video": {
+        "$host": "inputs",
+        "kind": "video",
+        "encoding": "public-url"
+      },
+      "videoDurationMs": {
+        "$host": "inputs",
+        "kind": "video",
+        "encoding": "video-duration-ms"
+      }
+    }
+  }
+}

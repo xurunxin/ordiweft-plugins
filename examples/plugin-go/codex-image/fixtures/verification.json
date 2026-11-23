@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "generation": {
+    "provider": "codex",
+    "capability": "image.generate",
+    "model": "gpt-image-2",
+    "prompt": "synthetic original",
+    "parameters": {
+      "ratio": "auto",
+      "style": "",
+      "background": "auto"
+    }
+  },
+  "inputs": [],
+  "exchanges": [
+    {
+      "callId": "original-submit",
+      "operation": "generate",
+      "status": 200,
+      "body": "eyJkYXRhIjpbeyJiNjRfanNvbiI6ImlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFBSUFBQUFDQ0FZQUFBQnl0ZzBrQUFBQUgwbEVRVlI0bkFBU0FPMy9BZ0FBQUFBQUFBQUFBZ0FBQUFBQUFBQUFBd0FBU0FBRmQxNkdQUUFBQUFCSlJVNUVya0pnZ2c9PSJ9XSwibW9kZWwiOiJzeW50aGV0aWMtcmVwb3J0ZWQiLCJzaXplIjoiMngyIiwicXVhbGl0eSI6ImF1dG8iLCJiYWNrZ3JvdW5kIjoib3BhcXVlIn0="
+    }
+  ],
+  "outputSha256": "7fbe3086e4c6aa8998c0d51c7c89622b00b712b7344393e38e38befe67acb456"
+}

@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "models": {
+    "seed-tts-2.0": "seed-tts-2.0"
+  },
+  "body": {
+    "req_params": {
+      "text": {
+        "$host": "prompt"
+      },
+      "speaker": {
+        "$host": "voice-id",
+        "name": "voice_id",
+        "kind": "official"
+      },
+      "audio_params": {
+        "format": {
+          "$host": "parameter",
+          "name": "format"
+        },
+        "sample_rate": {
+          "$host": "parameter",
+          "name": "sample_rate"
+        },
+        "speech_rate": {
+          "$host": "parameter",
+          "name": "speech_rate"
+        },
+        "loudness_rate": {
+          "$host": "parameter",
+          "name": "loudness_rate"
+        }
+      },
+      "additions": {
+        "$host": "text-array-json",
+        "name": "context_text",
+        "property": "context_texts",
+        "optional": true
+      }
+    }
+  },
+  "fixedModel": "seed-tts-2.0",
+  "singleOutput": true
+}

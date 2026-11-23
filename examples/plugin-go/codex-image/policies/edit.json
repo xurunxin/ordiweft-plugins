@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "models": {
+    "gpt-image-2": "gpt-image-2",
+    "gpt-image-2.5-flare": "gpt-image-2.5-flare",
+    "gpt-image-2.5-sunburst": "gpt-image-2.5-sunburst"
+  },
+  "modelPointer": "/model",
+  "singleOutput": true,
+  "body": {
+    "model": {
+      "$host": "model"
+    },
+    "prompt": {
+      "$host": "prompt"
+    },
+    "background": {
+      "$host": "parameter",
+      "name": "background"
+    },
+    "quality": "auto",
+    "size": "auto",
+    "images": {
+      "$host": "inputs",
+      "kind": "image",
+      "encoding": "data-url",
+      "property": "image_url"
+    }
+  },
+  "whenAny": [
+    {
+      "/inputCount": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}

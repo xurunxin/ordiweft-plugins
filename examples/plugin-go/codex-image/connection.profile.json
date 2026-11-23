@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "credentialProvider": "codex-profile",
+  "origin": "https://chatgpt.com",
+  "headers": [],
+  "maxRuntimeMs": 900000,
+  "taskIO": {
+    "maxCalls": 1024,
+    "maxRequestBytes": 268435456,
+    "maxResponseBytes": 268435456
+  },
+  "operations": {
+    "generate": {
+      "method": "POST",
+      "path": "/backend-api/codex/images/generations",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "generate",
+        "digest": "8c191b3c13d2f83b32cc87a8917606c48840a529322b6f2de8f34a215b12e8c9"
+      }
+    },
+    "edit": {
+      "method": "POST",
+      "path": "/backend-api/codex/images/edits",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "edit",
+        "digest": "fc4de75668ec56e20ac9852d5f11cbf20e6780429a084785bf6104bb3ff9e5a6"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "models": {
+    "wan2.7-image-pro": "wan2.7-image-pro",
+    "wan2.7-image": "wan2.7-image"
+  },
+  "modelPointer": "/model",
+  "queryOnly": true,
+  "body": {
+    "action": "getPolicy",
+    "model": {
+      "$host": "model"
+    }
+  }
+}

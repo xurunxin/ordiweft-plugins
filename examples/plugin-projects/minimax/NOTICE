@@ -1,0 +1,11 @@
+Ordiweft Ark / Jimeng migration example
+Copyright 2026 Ordiweft contributors
+Apache-2.0. Native catalog snapshot from 1.1.0.
+
+Bundled host.mjs is the public SDK, whose NOTICE follows:
+
+Ordiweft plugin Host Services SDK
+Copyright 2026 Ordiweft contributors
+
+This SDK distribution is licensed under the Apache License, Version 2.0.
+It has no runtime npm dependencies and does not include Morpheus.

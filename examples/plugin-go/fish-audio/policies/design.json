@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "models": {
+    "voice-design-1": "voice-design-1"
+  },
+  "body": {
+    "reference_text": {
+      "$host": "parameter",
+      "name": "reference_text",
+      "optional": true
+    },
+    "language": {
+      "$host": "parameter",
+      "name": "language",
+      "optional": true
+    },
+    "speed": {
+      "$host": "parameter",
+      "name": "speed",
+      "optional": true
+    },
+    "num_step": {
+      "$host": "parameter",
+      "name": "num_step",
+      "optional": true
+    },
+    "guidance_scale": {
+      "$host": "parameter",
+      "name": "guidance_scale",
+      "optional": true
+    },
+    "instruct_guidance_scale": {
+      "$host": "parameter",
+      "name": "instruct_guidance_scale",
+      "optional": true
+    },
+    "seed": {
+      "$host": "parameter",
+      "name": "seed",
+      "optional": true
+    },
+    "instruction": {
+      "$host": "prompt"
+    },
+    "n": {
+      "$host": "count"
+    }
+  },
+  "fixedModel": "voice-design-1",
+  "countPointer": "/n"
+}

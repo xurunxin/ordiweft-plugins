@@ -1,0 +1,9 @@
+Ordiweft independent IndexTTS adapter candidate
+Copyright 2026 Ordiweft contributors
+
+This original sample is licensed under the Apache License, Version 2.0.
+The fixed public Go SDK retains its own LICENSE/NOTICE under sdk/.
+Morpheus is not included or relicensed by this distribution.
+
+The compiled Go runtime and standard library retain their original license.
+The matching toolchain LICENSE and PATENTS are included under licenses/.
