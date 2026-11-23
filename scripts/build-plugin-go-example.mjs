@@ -68,7 +68,8 @@ for(const file of proof.files){
 for(const required of ['pkg/pluginhost/action_client.go','pkg/pluginhost/asset_client.go','pkg/pluginhost/LICENSE','pkg/pluginhost/NOTICE','pkg/aigc/LICENSE','pkg/aigc/NOTICE','LICENSE','NOTICE','go.mod','.ordiweft-go-sdk-export'])if(!names.has(required))throw Error('required public SDK source/license absent');
 await put('sdk/sdk-export.json',sdkProofBytes);
 const sourceFiles=['main.go','go.mod','README.md','LICENSE','NOTICE','release.template.json',
- 'connection.profile.json','fixtures/verification.json',
+ 'connection.profile.json',
+ ...(await readdir(path.join(source,'fixtures'))).sort().map(name=>'fixtures/'+name),
  ...(await readdir(path.join(source,'policies'))).sort().map(name=>'policies/'+name),
  ...extraSources[example],
 ];

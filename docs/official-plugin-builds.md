@@ -27,7 +27,7 @@ node scripts/build-plugin-go-example.mjs --example gpt-image --sdk <公开SDK绝
 
 豆包语音使用 `--example doubao-speech`，沿用原生渠道的官方 2.0 模型、参数和计量字段。宿主需提供 `connections.voice-request-fields` v1。候选验证、原生授权、活动版本切换与回退使用现有宿主接口。
 
-Fish Audio 使用 `--example fish-audio`。宿主需支持 `connections.fish-audio-tts` 和 `connections.repeated-form-fields`。合成夹具使用静音 WAV，已在隔离 Linux 验证。声音设计和克隆需单独验收。豆包语音和 Fish Audio 构建需使用包含各自上述能力的宿主 SDK。
+Fish Audio 使用 `--example fish-audio`。宿主需支持 `connections.fish-audio-tts`、`connections.repeated-form-fields` 及 1.1.0 安装夹具的音色和回执验证。合成、零样本合成、设计候选排序及私有克隆在隔离 Linux 中分别验证。豆包语音和 Fish Audio 构建需使用包含各自上述能力的宿主 SDK。
 
 ## 保留原配方
 
