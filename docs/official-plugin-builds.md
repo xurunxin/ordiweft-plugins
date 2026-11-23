@@ -11,8 +11,11 @@
 | 豆包语音 | [doubao-speech](../examples/plugin-go/doubao-speech) | `ordiweft-migrations/doubao-speech` | 官方语音 API Key 与宿主原任务流 |
 | Fish Audio | [fish-audio](../examples/plugin-go/fish-audio) | `ordiweft-migrations/fish-audio` | Fish Audio API Key、原音色目录和请求编码 |
 | 百炼万相 2.7 | [dashscope-wan](../examples/plugin-go/dashscope-wan) | `ordiweft-examples/dashscope-wan` | 百炼区域 API 连接和受审 OSS 上传策略 |
+| 百炼完整渠道 | [native/dashscope](../native/dashscope) | 宿主渠道 `dashscope` | 受信 Go 宿主构建、原工作空间与账号配置 |
 
 ## Go 适配器
+
+完整百炼使用独立维护的 Go 模块。宿主固定此目录的提交与树摘要，构建时静态链接。升级与回退由宿主构建采用相应源码固定记录，现有运行业务使用同一渠道、模型及异步回执标识。万相 2.7 ZIP 保留为单独示例。
 
 准备从上述宿主提交导出的公开 Go SDK，核对 `sdk-export.json`，安装与快照一致的 Go。分别运行下列命令，构建器创建新的仓外目录，编译 Linux amd64 静态适配器，记录 SDK、源码、构建工具和制品摘要。
 
