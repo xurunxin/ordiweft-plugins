@@ -7,6 +7,19 @@ test('result is bound to original ID, route and media kind including inline audi
  assert.equal(channelResult(value,'original','audio').media[0].voice.id,'voice');
  for(const candidate of [{...value,id:'replacement'},{...value,route:'cli'},{...value,media:[{kind:'audio',url:'http://host/private'}]},{...value,media:[{kind:'audio',data:'UklGRg==',url:'https://media.example/a'}]}])assert.throws(()=>channelResult(candidate,'original','audio'));
 });
+
+test('subscription HTTP 451 is classified only for the bound original refusal',()=>{
+ const refusal={id:'original',state:'failed',route:'subscription',submission:'unknown',errorCode:'subscription_provider_http_451'};
+ for (const submission of ['unknown','accepted']) {
+  assert.throws(()=>channelResult({...refusal,submission,media:[]},'original','video'), {message:'minimax_prompt_content_filter'});
+ }
+ for (const change of [
+  {id:'other'}, {route:'api'}, {state:'running'}, {submission:'rejected'},
+  {errorCode:'subscription_provider_rejected'}, {media:'invalid'}, {media:[{}]}, {draft:{}},
+ ]) {
+  assert.throws(()=>channelResult({...refusal,...change},'original','video'), {message:'Original result unconfirmed'});
+ }
+});
 test('image references use host byte facts and mode cardinality before submitting',()=>{
  const input={kind:'image',asset:{bytes:100,sha256:'a'.repeat(64)}},fact={bytes:100,sha256:'a'.repeat(64),mime:'image/png',width:512,height:512};
  const generation={capability:'video.generate',parameters:{input_mode:'first_frame'}};
