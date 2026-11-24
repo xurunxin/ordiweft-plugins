@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "portId": "analyze-text",
+  "arguments": {
+    "text": "Hello 织序 world"
+  },
+  "inputs": [],
+  "expectedValue": {
+    "characters": 14,
+    "words": 3
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "arguments": {},
+  "expectedValue": {
+    "bytes": 75,
+    "durationMs": 0,
+    "height": 1,
+    "kind": "image",
+    "mime": "image/png",
+    "sha256": "2e39f08959218012438d1b58a05b73fe326f02823732d5201cb330225869bfe0",
+    "signature": "89504e470d0a1a0a",
+    "width": 1
+  },
+  "inputs": [
+    {
+      "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAEklEQVR4nAAFAPr/AgAAAAADAAAPAANCp/UOAAAAAElFTkSuQmCC",
+      "kind": "image",
+      "role": "original"
+    }
+  ],
+  "portId": "media-inspection",
+  "version": 1
+}

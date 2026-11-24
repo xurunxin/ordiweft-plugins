@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/dashscope-wan",
+  "releaseVersion": "1.0.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "9a9e059f7e41b6432ba360e34b2c4c24531ddd2f",
+    "path": "examples/plugin-go/dashscope-wan"
+  },
+  "runtimeImage": "sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c"
+}

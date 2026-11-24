@@ -1,0 +1,72 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/document-normalize",
+  "version": "1.0.1",
+  "license": "Apache-2.0",
+  "runtime": "node",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "document-normalize",
+      "kind": "processor"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "read"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "begin",
+        "write",
+        "stage"
+      ]
+    }
+  ],
+  "definitions": {
+    "document-normalize": "definitions/document-normalize.json"
+  },
+  "files": [
+    {
+      "path": "adapter.mjs",
+      "sha256": "c5d99f2e1b7d3346b7ff6bd18f8cdf1a867377d358e711724b8e06d8e1916699",
+      "bytes": 697
+    },
+    {
+      "path": "host.mjs",
+      "sha256": "773abad257563c6ba06b3aef5ad3f07375f24edc10b29d7c8fcffa3b8c4f488d",
+      "bytes": 14636
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "108cfd94349239cd4da56b99085a11a0fd42c8151db924ede62af2f0bbb0d95c",
+      "bytes": 426
+    },
+    {
+      "path": "README.md",
+      "sha256": "5dcf1063eef2c0a62f495433edb5c5a830eb2425df6b1173abe98ea908c231a2",
+      "bytes": 766
+    },
+    {
+      "path": "definitions/document-normalize.json",
+      "sha256": "b775e484972bbd180d30b8299d8d53ee0436e9d32bcf7d02e9bff6c47daf52ed",
+      "bytes": 1416
+    },
+    {
+      "path": "fixtures/action-verification.json",
+      "sha256": "e0461b92f63277b332e3571836b30d3256fbec1821ff6c9fa2456d755b448566",
+      "bytes": 537
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "id": "models",
+  "kind": "content",
+  "content": {
+    "type": "asset-bundle",
+    "entry": "models.json"
+  }
+}

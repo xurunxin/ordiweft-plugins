@@ -1,0 +1,951 @@
+{
+  "version": 1,
+  "origin": "https://api.openai.com",
+  "headers": [
+    {
+      "name": "Authorization",
+      "credential": "API_KEY",
+      "prefix": "Bearer "
+    }
+  ],
+  "operations": {
+    "generate-json": {
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "generate-json",
+        "digest": "ac2b46f7389ee664fdd3015002e3f311eab6b6d4fbbfb9b7960f1972957996b6"
+      }
+    },
+    "generate-json-jpeg": {
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "generate-json-jpeg",
+        "digest": "e1f9b6f160514d5c77afb875f601e11783ae2797d05b897ffca6734f9915daba"
+      }
+    },
+    "generate-json-sse": {
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "generate-json-sse",
+        "digest": "c6b6ac5e68463d701ca74a80e55b057023a39a5bbe59d55caef93dbf96d2bbf7"
+      },
+      "streaming": true
+    },
+    "generate-json-sse-jpeg": {
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "generate-json-sse-jpeg",
+        "digest": "f2083c8c8b6fa00d1f8a19f9705c2604ab67d38cc7d876e890fe08fab4e74764"
+      },
+      "streaming": true
+    },
+    "edit-multipart": {
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "edit-multipart",
+        "digest": "06f1cec7e15d7a7448a9ffde1e1a102ca3a801824bac438d49a127bdf18c621a"
+      },
+      "multipart": [
+        {
+          "name": "image[]",
+          "filename": "reference01",
+          "index": 0,
+          "role": "image01",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference02",
+          "index": 0,
+          "role": "image02",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference03",
+          "index": 0,
+          "role": "image03",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference04",
+          "index": 0,
+          "role": "image04",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference05",
+          "index": 0,
+          "role": "image05",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference06",
+          "index": 0,
+          "role": "image06",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference07",
+          "index": 0,
+          "role": "image07",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference08",
+          "index": 0,
+          "role": "image08",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference09",
+          "index": 0,
+          "role": "image09",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference10",
+          "index": 0,
+          "role": "image10",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference11",
+          "index": 0,
+          "role": "image11",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference12",
+          "index": 0,
+          "role": "image12",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference13",
+          "index": 0,
+          "role": "image13",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference14",
+          "index": 0,
+          "role": "image14",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference15",
+          "index": 0,
+          "role": "image15",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference16",
+          "index": 0,
+          "role": "image16",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "mask",
+          "filename": "overlay",
+          "index": 0,
+          "role": "mask",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png"
+          }
+        }
+      ]
+    },
+    "edit-multipart-jpeg": {
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "edit-multipart-jpeg",
+        "digest": "9aa33339ac7fcafd05bf64ff536c44af364b03e33764f159a9723dc40fd6c03c"
+      },
+      "multipart": [
+        {
+          "name": "image[]",
+          "filename": "reference01",
+          "index": 0,
+          "role": "image01",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference02",
+          "index": 0,
+          "role": "image02",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference03",
+          "index": 0,
+          "role": "image03",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference04",
+          "index": 0,
+          "role": "image04",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference05",
+          "index": 0,
+          "role": "image05",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference06",
+          "index": 0,
+          "role": "image06",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference07",
+          "index": 0,
+          "role": "image07",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference08",
+          "index": 0,
+          "role": "image08",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference09",
+          "index": 0,
+          "role": "image09",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference10",
+          "index": 0,
+          "role": "image10",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference11",
+          "index": 0,
+          "role": "image11",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference12",
+          "index": 0,
+          "role": "image12",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference13",
+          "index": 0,
+          "role": "image13",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference14",
+          "index": 0,
+          "role": "image14",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference15",
+          "index": 0,
+          "role": "image15",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference16",
+          "index": 0,
+          "role": "image16",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "mask",
+          "filename": "overlay",
+          "index": 0,
+          "role": "mask",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png"
+          }
+        }
+      ]
+    },
+    "edit-multipart-sse": {
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "edit-multipart-sse",
+        "digest": "30e9ad782244dc3fa4dee3aa0be03faf68080d254c07005aeb148a140e4ae597"
+      },
+      "streaming": true,
+      "multipart": [
+        {
+          "name": "image[]",
+          "filename": "reference01",
+          "index": 0,
+          "role": "image01",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference02",
+          "index": 0,
+          "role": "image02",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference03",
+          "index": 0,
+          "role": "image03",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference04",
+          "index": 0,
+          "role": "image04",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference05",
+          "index": 0,
+          "role": "image05",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference06",
+          "index": 0,
+          "role": "image06",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference07",
+          "index": 0,
+          "role": "image07",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference08",
+          "index": 0,
+          "role": "image08",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference09",
+          "index": 0,
+          "role": "image09",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference10",
+          "index": 0,
+          "role": "image10",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference11",
+          "index": 0,
+          "role": "image11",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference12",
+          "index": 0,
+          "role": "image12",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference13",
+          "index": 0,
+          "role": "image13",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference14",
+          "index": 0,
+          "role": "image14",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference15",
+          "index": 0,
+          "role": "image15",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference16",
+          "index": 0,
+          "role": "image16",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "mask",
+          "filename": "overlay",
+          "index": 0,
+          "role": "mask",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png"
+          }
+        }
+      ]
+    },
+    "edit-multipart-sse-jpeg": {
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 840000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 268435456,
+      "jsonPolicy": {
+        "operation": "edit-multipart-sse-jpeg",
+        "digest": "04621a432b66b97bffa731c1e1d673c8abcfda4e560c57c98e61deb6d2207c80"
+      },
+      "streaming": true,
+      "multipart": [
+        {
+          "name": "image[]",
+          "filename": "reference01",
+          "index": 0,
+          "role": "image01",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference02",
+          "index": 0,
+          "role": "image02",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference03",
+          "index": 0,
+          "role": "image03",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference04",
+          "index": 0,
+          "role": "image04",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference05",
+          "index": 0,
+          "role": "image05",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference06",
+          "index": 0,
+          "role": "image06",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference07",
+          "index": 0,
+          "role": "image07",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference08",
+          "index": 0,
+          "role": "image08",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference09",
+          "index": 0,
+          "role": "image09",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference10",
+          "index": 0,
+          "role": "image10",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference11",
+          "index": 0,
+          "role": "image11",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference12",
+          "index": 0,
+          "role": "image12",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference13",
+          "index": 0,
+          "role": "image13",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference14",
+          "index": 0,
+          "role": "image14",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference15",
+          "index": 0,
+          "role": "image15",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "image[]",
+          "filename": "reference16",
+          "index": 0,
+          "role": "image16",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/webp": ".webp"
+          }
+        },
+        {
+          "name": "mask",
+          "filename": "overlay",
+          "index": 0,
+          "role": "mask",
+          "optional": true,
+          "extensionsByMime": {
+            "image/png": ".png"
+          }
+        }
+      ]
+    }
+  },
+  "taskIO": {
+    "maxCalls": 1,
+    "maxRequestBytes": 67108864,
+    "maxResponseBytes": 268435456
+  },
+  "maxRuntimeMs": 900000
+}

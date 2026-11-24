@@ -1,0 +1,5104 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/minimax",
+  "version": "2.2.5",
+  "license": "Apache-2.0",
+  "runtime": "node",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "minimax",
+      "kind": "provider"
+    }
+  ],
+  "compatibility": {
+    "version": 1,
+    "host": [
+      {
+        "id": "runtime.negotiation",
+        "version": 1
+      },
+      {
+        "id": "generation.output-count",
+        "version": 1
+      },
+      {
+        "id": "channel.negotiation",
+        "version": 1
+      },
+      {
+        "id": "generation.voice-bindings",
+        "version": 1
+      },
+      {
+        "id": "outputs.voice-identity",
+        "version": 1
+      },
+      {
+        "id": "generation.quote",
+        "version": 1
+      },
+      {
+        "id": "connections.video-reference-duration",
+        "version": 1
+      },
+      {
+        "id": "generation.transcription",
+        "version": 1
+      }
+    ],
+    "sdk": {
+      "minimumVersion": "0.1.15",
+      "capabilities": [
+        {
+          "id": "invocation.negotiate",
+          "version": 1
+        }
+      ]
+    },
+    "channel": {
+      "version": 1,
+      "minimumVersion": "0.4.0",
+      "capabilities": [
+        {
+          "id": "channel.tasks",
+          "version": 1
+        },
+        {
+          "id": "channel.minimax-subscription",
+          "version": 1
+        },
+        {
+          "id": "channel.explicit-rejection",
+          "version": 1
+        },
+        {
+          "id": "channel.voice-scope",
+          "version": 1
+        },
+        {
+          "id": "channel.readonly-quote",
+          "version": 1
+        },
+        {
+          "id": "channel.design-models",
+          "version": 1
+        },
+        {
+          "id": "channel.audio-reference",
+          "version": 1
+        },
+        {
+          "id": "channel.design-audio-reference",
+          "version": 1
+        },
+        {
+          "id": "channel.design-video-reference",
+          "version": 1
+        },
+        {
+          "id": "channel.transcription",
+          "version": 1
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "read",
+        "decode",
+        "release"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint",
+        "wait"
+      ]
+    },
+    {
+      "service": "transfers",
+      "version": 1,
+      "operations": [
+        "download"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    },
+    {
+      "service": "media",
+      "version": 1,
+      "operations": [
+        "inspect"
+      ]
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "minimax",
+    "name": "MiniMax",
+    "version": "2.2.5",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY",
+      "CHANNEL_URL",
+      "CHANNEL_TOKEN"
+    ],
+    "nodes": [
+      {
+        "id": "music",
+        "label": "音乐生成",
+        "capability": "music.generate",
+        "model": "music-3.0-auto"
+      },
+      {
+        "id": "speech",
+        "label": "语音合成",
+        "capability": "speech.generate",
+        "model": "speech-2.8-hd-auto"
+      },
+      {
+        "id": "voice-design",
+        "label": "人声设计",
+        "capability": "voice.design",
+        "model": "voice-design-auto"
+      },
+      {
+        "id": "image",
+        "label": "图片生成",
+        "capability": "image.generate",
+        "model": "MiniMax-H3-Image-auto"
+      },
+      {
+        "id": "video",
+        "label": "视频生成",
+        "capability": "video.generate",
+        "model": "MiniMax-H3-auto"
+      }
+    ],
+    "models": [
+      {
+        "prompt": {
+          "label": "合成文本",
+          "placeholder": "输入需要朗读的内容，可加入停顿或情绪标记…",
+          "required": true,
+          "maxLength": 9999
+        },
+        "id": "speech-2.8-hd",
+        "label": "speech-2.8-hd",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 128000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "channel": {
+            "optionLabels": {
+              "1": "单声道",
+              "2": "立体声"
+            },
+            "type": "integer",
+            "label": "声道",
+            "default": 1,
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "emotion": {
+            "optionLabels": {
+              "angry": "愤怒",
+              "auto": "自动判断",
+              "calm": "平静",
+              "disgusted": "厌恶",
+              "fearful": "害怕",
+              "fluent": "生动",
+              "happy": "高兴",
+              "sad": "悲伤",
+              "surprised": "惊讶",
+              "whisper": "低语"
+            },
+            "icon": "emotion",
+            "description": "控制朗读情绪；自动判断会根据正文选择表达。",
+            "type": "string",
+            "label": "情绪",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "calm",
+              "fluent",
+              "whisper"
+            ]
+          },
+          "format": {
+            "optionLabels": {
+              "mp3": "MP3（压缩）",
+              "wav": "WAV（无损）"
+            },
+            "type": "string",
+            "label": "文件格式",
+            "default": "wav",
+            "enum": [
+              "wav",
+              "mp3"
+            ]
+          },
+          "language_boost": {
+            "optionLabels": {
+              "Arabic": "阿拉伯语",
+              "Chinese": "中文（普通话）",
+              "Chinese,Yue": "中文（粤语）",
+              "Czech": "捷克语",
+              "Dutch": "荷兰语",
+              "English": "英语",
+              "Finnish": "芬兰语",
+              "French": "法语",
+              "German": "德语",
+              "Greek": "希腊语",
+              "Hindi": "印地语",
+              "Indonesian": "印度尼西亚语",
+              "Italian": "意大利语",
+              "Japanese": "日语",
+              "Korean": "韩语",
+              "Polish": "波兰语",
+              "Portuguese": "葡萄牙语",
+              "Romanian": "罗马尼亚语",
+              "Russian": "俄语",
+              "Spanish": "西班牙语",
+              "Thai": "泰语",
+              "Turkish": "土耳其语",
+              "Ukrainian": "乌克兰语",
+              "Vietnamese": "越南语",
+              "auto": "自动识别"
+            },
+            "icon": "language",
+            "description": "增强所选语言的识别与发音；多语言正文可使用自动识别。",
+            "type": "string",
+            "label": "语言增强",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "Chinese",
+              "Chinese,Yue",
+              "English",
+              "Japanese",
+              "Korean",
+              "French",
+              "German",
+              "Spanish",
+              "Russian",
+              "Arabic",
+              "Portuguese",
+              "Italian",
+              "Indonesian",
+              "Vietnamese",
+              "Thai",
+              "Turkish",
+              "Dutch",
+              "Polish",
+              "Ukrainian",
+              "Romanian",
+              "Greek",
+              "Czech",
+              "Finnish",
+              "Hindi"
+            ]
+          },
+          "pitch": {
+            "step": 1,
+            "type": "number",
+            "label": "音高",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "pronunciation": {
+            "description": "每行一条，如 处理/(chu3)(li3)。",
+            "items": {
+              "type": "string",
+              "label": "词语/(拼音)"
+            },
+            "type": "array",
+            "label": "自定义发音",
+            "default": []
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100
+            ]
+          },
+          "speed": {
+            "step": 0.05,
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "text_normalization": {
+            "optionLabels": {
+              "basic": "基础规范化",
+              "quality": "增强规范化"
+            },
+            "type": "string",
+            "label": "文本规范化",
+            "default": "basic",
+            "enum": [
+              "basic",
+              "quality"
+            ]
+          },
+          "voice_id": {
+            "description": "可填写官方或已设计的音色 ID；连接音色设计节点时使用其当前版本。",
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "default": "male-qn-qingse",
+            "required": true
+          },
+          "voice_modify": {
+            "properties": {
+              "intensity": {
+                "step": 1,
+                "type": "number",
+                "label": "强度",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "pitch": {
+                "step": 1,
+                "type": "number",
+                "label": "音高变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "timbre": {
+                "step": 1,
+                "type": "number",
+                "label": "音色变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              }
+            },
+            "type": "object",
+            "label": "声音效果",
+            "default": {
+              "intensity": 0,
+              "pitch": 0,
+              "timbre": 0
+            }
+          },
+          "vol": {
+            "step": 0.1,
+            "type": "number",
+            "label": "音量",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "合成文本",
+          "placeholder": "输入需要朗读的内容，可加入停顿或情绪标记…",
+          "required": true,
+          "maxLength": 9999
+        },
+        "id": "speech-2.8-hd-auto",
+        "label": "speech-2.8-hd",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "visibleWhen": {
+              "format": "mp3",
+              "access": "api"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 128000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "channel": {
+            "optionLabels": {
+              "1": "单声道",
+              "2": "立体声"
+            },
+            "type": "integer",
+            "label": "声道",
+            "default": 1,
+            "enum": [
+              1,
+              2
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "emotion": {
+            "optionLabels": {
+              "angry": "愤怒",
+              "auto": "自动判断",
+              "calm": "平静",
+              "disgusted": "厌恶",
+              "fearful": "害怕",
+              "fluent": "生动",
+              "happy": "高兴",
+              "sad": "悲伤",
+              "surprised": "惊讶",
+              "whisper": "低语"
+            },
+            "icon": "emotion",
+            "description": "控制朗读情绪；自动判断会根据正文选择表达。",
+            "type": "string",
+            "label": "情绪",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "calm",
+              "fluent",
+              "whisper"
+            ]
+          },
+          "format": {
+            "optionLabels": {
+              "mp3": "MP3（压缩）",
+              "wav": "WAV（无损）"
+            },
+            "type": "string",
+            "label": "文件格式",
+            "default": "wav",
+            "enum": [
+              "wav",
+              "mp3"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "language_boost": {
+            "optionLabels": {
+              "Arabic": "阿拉伯语",
+              "Chinese": "中文（普通话）",
+              "Chinese,Yue": "中文（粤语）",
+              "Czech": "捷克语",
+              "Dutch": "荷兰语",
+              "English": "英语",
+              "Finnish": "芬兰语",
+              "French": "法语",
+              "German": "德语",
+              "Greek": "希腊语",
+              "Hindi": "印地语",
+              "Indonesian": "印度尼西亚语",
+              "Italian": "意大利语",
+              "Japanese": "日语",
+              "Korean": "韩语",
+              "Polish": "波兰语",
+              "Portuguese": "葡萄牙语",
+              "Romanian": "罗马尼亚语",
+              "Russian": "俄语",
+              "Spanish": "西班牙语",
+              "Thai": "泰语",
+              "Turkish": "土耳其语",
+              "Ukrainian": "乌克兰语",
+              "Vietnamese": "越南语",
+              "auto": "自动识别"
+            },
+            "icon": "language",
+            "description": "增强所选语言的识别与发音；多语言正文可使用自动识别。",
+            "type": "string",
+            "label": "语言增强",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "Chinese",
+              "Chinese,Yue",
+              "English",
+              "Japanese",
+              "Korean",
+              "French",
+              "German",
+              "Spanish",
+              "Russian",
+              "Arabic",
+              "Portuguese",
+              "Italian",
+              "Indonesian",
+              "Vietnamese",
+              "Thai",
+              "Turkish",
+              "Dutch",
+              "Polish",
+              "Ukrainian",
+              "Romanian",
+              "Greek",
+              "Czech",
+              "Finnish",
+              "Hindi"
+            ]
+          },
+          "pitch": {
+            "step": 1,
+            "type": "number",
+            "label": "音高",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "pronunciation": {
+            "description": "每行一条，如 处理/(chu3)(li3)。",
+            "items": {
+              "type": "string",
+              "label": "词语/(拼音)"
+            },
+            "type": "array",
+            "label": "自定义发音",
+            "default": [],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "speed": {
+            "step": 0.05,
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "text_normalization": {
+            "optionLabels": {
+              "basic": "基础规范化",
+              "quality": "增强规范化"
+            },
+            "type": "string",
+            "label": "文本规范化",
+            "default": "basic",
+            "enum": [
+              "basic",
+              "quality"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "voice_id": {
+            "description": "可填写官方或已设计的音色 ID；连接音色设计节点时使用其当前版本。",
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "default": "Friendly_Person",
+            "required": true
+          },
+          "voice_modify": {
+            "properties": {
+              "intensity": {
+                "step": 1,
+                "type": "number",
+                "label": "强度",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "pitch": {
+                "step": 1,
+                "type": "number",
+                "label": "音高变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "timbre": {
+                "step": 1,
+                "type": "number",
+                "label": "音色变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              }
+            },
+            "type": "object",
+            "label": "声音效果",
+            "default": {
+              "intensity": 0,
+              "pitch": 0,
+              "timbre": 0
+            },
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "vol": {
+            "step": 0.1,
+            "type": "number",
+            "label": "音量",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "voiceModels": [
+          "speech-2.8-hd"
+        ],
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "合成文本",
+          "placeholder": "输入需要朗读的内容，可加入停顿或情绪标记…",
+          "required": true,
+          "maxLength": 9999
+        },
+        "id": "speech-2.8-turbo",
+        "label": "speech-2.8-turbo",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 128000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "channel": {
+            "optionLabels": {
+              "1": "单声道",
+              "2": "立体声"
+            },
+            "type": "integer",
+            "label": "声道",
+            "default": 1,
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "emotion": {
+            "optionLabels": {
+              "angry": "愤怒",
+              "auto": "自动判断",
+              "calm": "平静",
+              "disgusted": "厌恶",
+              "fearful": "害怕",
+              "fluent": "生动",
+              "happy": "高兴",
+              "sad": "悲伤",
+              "surprised": "惊讶",
+              "whisper": "低语"
+            },
+            "icon": "emotion",
+            "description": "控制朗读情绪；自动判断会根据正文选择表达。",
+            "type": "string",
+            "label": "情绪",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "calm",
+              "fluent",
+              "whisper"
+            ]
+          },
+          "format": {
+            "optionLabels": {
+              "mp3": "MP3（压缩）",
+              "wav": "WAV（无损）"
+            },
+            "type": "string",
+            "label": "文件格式",
+            "default": "wav",
+            "enum": [
+              "wav",
+              "mp3"
+            ]
+          },
+          "language_boost": {
+            "optionLabels": {
+              "Arabic": "阿拉伯语",
+              "Chinese": "中文（普通话）",
+              "Chinese,Yue": "中文（粤语）",
+              "Czech": "捷克语",
+              "Dutch": "荷兰语",
+              "English": "英语",
+              "Finnish": "芬兰语",
+              "French": "法语",
+              "German": "德语",
+              "Greek": "希腊语",
+              "Hindi": "印地语",
+              "Indonesian": "印度尼西亚语",
+              "Italian": "意大利语",
+              "Japanese": "日语",
+              "Korean": "韩语",
+              "Polish": "波兰语",
+              "Portuguese": "葡萄牙语",
+              "Romanian": "罗马尼亚语",
+              "Russian": "俄语",
+              "Spanish": "西班牙语",
+              "Thai": "泰语",
+              "Turkish": "土耳其语",
+              "Ukrainian": "乌克兰语",
+              "Vietnamese": "越南语",
+              "auto": "自动识别"
+            },
+            "icon": "language",
+            "description": "增强所选语言的识别与发音；多语言正文可使用自动识别。",
+            "type": "string",
+            "label": "语言增强",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "Chinese",
+              "Chinese,Yue",
+              "English",
+              "Japanese",
+              "Korean",
+              "French",
+              "German",
+              "Spanish",
+              "Russian",
+              "Arabic",
+              "Portuguese",
+              "Italian",
+              "Indonesian",
+              "Vietnamese",
+              "Thai",
+              "Turkish",
+              "Dutch",
+              "Polish",
+              "Ukrainian",
+              "Romanian",
+              "Greek",
+              "Czech",
+              "Finnish",
+              "Hindi"
+            ]
+          },
+          "pitch": {
+            "step": 1,
+            "type": "number",
+            "label": "音高",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "pronunciation": {
+            "description": "每行一条，如 处理/(chu3)(li3)。",
+            "items": {
+              "type": "string",
+              "label": "词语/(拼音)"
+            },
+            "type": "array",
+            "label": "自定义发音",
+            "default": []
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100
+            ]
+          },
+          "speed": {
+            "step": 0.05,
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "text_normalization": {
+            "optionLabels": {
+              "basic": "基础规范化",
+              "quality": "增强规范化"
+            },
+            "type": "string",
+            "label": "文本规范化",
+            "default": "basic",
+            "enum": [
+              "basic",
+              "quality"
+            ]
+          },
+          "voice_id": {
+            "description": "可填写官方或已设计的音色 ID；连接音色设计节点时使用其当前版本。",
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "default": "male-qn-qingse",
+            "required": true
+          },
+          "voice_modify": {
+            "properties": {
+              "intensity": {
+                "step": 1,
+                "type": "number",
+                "label": "强度",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "pitch": {
+                "step": 1,
+                "type": "number",
+                "label": "音高变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "timbre": {
+                "step": 1,
+                "type": "number",
+                "label": "音色变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              }
+            },
+            "type": "object",
+            "label": "声音效果",
+            "default": {
+              "intensity": 0,
+              "pitch": 0,
+              "timbre": 0
+            }
+          },
+          "vol": {
+            "step": 0.1,
+            "type": "number",
+            "label": "音量",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "合成文本",
+          "placeholder": "输入需要朗读的内容，可加入停顿或情绪标记…",
+          "required": true,
+          "maxLength": 9999
+        },
+        "id": "speech-2.8-turbo-auto",
+        "label": "speech-2.8-turbo",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "visibleWhen": {
+              "format": "mp3",
+              "access": "api"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 128000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "channel": {
+            "optionLabels": {
+              "1": "单声道",
+              "2": "立体声"
+            },
+            "type": "integer",
+            "label": "声道",
+            "default": 1,
+            "enum": [
+              1,
+              2
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "emotion": {
+            "optionLabels": {
+              "angry": "愤怒",
+              "auto": "自动判断",
+              "calm": "平静",
+              "disgusted": "厌恶",
+              "fearful": "害怕",
+              "fluent": "生动",
+              "happy": "高兴",
+              "sad": "悲伤",
+              "surprised": "惊讶",
+              "whisper": "低语"
+            },
+            "icon": "emotion",
+            "description": "控制朗读情绪；自动判断会根据正文选择表达。",
+            "type": "string",
+            "label": "情绪",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "calm",
+              "fluent",
+              "whisper"
+            ]
+          },
+          "format": {
+            "optionLabels": {
+              "mp3": "MP3（压缩）",
+              "wav": "WAV（无损）"
+            },
+            "type": "string",
+            "label": "文件格式",
+            "default": "wav",
+            "enum": [
+              "wav",
+              "mp3"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "language_boost": {
+            "optionLabels": {
+              "Arabic": "阿拉伯语",
+              "Chinese": "中文（普通话）",
+              "Chinese,Yue": "中文（粤语）",
+              "Czech": "捷克语",
+              "Dutch": "荷兰语",
+              "English": "英语",
+              "Finnish": "芬兰语",
+              "French": "法语",
+              "German": "德语",
+              "Greek": "希腊语",
+              "Hindi": "印地语",
+              "Indonesian": "印度尼西亚语",
+              "Italian": "意大利语",
+              "Japanese": "日语",
+              "Korean": "韩语",
+              "Polish": "波兰语",
+              "Portuguese": "葡萄牙语",
+              "Romanian": "罗马尼亚语",
+              "Russian": "俄语",
+              "Spanish": "西班牙语",
+              "Thai": "泰语",
+              "Turkish": "土耳其语",
+              "Ukrainian": "乌克兰语",
+              "Vietnamese": "越南语",
+              "auto": "自动识别"
+            },
+            "icon": "language",
+            "description": "增强所选语言的识别与发音；多语言正文可使用自动识别。",
+            "type": "string",
+            "label": "语言增强",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "Chinese",
+              "Chinese,Yue",
+              "English",
+              "Japanese",
+              "Korean",
+              "French",
+              "German",
+              "Spanish",
+              "Russian",
+              "Arabic",
+              "Portuguese",
+              "Italian",
+              "Indonesian",
+              "Vietnamese",
+              "Thai",
+              "Turkish",
+              "Dutch",
+              "Polish",
+              "Ukrainian",
+              "Romanian",
+              "Greek",
+              "Czech",
+              "Finnish",
+              "Hindi"
+            ]
+          },
+          "pitch": {
+            "step": 1,
+            "type": "number",
+            "label": "音高",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "pronunciation": {
+            "description": "每行一条，如 处理/(chu3)(li3)。",
+            "items": {
+              "type": "string",
+              "label": "词语/(拼音)"
+            },
+            "type": "array",
+            "label": "自定义发音",
+            "default": [],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "speed": {
+            "step": 0.05,
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "text_normalization": {
+            "optionLabels": {
+              "basic": "基础规范化",
+              "quality": "增强规范化"
+            },
+            "type": "string",
+            "label": "文本规范化",
+            "default": "basic",
+            "enum": [
+              "basic",
+              "quality"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "voice_id": {
+            "description": "可填写官方或已设计的音色 ID；连接音色设计节点时使用其当前版本。",
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "default": "Friendly_Person",
+            "required": true
+          },
+          "voice_modify": {
+            "properties": {
+              "intensity": {
+                "step": 1,
+                "type": "number",
+                "label": "强度",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "pitch": {
+                "step": 1,
+                "type": "number",
+                "label": "音高变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "timbre": {
+                "step": 1,
+                "type": "number",
+                "label": "音色变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              }
+            },
+            "type": "object",
+            "label": "声音效果",
+            "default": {
+              "intensity": 0,
+              "pitch": 0,
+              "timbre": 0
+            },
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "vol": {
+            "step": 0.1,
+            "type": "number",
+            "label": "音量",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "voiceModels": [
+          "speech-2.8-turbo"
+        ],
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "合成文本",
+          "placeholder": "输入需要朗读的内容，可加入停顿或情绪标记…",
+          "required": true,
+          "maxLength": 9999
+        },
+        "id": "speech-2.6-hd",
+        "label": "speech-2.6-hd",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 128000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "channel": {
+            "optionLabels": {
+              "1": "单声道",
+              "2": "立体声"
+            },
+            "type": "integer",
+            "label": "声道",
+            "default": 1,
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "emotion": {
+            "optionLabels": {
+              "angry": "愤怒",
+              "auto": "自动判断",
+              "calm": "平静",
+              "disgusted": "厌恶",
+              "fearful": "害怕",
+              "fluent": "生动",
+              "happy": "高兴",
+              "sad": "悲伤",
+              "surprised": "惊讶",
+              "whisper": "低语"
+            },
+            "icon": "emotion",
+            "description": "控制朗读情绪；自动判断会根据正文选择表达。",
+            "type": "string",
+            "label": "情绪",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "calm",
+              "fluent",
+              "whisper"
+            ]
+          },
+          "format": {
+            "optionLabels": {
+              "mp3": "MP3（压缩）",
+              "wav": "WAV（无损）"
+            },
+            "type": "string",
+            "label": "文件格式",
+            "default": "wav",
+            "enum": [
+              "wav",
+              "mp3"
+            ]
+          },
+          "language_boost": {
+            "optionLabels": {
+              "Arabic": "阿拉伯语",
+              "Chinese": "中文（普通话）",
+              "Chinese,Yue": "中文（粤语）",
+              "Czech": "捷克语",
+              "Dutch": "荷兰语",
+              "English": "英语",
+              "Finnish": "芬兰语",
+              "French": "法语",
+              "German": "德语",
+              "Greek": "希腊语",
+              "Hindi": "印地语",
+              "Indonesian": "印度尼西亚语",
+              "Italian": "意大利语",
+              "Japanese": "日语",
+              "Korean": "韩语",
+              "Polish": "波兰语",
+              "Portuguese": "葡萄牙语",
+              "Romanian": "罗马尼亚语",
+              "Russian": "俄语",
+              "Spanish": "西班牙语",
+              "Thai": "泰语",
+              "Turkish": "土耳其语",
+              "Ukrainian": "乌克兰语",
+              "Vietnamese": "越南语",
+              "auto": "自动识别"
+            },
+            "icon": "language",
+            "description": "增强所选语言的识别与发音；多语言正文可使用自动识别。",
+            "type": "string",
+            "label": "语言增强",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "Chinese",
+              "Chinese,Yue",
+              "English",
+              "Japanese",
+              "Korean",
+              "French",
+              "German",
+              "Spanish",
+              "Russian",
+              "Arabic",
+              "Portuguese",
+              "Italian",
+              "Indonesian",
+              "Vietnamese",
+              "Thai",
+              "Turkish",
+              "Dutch",
+              "Polish",
+              "Ukrainian",
+              "Romanian",
+              "Greek",
+              "Czech",
+              "Finnish",
+              "Hindi"
+            ]
+          },
+          "pitch": {
+            "step": 1,
+            "type": "number",
+            "label": "音高",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "pronunciation": {
+            "description": "每行一条，如 处理/(chu3)(li3)。",
+            "items": {
+              "type": "string",
+              "label": "词语/(拼音)"
+            },
+            "type": "array",
+            "label": "自定义发音",
+            "default": []
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100
+            ]
+          },
+          "speed": {
+            "step": 0.05,
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "text_normalization": {
+            "optionLabels": {
+              "basic": "基础规范化",
+              "quality": "增强规范化"
+            },
+            "type": "string",
+            "label": "文本规范化",
+            "default": "basic",
+            "enum": [
+              "basic",
+              "quality"
+            ]
+          },
+          "voice_id": {
+            "description": "可填写官方或已设计的音色 ID；连接音色设计节点时使用其当前版本。",
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "default": "male-qn-qingse",
+            "required": true
+          },
+          "voice_modify": {
+            "properties": {
+              "intensity": {
+                "step": 1,
+                "type": "number",
+                "label": "强度",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "pitch": {
+                "step": 1,
+                "type": "number",
+                "label": "音高变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "timbre": {
+                "step": 1,
+                "type": "number",
+                "label": "音色变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              }
+            },
+            "type": "object",
+            "label": "声音效果",
+            "default": {
+              "intensity": 0,
+              "pitch": 0,
+              "timbre": 0
+            }
+          },
+          "vol": {
+            "step": 0.1,
+            "type": "number",
+            "label": "音量",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "合成文本",
+          "placeholder": "输入需要朗读的内容，可加入停顿或情绪标记…",
+          "required": true,
+          "maxLength": 9999
+        },
+        "id": "speech-2.6-hd-auto",
+        "label": "speech-2.6-hd",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "visibleWhen": {
+              "format": "mp3",
+              "access": "api"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 128000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "channel": {
+            "optionLabels": {
+              "1": "单声道",
+              "2": "立体声"
+            },
+            "type": "integer",
+            "label": "声道",
+            "default": 1,
+            "enum": [
+              1,
+              2
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "emotion": {
+            "optionLabels": {
+              "angry": "愤怒",
+              "auto": "自动判断",
+              "calm": "平静",
+              "disgusted": "厌恶",
+              "fearful": "害怕",
+              "fluent": "生动",
+              "happy": "高兴",
+              "sad": "悲伤",
+              "surprised": "惊讶",
+              "whisper": "低语"
+            },
+            "icon": "emotion",
+            "description": "控制朗读情绪；自动判断会根据正文选择表达。",
+            "type": "string",
+            "label": "情绪",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "calm",
+              "fluent",
+              "whisper"
+            ]
+          },
+          "format": {
+            "optionLabels": {
+              "mp3": "MP3（压缩）",
+              "wav": "WAV（无损）"
+            },
+            "type": "string",
+            "label": "文件格式",
+            "default": "wav",
+            "enum": [
+              "wav",
+              "mp3"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "language_boost": {
+            "optionLabels": {
+              "Arabic": "阿拉伯语",
+              "Chinese": "中文（普通话）",
+              "Chinese,Yue": "中文（粤语）",
+              "Czech": "捷克语",
+              "Dutch": "荷兰语",
+              "English": "英语",
+              "Finnish": "芬兰语",
+              "French": "法语",
+              "German": "德语",
+              "Greek": "希腊语",
+              "Hindi": "印地语",
+              "Indonesian": "印度尼西亚语",
+              "Italian": "意大利语",
+              "Japanese": "日语",
+              "Korean": "韩语",
+              "Polish": "波兰语",
+              "Portuguese": "葡萄牙语",
+              "Romanian": "罗马尼亚语",
+              "Russian": "俄语",
+              "Spanish": "西班牙语",
+              "Thai": "泰语",
+              "Turkish": "土耳其语",
+              "Ukrainian": "乌克兰语",
+              "Vietnamese": "越南语",
+              "auto": "自动识别"
+            },
+            "icon": "language",
+            "description": "增强所选语言的识别与发音；多语言正文可使用自动识别。",
+            "type": "string",
+            "label": "语言增强",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "Chinese",
+              "Chinese,Yue",
+              "English",
+              "Japanese",
+              "Korean",
+              "French",
+              "German",
+              "Spanish",
+              "Russian",
+              "Arabic",
+              "Portuguese",
+              "Italian",
+              "Indonesian",
+              "Vietnamese",
+              "Thai",
+              "Turkish",
+              "Dutch",
+              "Polish",
+              "Ukrainian",
+              "Romanian",
+              "Greek",
+              "Czech",
+              "Finnish",
+              "Hindi"
+            ]
+          },
+          "pitch": {
+            "step": 1,
+            "type": "number",
+            "label": "音高",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "pronunciation": {
+            "description": "每行一条，如 处理/(chu3)(li3)。",
+            "items": {
+              "type": "string",
+              "label": "词语/(拼音)"
+            },
+            "type": "array",
+            "label": "自定义发音",
+            "default": [],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "speed": {
+            "step": 0.05,
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "text_normalization": {
+            "optionLabels": {
+              "basic": "基础规范化",
+              "quality": "增强规范化"
+            },
+            "type": "string",
+            "label": "文本规范化",
+            "default": "basic",
+            "enum": [
+              "basic",
+              "quality"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "voice_id": {
+            "description": "可填写官方或已设计的音色 ID；连接音色设计节点时使用其当前版本。",
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "default": "Friendly_Person",
+            "required": true
+          },
+          "voice_modify": {
+            "properties": {
+              "intensity": {
+                "step": 1,
+                "type": "number",
+                "label": "强度",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "pitch": {
+                "step": 1,
+                "type": "number",
+                "label": "音高变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "timbre": {
+                "step": 1,
+                "type": "number",
+                "label": "音色变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              }
+            },
+            "type": "object",
+            "label": "声音效果",
+            "default": {
+              "intensity": 0,
+              "pitch": 0,
+              "timbre": 0
+            },
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "vol": {
+            "step": 0.1,
+            "type": "number",
+            "label": "音量",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "voiceModels": [
+          "speech-2.6-hd"
+        ],
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "合成文本",
+          "placeholder": "输入需要朗读的内容，可加入停顿或情绪标记…",
+          "required": true,
+          "maxLength": 9999
+        },
+        "id": "speech-2.6-turbo",
+        "label": "speech-2.6-turbo",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 128000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "channel": {
+            "optionLabels": {
+              "1": "单声道",
+              "2": "立体声"
+            },
+            "type": "integer",
+            "label": "声道",
+            "default": 1,
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "emotion": {
+            "optionLabels": {
+              "angry": "愤怒",
+              "auto": "自动判断",
+              "calm": "平静",
+              "disgusted": "厌恶",
+              "fearful": "害怕",
+              "fluent": "生动",
+              "happy": "高兴",
+              "sad": "悲伤",
+              "surprised": "惊讶",
+              "whisper": "低语"
+            },
+            "icon": "emotion",
+            "description": "控制朗读情绪；自动判断会根据正文选择表达。",
+            "type": "string",
+            "label": "情绪",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "calm",
+              "fluent",
+              "whisper"
+            ]
+          },
+          "format": {
+            "optionLabels": {
+              "mp3": "MP3（压缩）",
+              "wav": "WAV（无损）"
+            },
+            "type": "string",
+            "label": "文件格式",
+            "default": "wav",
+            "enum": [
+              "wav",
+              "mp3"
+            ]
+          },
+          "language_boost": {
+            "optionLabels": {
+              "Arabic": "阿拉伯语",
+              "Chinese": "中文（普通话）",
+              "Chinese,Yue": "中文（粤语）",
+              "Czech": "捷克语",
+              "Dutch": "荷兰语",
+              "English": "英语",
+              "Finnish": "芬兰语",
+              "French": "法语",
+              "German": "德语",
+              "Greek": "希腊语",
+              "Hindi": "印地语",
+              "Indonesian": "印度尼西亚语",
+              "Italian": "意大利语",
+              "Japanese": "日语",
+              "Korean": "韩语",
+              "Polish": "波兰语",
+              "Portuguese": "葡萄牙语",
+              "Romanian": "罗马尼亚语",
+              "Russian": "俄语",
+              "Spanish": "西班牙语",
+              "Thai": "泰语",
+              "Turkish": "土耳其语",
+              "Ukrainian": "乌克兰语",
+              "Vietnamese": "越南语",
+              "auto": "自动识别"
+            },
+            "icon": "language",
+            "description": "增强所选语言的识别与发音；多语言正文可使用自动识别。",
+            "type": "string",
+            "label": "语言增强",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "Chinese",
+              "Chinese,Yue",
+              "English",
+              "Japanese",
+              "Korean",
+              "French",
+              "German",
+              "Spanish",
+              "Russian",
+              "Arabic",
+              "Portuguese",
+              "Italian",
+              "Indonesian",
+              "Vietnamese",
+              "Thai",
+              "Turkish",
+              "Dutch",
+              "Polish",
+              "Ukrainian",
+              "Romanian",
+              "Greek",
+              "Czech",
+              "Finnish",
+              "Hindi"
+            ]
+          },
+          "pitch": {
+            "step": 1,
+            "type": "number",
+            "label": "音高",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "pronunciation": {
+            "description": "每行一条，如 处理/(chu3)(li3)。",
+            "items": {
+              "type": "string",
+              "label": "词语/(拼音)"
+            },
+            "type": "array",
+            "label": "自定义发音",
+            "default": []
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100
+            ]
+          },
+          "speed": {
+            "step": 0.05,
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "text_normalization": {
+            "optionLabels": {
+              "basic": "基础规范化",
+              "quality": "增强规范化"
+            },
+            "type": "string",
+            "label": "文本规范化",
+            "default": "basic",
+            "enum": [
+              "basic",
+              "quality"
+            ]
+          },
+          "voice_id": {
+            "description": "可填写官方或已设计的音色 ID；连接音色设计节点时使用其当前版本。",
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "default": "male-qn-qingse",
+            "required": true
+          },
+          "voice_modify": {
+            "properties": {
+              "intensity": {
+                "step": 1,
+                "type": "number",
+                "label": "强度",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "pitch": {
+                "step": 1,
+                "type": "number",
+                "label": "音高变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "timbre": {
+                "step": 1,
+                "type": "number",
+                "label": "音色变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              }
+            },
+            "type": "object",
+            "label": "声音效果",
+            "default": {
+              "intensity": 0,
+              "pitch": 0,
+              "timbre": 0
+            }
+          },
+          "vol": {
+            "step": 0.1,
+            "type": "number",
+            "label": "音量",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "合成文本",
+          "placeholder": "输入需要朗读的内容，可加入停顿或情绪标记…",
+          "required": true,
+          "maxLength": 9999
+        },
+        "id": "speech-2.6-turbo-auto",
+        "label": "speech-2.6-turbo",
+        "capability": "speech.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "visibleWhen": {
+              "format": "mp3",
+              "access": "api"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 128000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "channel": {
+            "optionLabels": {
+              "1": "单声道",
+              "2": "立体声"
+            },
+            "type": "integer",
+            "label": "声道",
+            "default": 1,
+            "enum": [
+              1,
+              2
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "emotion": {
+            "optionLabels": {
+              "angry": "愤怒",
+              "auto": "自动判断",
+              "calm": "平静",
+              "disgusted": "厌恶",
+              "fearful": "害怕",
+              "fluent": "生动",
+              "happy": "高兴",
+              "sad": "悲伤",
+              "surprised": "惊讶",
+              "whisper": "低语"
+            },
+            "icon": "emotion",
+            "description": "控制朗读情绪；自动判断会根据正文选择表达。",
+            "type": "string",
+            "label": "情绪",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "calm",
+              "fluent",
+              "whisper"
+            ]
+          },
+          "format": {
+            "optionLabels": {
+              "mp3": "MP3（压缩）",
+              "wav": "WAV（无损）"
+            },
+            "type": "string",
+            "label": "文件格式",
+            "default": "wav",
+            "enum": [
+              "wav",
+              "mp3"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "language_boost": {
+            "optionLabels": {
+              "Arabic": "阿拉伯语",
+              "Chinese": "中文（普通话）",
+              "Chinese,Yue": "中文（粤语）",
+              "Czech": "捷克语",
+              "Dutch": "荷兰语",
+              "English": "英语",
+              "Finnish": "芬兰语",
+              "French": "法语",
+              "German": "德语",
+              "Greek": "希腊语",
+              "Hindi": "印地语",
+              "Indonesian": "印度尼西亚语",
+              "Italian": "意大利语",
+              "Japanese": "日语",
+              "Korean": "韩语",
+              "Polish": "波兰语",
+              "Portuguese": "葡萄牙语",
+              "Romanian": "罗马尼亚语",
+              "Russian": "俄语",
+              "Spanish": "西班牙语",
+              "Thai": "泰语",
+              "Turkish": "土耳其语",
+              "Ukrainian": "乌克兰语",
+              "Vietnamese": "越南语",
+              "auto": "自动识别"
+            },
+            "icon": "language",
+            "description": "增强所选语言的识别与发音；多语言正文可使用自动识别。",
+            "type": "string",
+            "label": "语言增强",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "Chinese",
+              "Chinese,Yue",
+              "English",
+              "Japanese",
+              "Korean",
+              "French",
+              "German",
+              "Spanish",
+              "Russian",
+              "Arabic",
+              "Portuguese",
+              "Italian",
+              "Indonesian",
+              "Vietnamese",
+              "Thai",
+              "Turkish",
+              "Dutch",
+              "Polish",
+              "Ukrainian",
+              "Romanian",
+              "Greek",
+              "Czech",
+              "Finnish",
+              "Hindi"
+            ]
+          },
+          "pitch": {
+            "step": 1,
+            "type": "number",
+            "label": "音高",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12
+          },
+          "pronunciation": {
+            "description": "每行一条，如 处理/(chu3)(li3)。",
+            "items": {
+              "type": "string",
+              "label": "词语/(拼音)"
+            },
+            "type": "array",
+            "label": "自定义发音",
+            "default": [],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "speed": {
+            "step": 0.05,
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "text_normalization": {
+            "optionLabels": {
+              "basic": "基础规范化",
+              "quality": "增强规范化"
+            },
+            "type": "string",
+            "label": "文本规范化",
+            "default": "basic",
+            "enum": [
+              "basic",
+              "quality"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "voice_id": {
+            "description": "可填写官方或已设计的音色 ID；连接音色设计节点时使用其当前版本。",
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "default": "Friendly_Person",
+            "required": true
+          },
+          "voice_modify": {
+            "properties": {
+              "intensity": {
+                "step": 1,
+                "type": "number",
+                "label": "强度",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "pitch": {
+                "step": 1,
+                "type": "number",
+                "label": "音高变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              },
+              "timbre": {
+                "step": 1,
+                "type": "number",
+                "label": "音色变化",
+                "default": 0,
+                "minimum": -100,
+                "maximum": 100
+              }
+            },
+            "type": "object",
+            "label": "声音效果",
+            "default": {
+              "intensity": 0,
+              "pitch": 0,
+              "timbre": 0
+            },
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "vol": {
+            "step": 0.1,
+            "type": "number",
+            "label": "音量",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "voiceModels": [
+          "speech-2.6-turbo"
+        ],
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "音乐描述",
+          "placeholder": "描述曲风、乐器、节奏、情绪和使用场景…",
+          "required": false,
+          "maxLength": 2000
+        },
+        "id": "music-3.0",
+        "label": "Music 3.0",
+        "capability": "music.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 256000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ]
+          },
+          "is_instrumental": {
+            "type": "boolean",
+            "label": "纯音乐",
+            "default": true
+          },
+          "lyrics": {
+            "description": "支持 [Verse]、[Chorus] 等结构标签；关闭自动创作时必须填写。",
+            "placement": "body",
+            "maxLength": 3500,
+            "visibleWhen": {
+              "is_instrumental": false
+            },
+            "type": "string",
+            "label": "歌词",
+            "control": "textarea",
+            "default": ""
+          },
+          "lyrics_optimizer": {
+            "visibleWhen": {
+              "is_instrumental": false
+            },
+            "type": "boolean",
+            "label": "自动创作歌词",
+            "default": true
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 44100,
+            "enum": [
+              16000,
+              24000,
+              32000,
+              44100
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "音乐风格",
+          "placeholder": "描述想要的音乐风格、乐器、节奏与氛围…",
+          "required": false,
+          "maxLength": 2000
+        },
+        "id": "music-3.0-auto",
+        "label": "MiniMax Music 3.0",
+        "capability": "music.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "bitrate": {
+            "optionLabels": {
+              "32000": "32 kbps",
+              "64000": "64 kbps",
+              "128000": "128 kbps",
+              "256000": "256 kbps"
+            },
+            "type": "integer",
+            "label": "比特率",
+            "default": 256000,
+            "enum": [
+              32000,
+              64000,
+              128000,
+              256000
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "is_instrumental": {
+            "type": "boolean",
+            "label": "纯音乐",
+            "default": false
+          },
+          "lyrics": {
+            "description": "在此添加歌词；留空且开启自动创作时，根据音乐风格生成歌词。",
+            "placement": "body",
+            "maxLength": 3500,
+            "visibleWhen": {
+              "is_instrumental": false
+            },
+            "type": "string",
+            "label": "歌词",
+            "control": "textarea",
+            "default": ""
+          },
+          "lyrics_optimizer": {
+            "visibleWhen": {
+              "is_instrumental": false
+            },
+            "type": "boolean",
+            "label": "自动创作歌词",
+            "default": true
+          },
+          "sample_rate": {
+            "optionLabels": {
+              "8000": "8 kHz",
+              "16000": "16 kHz",
+              "22050": "22.05 kHz",
+              "24000": "24 kHz",
+              "32000": "32 kHz",
+              "44100": "44.1 kHz"
+            },
+            "type": "integer",
+            "label": "采样率",
+            "default": 44100,
+            "enum": [
+              16000,
+              24000,
+              32000,
+              44100
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "音色描述",
+          "placeholder": "描述年龄、性别、音域、音色质感、口音和说话风格…",
+          "required": true,
+          "maxLength": 2000
+        },
+        "id": "voice-design",
+        "label": "MiniMax 音色设计",
+        "capability": "voice.design",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "preview_text": {
+            "placement": "body",
+            "maxLength": 500,
+            "type": "string",
+            "label": "试听文本",
+            "control": "textarea",
+            "default": "你好，这是为你设计的专属音色。",
+            "required": true
+          },
+          "voice_id": {
+            "description": "留空由平台生成；填写时须符合 MiniMax 的命名规则。",
+            "type": "string",
+            "label": "自定义音色 ID（可选）",
+            "default": ""
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "音色描述",
+          "placeholder": "描述年龄、性别、音域、音色质感、口音和说话风格…",
+          "required": true,
+          "maxLength": 2000
+        },
+        "id": "voice-design-auto",
+        "label": "MiniMax 音色设计",
+        "capability": "voice.design",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "fields": {
+          "preview_text": {
+            "placement": "body",
+            "maxLength": 500,
+            "type": "string",
+            "label": "试听文本",
+            "control": "textarea",
+            "default": "你好，这是为你设计的专属音色。",
+            "required": true
+          },
+          "voice_id": {
+            "description": "留空由平台生成；填写时须符合 MiniMax 的命名规则。",
+            "type": "string",
+            "label": "自定义音色 ID（可选）",
+            "default": ""
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        },
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 32000
+        },
+        "id": "MiniMax-H3-Image",
+        "label": "MiniMax-H3-Image",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 16,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "area": {
+            "visibleWhen": {
+              "size": "auto"
+            },
+            "type": "string",
+            "label": "分辨率",
+            "default": "4K",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ]
+          },
+          "aspect_ratio": {
+            "visibleWhen": {
+              "size": "auto"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "21:9",
+              "3:1",
+              "1:3"
+            ]
+          },
+          "disable_prompt_enhanced": {
+            "type": "boolean",
+            "label": "关闭提示词增强",
+            "default": false
+          },
+          "n": {
+            "type": "integer",
+            "label": "生成数量",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10
+          },
+          "output_compression": {
+            "type": "integer",
+            "label": "压缩质量",
+            "default": 95,
+            "minimum": 0,
+            "maximum": 100
+          },
+          "output_format": {
+            "type": "string",
+            "label": "输出格式",
+            "default": "jpeg",
+            "enum": [
+              "jpeg",
+              "png",
+              "webp"
+            ]
+          },
+          "size": {
+            "description": "auto 或 宽x高；655360–20000000 像素，比例 1:3–3:1。自定义尺寸时不发送比例与面积档位。",
+            "maxLength": 32,
+            "type": "string",
+            "label": "自定义分辨率",
+            "default": "auto"
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 32000
+        },
+        "id": "MiniMax-H3-Image-auto",
+        "label": "MiniMax-H3-Image",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 16,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "area": {
+            "visibleWhen": {
+              "size": "auto"
+            },
+            "type": "string",
+            "label": "分辨率",
+            "default": "4K",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ]
+          },
+          "aspect_ratio": {
+            "visibleWhen": {
+              "size": "auto"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "21:9",
+              "3:1",
+              "1:3"
+            ]
+          },
+          "disable_prompt_enhanced": {
+            "type": "boolean",
+            "label": "关闭提示词增强",
+            "default": false,
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "n": {
+            "type": "integer",
+            "label": "生成数量",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10
+          },
+          "output_compression": {
+            "type": "integer",
+            "label": "压缩质量",
+            "default": 95,
+            "minimum": 0,
+            "maximum": 100,
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "output_format": {
+            "type": "string",
+            "label": "输出格式",
+            "default": "jpeg",
+            "enum": [
+              "jpeg",
+              "png",
+              "webp"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "size": {
+            "description": "auto 或 宽x高；655360–20000000 像素，比例 1:3–3:1。自定义尺寸时不发送比例与面积档位。",
+            "maxLength": 32,
+            "type": "string",
+            "label": "自定义分辨率",
+            "default": "auto"
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          }
+        },
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 32000
+        },
+        "id": "MiniMax-H3-Image-Highspeed",
+        "label": "MiniMax-H3-Image-Highspeed",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 16,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "area": {
+            "visibleWhen": {
+              "size": "auto"
+            },
+            "type": "string",
+            "label": "分辨率",
+            "default": "4K",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ]
+          },
+          "aspect_ratio": {
+            "visibleWhen": {
+              "size": "auto"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "21:9",
+              "3:1",
+              "1:3"
+            ]
+          },
+          "disable_prompt_enhanced": {
+            "type": "boolean",
+            "label": "关闭提示词增强",
+            "default": false
+          },
+          "n": {
+            "type": "integer",
+            "label": "生成数量",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10
+          },
+          "output_compression": {
+            "type": "integer",
+            "label": "压缩质量",
+            "default": 95,
+            "minimum": 0,
+            "maximum": 100
+          },
+          "output_format": {
+            "type": "string",
+            "label": "输出格式",
+            "default": "jpeg",
+            "enum": [
+              "jpeg",
+              "png",
+              "webp"
+            ]
+          },
+          "size": {
+            "description": "auto 或 宽x高；655360–20000000 像素，比例 1:3–3:1。自定义尺寸时不发送比例与面积档位。",
+            "maxLength": 32,
+            "type": "string",
+            "label": "自定义分辨率",
+            "default": "auto"
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 32000
+        },
+        "id": "MiniMax-H3-Image-Highspeed-auto",
+        "label": "MiniMax-H3-Image-Highspeed",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 16,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "area": {
+            "visibleWhen": {
+              "size": "auto"
+            },
+            "type": "string",
+            "label": "分辨率",
+            "default": "4K",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ]
+          },
+          "aspect_ratio": {
+            "visibleWhen": {
+              "size": "auto"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "21:9",
+              "3:1",
+              "1:3"
+            ]
+          },
+          "disable_prompt_enhanced": {
+            "type": "boolean",
+            "label": "关闭提示词增强",
+            "default": false,
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "n": {
+            "type": "integer",
+            "label": "生成数量",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10
+          },
+          "output_compression": {
+            "type": "integer",
+            "label": "压缩质量",
+            "default": 95,
+            "minimum": 0,
+            "maximum": 100,
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "output_format": {
+            "type": "string",
+            "label": "输出格式",
+            "default": "jpeg",
+            "enum": [
+              "jpeg",
+              "png",
+              "webp"
+            ],
+            "visibleWhen": {
+              "access": "api"
+            }
+          },
+          "size": {
+            "description": "auto 或 宽x高；655360–20000000 像素，比例 1:3–3:1。自定义尺寸时不发送比例与面积档位。",
+            "maxLength": 32,
+            "type": "string",
+            "label": "自定义分辨率",
+            "default": "auto"
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          }
+        },
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "MiniMax-H3",
+        "label": "MiniMax-H3",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image",
+          "video",
+          "audio"
+        ],
+        "maxInputs": 12,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "default": 5,
+            "minimum": 4,
+            "maximum": 15,
+            "control": "duration"
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference_image": {
+                "intent": "reference",
+                "images": {
+                  "min": 1,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "text": {
+                "intent": "text",
+                "images": {
+                  "min": 0,
+                  "max": 0
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference": {
+                "intent": "reference",
+                "images": {
+                  "min": 0,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 3
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧",
+              "first_last_frame": "首尾帧",
+              "reference_image": "参考图片",
+              "text": "文生视频",
+              "reference": "全能参考"
+            },
+            "type": "string",
+            "label": "输入模式",
+            "default": "text",
+            "enum": [
+              "text",
+              "first_frame",
+              "first_last_frame",
+              "reference_image",
+              "reference"
+            ]
+          },
+          "ratio": {
+            "visibleWhen": {
+              "input_mode": "text"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "reference_ratio": {
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "adaptive",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "visibleWhenAny": [
+              {
+                "input_mode": "reference_image"
+              },
+              {
+                "input_mode": "reference"
+              }
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "768P",
+            "enum": [
+              "768P",
+              "2K"
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          },
+          "regeneration_draft": {
+            "type": "boolean",
+            "label": "保留原内容用于 2K 再生成",
+            "default": false,
+            "visibleWhen": {
+              "resolution": "768P"
+            }
+          }
+        },
+        "hidden": true,
+        "draftOutput": {
+          "parameter": "regeneration_draft",
+          "finalModel": "MiniMax-H3-Regeneration"
+        }
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "MiniMax-H3-auto",
+        "label": "MiniMax-H3",
+        "usageNote": "全能参考支持订阅和官方 API，均可混合输入图片、视频和音频。订阅下视频和音频合计最多 3 段。",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image",
+          "video",
+          "audio"
+        ],
+        "maxInputs": 12,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "default": 5,
+            "minimum": 4,
+            "maximum": 15,
+            "control": "duration"
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference_image": {
+                "intent": "reference",
+                "images": {
+                  "min": 1,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "text": {
+                "intent": "text",
+                "images": {
+                  "min": 0,
+                  "max": 0
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference": {
+                "intent": "reference",
+                "images": {
+                  "min": 0,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 3
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧",
+              "first_last_frame": "首尾帧",
+              "reference_image": "参考图片",
+              "text": "文生视频",
+              "reference": "全能参考"
+            },
+            "type": "string",
+            "label": "输入模式",
+            "default": "text",
+            "enum": [
+              "text",
+              "first_frame",
+              "first_last_frame",
+              "reference_image",
+              "reference"
+            ]
+          },
+          "ratio": {
+            "visibleWhen": {
+              "input_mode": "text"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "reference_ratio": {
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "adaptive",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "visibleWhenAny": [
+              {
+                "input_mode": "reference_image"
+              },
+              {
+                "input_mode": "reference"
+              }
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "768P",
+            "enum": [
+              "768P",
+              "2K"
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          },
+          "regeneration_draft": {
+            "type": "boolean",
+            "label": "保留原内容用于 2K 再生成",
+            "default": false,
+            "visibleWhen": {
+              "resolution": "768P"
+            }
+          }
+        },
+        "hidden": false,
+        "draftOutput": {
+          "parameter": "regeneration_draft",
+          "finalModel": "MiniMax-H3-Regeneration"
+        }
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "MiniMax-H3-Highspeed",
+        "label": "MiniMax-H3-Highspeed",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "default": 5,
+            "minimum": 4,
+            "maximum": 15,
+            "control": "duration"
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference_image": {
+                "intent": "reference",
+                "images": {
+                  "min": 1,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "text": {
+                "intent": "text",
+                "images": {
+                  "min": 0,
+                  "max": 0
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧",
+              "first_last_frame": "首尾帧",
+              "reference_image": "参考图片",
+              "text": "文生视频"
+            },
+            "type": "string",
+            "label": "输入模式",
+            "default": "text",
+            "enum": [
+              "text",
+              "first_frame",
+              "first_last_frame",
+              "reference_image"
+            ]
+          },
+          "ratio": {
+            "visibleWhen": {
+              "input_mode": "text"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "reference_ratio": {
+            "visibleWhen": {
+              "input_mode": "reference_image"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "adaptive",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "768P",
+            "enum": [
+              "480P",
+              "768P"
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "MiniMax-H3-Highspeed-auto",
+        "label": "MiniMax-H3-Highspeed",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "default": 5,
+            "minimum": 4,
+            "maximum": 15,
+            "control": "duration"
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference_image": {
+                "intent": "reference",
+                "images": {
+                  "min": 1,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "text": {
+                "intent": "text",
+                "images": {
+                  "min": 0,
+                  "max": 0
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧",
+              "first_last_frame": "首尾帧",
+              "reference_image": "参考图片",
+              "text": "文生视频"
+            },
+            "type": "string",
+            "label": "输入模式",
+            "default": "text",
+            "enum": [
+              "text",
+              "first_frame",
+              "first_last_frame",
+              "reference_image"
+            ]
+          },
+          "ratio": {
+            "visibleWhen": {
+              "input_mode": "text"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "reference_ratio": {
+            "visibleWhen": {
+              "input_mode": "reference_image"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "adaptive",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "768P",
+            "enum": [
+              "480P",
+              "768P"
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          }
+        },
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "MiniMax-H3-Lite",
+        "label": "MiniMax-H3-Lite",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "default": 5,
+            "minimum": 4,
+            "maximum": 15,
+            "control": "duration"
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference_image": {
+                "intent": "reference",
+                "images": {
+                  "min": 1,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "text": {
+                "intent": "text",
+                "images": {
+                  "min": 0,
+                  "max": 0
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧",
+              "first_last_frame": "首尾帧",
+              "reference_image": "参考图片",
+              "text": "文生视频"
+            },
+            "type": "string",
+            "label": "输入模式",
+            "default": "text",
+            "enum": [
+              "text",
+              "first_frame",
+              "first_last_frame",
+              "reference_image"
+            ]
+          },
+          "ratio": {
+            "visibleWhen": {
+              "input_mode": "text"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "reference_ratio": {
+            "visibleWhen": {
+              "input_mode": "reference_image"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "768P",
+            "enum": [
+              "480P",
+              "768P"
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "MiniMax-H3-Lite-auto",
+        "label": "MiniMax-H3-Lite",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "default": 5,
+            "minimum": 4,
+            "maximum": 15,
+            "control": "duration"
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference_image": {
+                "intent": "reference",
+                "images": {
+                  "min": 1,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "text": {
+                "intent": "text",
+                "images": {
+                  "min": 0,
+                  "max": 0
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧",
+              "first_last_frame": "首尾帧",
+              "reference_image": "参考图片",
+              "text": "文生视频"
+            },
+            "type": "string",
+            "label": "输入模式",
+            "default": "text",
+            "enum": [
+              "text",
+              "first_frame",
+              "first_last_frame",
+              "reference_image"
+            ]
+          },
+          "ratio": {
+            "visibleWhen": {
+              "input_mode": "text"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "reference_ratio": {
+            "visibleWhen": {
+              "input_mode": "reference_image"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "768P",
+            "enum": [
+              "480P",
+              "768P"
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          }
+        },
+        "hidden": false
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "MiniMax-H3-Max",
+        "label": "MiniMax-H3-Max",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "default": 5,
+            "minimum": 5,
+            "maximum": 15,
+            "control": "duration"
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference_image": {
+                "intent": "reference",
+                "images": {
+                  "min": 1,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "text": {
+                "intent": "text",
+                "images": {
+                  "min": 0,
+                  "max": 0
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧",
+              "first_last_frame": "首尾帧",
+              "reference_image": "参考图片",
+              "text": "文生视频"
+            },
+            "type": "string",
+            "label": "输入模式",
+            "default": "text",
+            "enum": [
+              "text",
+              "first_frame",
+              "first_last_frame",
+              "reference_image"
+            ]
+          },
+          "prompt_expansion_mode": {
+            "type": "string",
+            "label": "提示词扩写",
+            "default": "balanced",
+            "enum": [
+              "disabled",
+              "balanced",
+              "quality"
+            ]
+          },
+          "ratio": {
+            "visibleWhen": {
+              "input_mode": "text"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "reference_ratio": {
+            "visibleWhen": {
+              "input_mode": "reference_image"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "adaptive",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "768P",
+            "enum": [
+              "480P",
+              "768P"
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ],
+            "optionLabels": {
+              "api": "官方 API"
+            }
+          }
+        },
+        "hidden": true
+      },
+      {
+        "prompt": {
+          "label": "提示词",
+          "required": true,
+          "maxLength": 20000
+        },
+        "id": "MiniMax-H3-Max-auto",
+        "label": "MiniMax-H3-Max",
+        "capability": "video.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 9,
+        "fields": {
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "可见水印",
+            "default": false
+          },
+          "duration": {
+            "type": "integer",
+            "label": "时长（秒）",
+            "default": 5,
+            "minimum": 5,
+            "maximum": 15,
+            "control": "duration"
+          },
+          "input_mode": {
+            "inputModes": {
+              "first_frame": {
+                "intent": "first_frame",
+                "images": {
+                  "min": 1,
+                  "max": 1
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "first_last_frame": {
+                "intent": "first_last_frame",
+                "images": {
+                  "min": 2,
+                  "max": 2
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "reference_image": {
+                "intent": "reference",
+                "images": {
+                  "min": 1,
+                  "max": 9
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              },
+              "text": {
+                "intent": "text",
+                "images": {
+                  "min": 0,
+                  "max": 0
+                },
+                "videos": {
+                  "min": 0,
+                  "max": 0
+                },
+                "audios": {
+                  "min": 0,
+                  "max": 0
+                }
+              }
+            },
+            "optionLabels": {
+              "first_frame": "首帧",
+              "first_last_frame": "首尾帧",
+              "reference_image": "参考图片",
+              "text": "文生视频"
+            },
+            "type": "string",
+            "label": "输入模式",
+            "default": "text",
+            "enum": [
+              "text",
+              "first_frame",
+              "first_last_frame",
+              "reference_image"
+            ]
+          },
+          "prompt_expansion_mode": {
+            "type": "string",
+            "label": "提示词扩写",
+            "default": "balanced",
+            "enum": [
+              "disabled",
+              "balanced",
+              "quality"
+            ]
+          },
+          "ratio": {
+            "visibleWhen": {
+              "input_mode": "text"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "16:9",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "reference_ratio": {
+            "visibleWhen": {
+              "input_mode": "reference_image"
+            },
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "default": "adaptive",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "default": "768P",
+            "enum": [
+              "480P",
+              "768P"
+            ]
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "subscription",
+              "api"
+            ],
+            "optionLabels": {
+              "auto": "订阅优先，积分或并发不足时使用官方 API",
+              "subscription": "仅 MiniMax Design 订阅",
+              "api": "仅官方 API"
+            }
+          }
+        },
+        "hidden": false
+      },
+      {
+        "id": "MiniMax-H3-Regeneration",
+        "label": "MiniMax-H3 · 官方 API 再生成 2K",
+        "capability": "video.generate",
+        "hidden": true,
+        "maxInputs": 0,
+        "prompt": {
+          "required": false
+        },
+        "fromDraft": {
+          "parameter": "sourceJob",
+          "models": [
+            "MiniMax-H3",
+            "MiniMax-H3-auto"
+          ]
+        },
+        "fields": {
+          "sourceJob": {
+            "type": "string",
+            "label": "原样片任务",
+            "required": true
+          }
+        }
+      },
+      {
+        "id": "nano_banana_2_flash",
+        "label": "Nano Bnana 2",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 10,
+        "prompt": {
+          "label": "图片描述",
+          "required": true,
+          "maxLength": 5000
+        },
+        "fields": {
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "subscription",
+            "enum": [
+              "subscription"
+            ],
+            "optionLabels": {
+              "subscription": "MiniMax Design 订阅"
+            }
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "enum": [
+              "auto",
+              "1:1",
+              "16:9",
+              "9:16",
+              "3:4",
+              "4:3",
+              "3:2",
+              "2:3",
+              "5:4",
+              "4:5",
+              "21:9"
+            ],
+            "default": "auto"
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "control": "resolution",
+            "enum": [
+              "auto",
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "default": "2K"
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "id": "nano_banana_2",
+        "label": "Nano Bnana Pro",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 10,
+        "prompt": {
+          "label": "图片描述",
+          "required": true,
+          "maxLength": 5000
+        },
+        "fields": {
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "subscription",
+            "enum": [
+              "subscription"
+            ],
+            "optionLabels": {
+              "subscription": "MiniMax Design 订阅"
+            }
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "enum": [
+              "auto",
+              "1:1",
+              "16:9",
+              "9:16",
+              "3:4",
+              "4:3",
+              "3:2",
+              "2:3",
+              "5:4",
+              "4:5",
+              "21:9"
+            ],
+            "default": "auto"
+          },
+          "resolution": {
+            "type": "string",
+            "label": "分辨率",
+            "control": "resolution",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "default": "2K"
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "id": "midjourney-8.2",
+        "label": "Midjourney V8.2",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 4,
+        "prompt": {
+          "label": "图片描述",
+          "required": true,
+          "maxLength": 2000
+        },
+        "fields": {
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "subscription",
+            "enum": [
+              "subscription"
+            ],
+            "optionLabels": {
+              "subscription": "MiniMax Design 订阅"
+            }
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "label": "比例",
+            "control": "ratio",
+            "enum": [
+              "auto",
+              "1:1",
+              "16:9",
+              "9:16",
+              "3:4",
+              "4:3",
+              "3:2",
+              "2:3",
+              "5:4",
+              "4:5",
+              "21:9"
+            ],
+            "default": "1:1"
+          },
+          "clarity": {
+            "type": "string",
+            "label": "清晰度",
+            "control": "resolution",
+            "enum": [
+              "1k",
+              "2k"
+            ],
+            "default": "2k"
+          },
+          "stylize": {
+            "type": "integer",
+            "label": "风格化",
+            "control": "slider",
+            "minimum": 0,
+            "maximum": 1000,
+            "step": 1,
+            "default": 100
+          },
+          "chaos": {
+            "type": "integer",
+            "label": "多样化",
+            "control": "slider",
+            "minimum": 0,
+            "maximum": 100,
+            "step": 1,
+            "default": 0
+          },
+          "weird": {
+            "type": "integer",
+            "label": "怪异化",
+            "control": "slider",
+            "minimum": 0,
+            "maximum": 3000,
+            "step": 1,
+            "default": 0
+          },
+          "n": {
+            "type": "integer",
+            "label": "每次四张",
+            "control": "count",
+            "default": 4,
+            "enum": [
+              4
+            ],
+            "minimum": 4,
+            "maximum": 4
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "id": "elevenlabs-music-v2",
+        "label": "ElevenLabs Music v2",
+        "capability": "music.generate",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "prompt": {
+          "label": "音乐风格",
+          "placeholder": "描述想要的音乐风格、乐器与氛围…",
+          "required": true,
+          "maxLength": 2000
+        },
+        "fields": {
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "subscription",
+            "enum": [
+              "subscription"
+            ],
+            "optionLabels": {
+              "subscription": "MiniMax Design 订阅"
+            }
+          },
+          "is_instrumental": {
+            "type": "boolean",
+            "label": "纯音乐",
+            "default": true,
+            "enum": [
+              true
+            ],
+            "description": "当前渠道仅支持纯音乐。"
+          },
+          "duration": {
+            "type": "integer",
+            "label": "音乐时长",
+            "control": "duration",
+            "minimum": 3,
+            "maximum": 600,
+            "step": 1,
+            "description": "不指定时由模型自适应生成；可指定 3–600 秒。"
+          },
+          "aigc_watermark": {
+            "type": "boolean",
+            "label": "生成水印",
+            "default": false
+          }
+        }
+      },
+      {
+        "id": "asr-1.0",
+        "label": "MiniMax ASR 1.0",
+        "capability": "speech.transcribe",
+        "hidden": true,
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "inputRoles": {
+          "source_audio": {
+            "kind": "audio",
+            "label": "固定源音频",
+            "required": true
+          }
+        },
+        "transcription": {
+          "maxDurationMs": 500000,
+          "maxBytes": 50000000,
+          "wordTimestamps": true,
+          "speakerDiarization": true,
+          "languages": [
+            "zh",
+            "yue",
+            "en",
+            "ja",
+            "ko",
+            "th",
+            "vi",
+            "id",
+            "ms",
+            "fil",
+            "ar",
+            "tr",
+            "fr",
+            "de",
+            "es",
+            "it",
+            "pt",
+            "pl",
+            "ru",
+            "uk"
+          ]
+        },
+        "fields": {
+          "language": {
+            "type": "string",
+            "label": "识别语言",
+            "default": "",
+            "enum": [
+              "",
+              "zh",
+              "yue",
+              "en",
+              "ja",
+              "ko",
+              "th",
+              "vi",
+              "id",
+              "ms",
+              "fil",
+              "ar",
+              "tr",
+              "fr",
+              "de",
+              "es",
+              "it",
+              "pt",
+              "pl",
+              "ru",
+              "uk"
+            ]
+          },
+          "source_duration_ms": {
+            "type": "integer",
+            "label": "固定源时长（毫秒）",
+            "required": true,
+            "minimum": 1,
+            "maximum": 500000
+          },
+          "access": {
+            "type": "string",
+            "label": "接入方式",
+            "default": "api",
+            "enum": [
+              "api"
+            ]
+          }
+        }
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 20,
+      "cancelable": false
+    },
+    "optionalSecrets": [
+      "API_KEY"
+    ]
+  },
+  "files": []
+}

@@ -1,0 +1,55 @@
+{
+  "contributions": [
+    {
+      "id": "document-text",
+      "kind": "processor"
+    }
+  ],
+  "definitions": {
+    "document-text": "definitions/document-text.json"
+  },
+  "files": [
+    {
+      "bytes": 397,
+      "path": "adapter.mjs",
+      "sha256": "948d1dae76e7a9daef1266b106ba3400b043fa9499a5e818a5c8e684157609f7"
+    },
+    {
+      "bytes": 11262,
+      "path": "host.mjs",
+      "sha256": "a63c55cff1aa6f745e9be8421379a91c5413067d130891c61616006a4d752383"
+    },
+    {
+      "bytes": 965,
+      "path": "definitions/document-text.json",
+      "sha256": "87fc999a87cdf56d67aed31118509981b84a1a913f1a1c41e1674f2eca0221a7"
+    },
+    {
+      "bytes": 11358,
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "bytes": 349,
+      "path": "NOTICE",
+      "sha256": "aa12f0e81e44a0b8660cb58ce8abd15cb44f4c2dca72c4a25f40ff73b8526a1d"
+    },
+    {
+      "bytes": 2147,
+      "path": "README.md",
+      "sha256": "f0d6c49227901c47553c9b2cba16cef09ed9412224acaebffe20b1f9ea84c3fa"
+    },
+    {
+      "bytes": 248,
+      "path": "fixtures/action-verification.json",
+      "sha256": "5d02cab2cf0caa220691f81557c821865afe92ec0cbdb60f86c3c82bf5810a96"
+    }
+  ],
+  "formatVersion": 1,
+  "hostProtocol": 1,
+  "license": "Apache-2.0",
+  "packageId": "ordiweft-examples/document-text",
+  "requirements": [],
+  "runtime": "node",
+  "version": "1.0.1"
+}

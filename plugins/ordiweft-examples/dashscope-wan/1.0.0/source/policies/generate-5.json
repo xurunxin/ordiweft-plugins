@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "models": {
+    "wan2.7-image-pro": "wan2.7-image-pro",
+    "wan2.7-image": "wan2.7-image"
+  },
+  "modelPointer": "/model",
+  "countPointer": "/parameters/n",
+  "whenAny": [
+    {
+      "/inputCount": [
+        5
+      ],
+      "/parameters/enable_sequential": [
+        true
+      ],
+      "/parameters/size": [
+        "1K",
+        "2K"
+      ],
+      "/count": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "/inputCount": [
+        5
+      ],
+      "/parameters/enable_sequential": [
+        false
+      ],
+      "/parameters/size": [
+        "1K",
+        "2K"
+      ],
+      "/count": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  ],
+  "body": {
+    "model": {
+      "$host": "model"
+    },
+    "input": {
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "image": {
+                "$host": "input-key",
+                "ref": "original-policy",
+                "pointer": "/data/upload_dir",
+                "index": 0,
+                "extensionsByMime": {
+                  "image/png": ".png",
+                  "image/jpeg": ".jpg",
+                  "image/webp": ".webp"
+                },
+                "uriPrefix": "oss://"
+              }
+            },
+            {
+              "image": {
+                "$host": "input-key",
+                "ref": "original-policy",
+                "pointer": "/data/upload_dir",
+                "index": 1,
+                "extensionsByMime": {
+                  "image/png": ".png",
+                  "image/jpeg": ".jpg",
+                  "image/webp": ".webp"
+                },
+                "uriPrefix": "oss://"
+              }
+            },
+            {
+              "image": {
+                "$host": "input-key",
+                "ref": "original-policy",
+                "pointer": "/data/upload_dir",
+                "index": 2,
+                "extensionsByMime": {
+                  "image/png": ".png",
+                  "image/jpeg": ".jpg",
+                  "image/webp": ".webp"
+                },
+                "uriPrefix": "oss://"
+              }
+            },
+            {
+              "image": {
+                "$host": "input-key",
+                "ref": "original-policy",
+                "pointer": "/data/upload_dir",
+                "index": 3,
+                "extensionsByMime": {
+                  "image/png": ".png",
+                  "image/jpeg": ".jpg",
+                  "image/webp": ".webp"
+                },
+                "uriPrefix": "oss://"
+              }
+            },
+            {
+              "image": {
+                "$host": "input-key",
+                "ref": "original-policy",
+                "pointer": "/data/upload_dir",
+                "index": 4,
+                "extensionsByMime": {
+                  "image/png": ".png",
+                  "image/jpeg": ".jpg",
+                  "image/webp": ".webp"
+                },
+                "uriPrefix": "oss://"
+              }
+            },
+            {
+              "text": {
+                "$host": "prompt"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "parameters": {
+      "n": {
+        "$host": "count"
+      },
+      "size": {
+        "$host": "parameter",
+        "name": "size"
+      },
+      "watermark": {
+        "$host": "parameter",
+        "name": "watermark"
+      },
+      "seed": {
+        "$host": "parameter",
+        "name": "seed",
+        "optional": true
+      },
+      "enable_sequential": {
+        "$host": "parameter",
+        "name": "enable_sequential"
+      }
+    }
+  }
+}

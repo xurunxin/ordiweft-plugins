@@ -1,0 +1,11 @@
+Ordiweft document-normalize processor sample
+Copyright 2026 Ordiweft contributors
+
+This original sample is licensed under the Apache License, Version 2.0.
+Includes the vendored SDK below; Morpheus is not included.
+
+Ordiweft plugin Host Services SDK
+Copyright 2026 Ordiweft contributors
+
+This SDK distribution is licensed under the Apache License, Version 2.0.
+It has no runtime npm dependencies and does not include Morpheus.

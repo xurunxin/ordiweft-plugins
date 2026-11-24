@@ -1,0 +1,40 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/form-node",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "data",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "kind": "node",
+      "id": "brief"
+    }
+  ],
+  "requirements": [],
+  "definitions": {
+    "brief": "definitions/brief.json"
+  },
+  "files": [
+    {
+      "path": "definitions/brief.json",
+      "sha256": "4f71cdbcd4fc7462a3856adbd8b9b61adaa624e2ecbd44ee6020434b8a0855a6",
+      "bytes": 775
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "aaa80bcc5005954d8332612f36d9f72a635825a79227598f9697f4b25523e6d9",
+      "bytes": 124
+    },
+    {
+      "path": "README.md",
+      "sha256": "1ec35e4489cff5165c825290400b049a5461dbe5e517ac391b38c5bdcd2fc291",
+      "bytes": 995
+    }
+  ]
+}

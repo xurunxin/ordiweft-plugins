@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-migrations/dashscope",
+  "releaseVersion": "1.1.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/ordiweft-plugins",
+    "commit": "81457faad7496f2de80999bd10b4ad912479dd52",
+    "path": "executors/dashscope"
+  },
+  "runtimeImage": "sha256:c567b231f65614688711a75f31518a064258a51d442117a3e771a3a8fdba78ef"
+}

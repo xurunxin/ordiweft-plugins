@@ -1,0 +1,1000 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/gpt-image",
+  "version": "1.0.2",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "gpt-image",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "streams",
+      "version": 1,
+      "operations": [
+        "open",
+        "next",
+        "close"
+      ]
+    },
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "read",
+        "release"
+      ]
+    },
+    {
+      "service": "media",
+      "version": 1,
+      "operations": [
+        "inspect"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint",
+        "progress",
+        "query"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "begin",
+        "write",
+        "stage"
+      ]
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "gpt-image",
+    "name": "GPT Image（OpenAI API）",
+    "version": "1.0.2",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY"
+    ],
+    "nodes": [
+      {
+        "id": "image",
+        "label": "图片生成（GPT Image API）",
+        "capability": "image.generate",
+        "model": "gpt-image-1.5"
+      }
+    ],
+    "models": [
+      {
+        "inputRoles": {
+          "image01": {
+            "kind": "image",
+            "label": "参考图 1",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 1
+          },
+          "image02": {
+            "kind": "image",
+            "label": "参考图 2",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 2
+          },
+          "image03": {
+            "kind": "image",
+            "label": "参考图 3",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 3
+          },
+          "image04": {
+            "kind": "image",
+            "label": "参考图 4",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 4
+          },
+          "image05": {
+            "kind": "image",
+            "label": "参考图 5",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 5
+          },
+          "image06": {
+            "kind": "image",
+            "label": "参考图 6",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 6
+          },
+          "image07": {
+            "kind": "image",
+            "label": "参考图 7",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 7
+          },
+          "image08": {
+            "kind": "image",
+            "label": "参考图 8",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 8
+          },
+          "image09": {
+            "kind": "image",
+            "label": "参考图 9",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 9
+          },
+          "image10": {
+            "kind": "image",
+            "label": "参考图 10",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 10
+          },
+          "image11": {
+            "kind": "image",
+            "label": "参考图 11",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 11
+          },
+          "image12": {
+            "kind": "image",
+            "label": "参考图 12",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 12
+          },
+          "image13": {
+            "kind": "image",
+            "label": "参考图 13",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 13
+          },
+          "image14": {
+            "kind": "image",
+            "label": "参考图 14",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 14
+          },
+          "image15": {
+            "kind": "image",
+            "label": "参考图 15",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 15
+          },
+          "image16": {
+            "kind": "image",
+            "label": "参考图 16",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 16
+          },
+          "mask": {
+            "kind": "image",
+            "label": "编辑遮罩",
+            "description": "与第一张参考图同尺寸的透明 PNG，小于 4 MB；透明区域为编辑区域。",
+            "required": true,
+            "order": 17,
+            "visibleWhen": {
+              "edit_overlay": "mask"
+            }
+          }
+        },
+        "prompt": {
+          "label": "提示词",
+          "placeholder": "描述图像；连接参考图进行编辑，可选遮罩控制局部修改。",
+          "required": true,
+          "maxLength": 32000
+        },
+        "id": "gpt-image-1.5",
+        "label": "gpt-image-1.5",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 17,
+        "fields": {
+          "background": {
+            "optionLabels": {
+              "auto": "自动",
+              "opaque": "不透明",
+              "transparent": "透明"
+            },
+            "visibleWhenAny": [
+              {
+                "output_format": "png"
+              },
+              {
+                "output_format": "webp"
+              }
+            ],
+            "type": "string",
+            "label": "背景",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "opaque",
+              "transparent"
+            ]
+          },
+          "edit_overlay": {
+            "optionLabels": {
+              "mask": "遮罩",
+              "none": "无"
+            },
+            "type": "string",
+            "label": "局部编辑",
+            "default": "none",
+            "enum": [
+              "none",
+              "mask"
+            ]
+          },
+          "input_fidelity": {
+            "optionLabels": {
+              "high": "高",
+              "low": "低"
+            },
+            "type": "string",
+            "label": "参考保真度",
+            "default": "low",
+            "enum": [
+              "low",
+              "high"
+            ]
+          },
+          "moderation": {
+            "optionLabels": {
+              "auto": "自动",
+              "low": "宽松"
+            },
+            "type": "string",
+            "label": "内容审核",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "low"
+            ]
+          },
+          "n": {
+            "visibleWhen": {
+              "stream": false
+            },
+            "type": "integer",
+            "label": "生成数量",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10
+          },
+          "output_compression": {
+            "section": "advanced",
+            "visibleWhenAny": [
+              {
+                "output_format": "jpeg"
+              },
+              {
+                "output_format": "webp"
+              }
+            ],
+            "type": "integer",
+            "label": "压缩质量",
+            "default": 100,
+            "minimum": 0,
+            "maximum": 100
+          },
+          "output_format": {
+            "optionLabels": {
+              "jpeg": "JPEG",
+              "png": "PNG",
+              "webp": "WebP"
+            },
+            "type": "string",
+            "label": "输出格式",
+            "default": "png",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ]
+          },
+          "partial_images": {
+            "section": "advanced",
+            "visibleWhen": {
+              "stream": true
+            },
+            "type": "integer",
+            "label": "中间图数量",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 3
+          },
+          "quality": {
+            "optionLabels": {
+              "auto": "自动",
+              "high": "高",
+              "low": "低",
+              "medium": "中"
+            },
+            "type": "string",
+            "label": "质量",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "safety_identifier": {
+            "section": "advanced",
+            "description": "可选的匿名用户标识；留空时由宿主身份生成哈希。",
+            "maxLength": 128,
+            "type": "string",
+            "label": "安全标识"
+          },
+          "size": {
+            "optionLabels": {
+              "1024x1024": "方形 1:1",
+              "1024x1536": "纵向 2:3",
+              "1536x1024": "横向 3:2",
+              "1536x864": "横向 16:9",
+              "2048x2048": "2K 方形",
+              "2160x3840": "4K 纵向",
+              "3840x2160": "4K 横向",
+              "864x1536": "纵向 9:16",
+              "auto": "自动"
+            },
+            "description": "此模型仅支持自动、1024x1024、1024x1536 和 1536x1024。",
+            "maxLength": 32,
+            "type": "string",
+            "label": "分辨率",
+            "control": "resolution",
+            "default": "1024x1024",
+            "enum": [
+              "auto",
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
+            ]
+          },
+          "stream": {
+            "section": "advanced",
+            "description": "仅支持单张。接收中间图事件；仅最终图保存为版本，中断不重新提交。",
+            "type": "boolean",
+            "label": "流式接收",
+            "default": false
+          },
+          "user": {
+            "section": "advanced",
+            "description": "兼容官方弃用参数；优先使用安全标识。",
+            "maxLength": 128,
+            "type": "string",
+            "label": "旧版用户标识"
+          }
+        }
+      },
+      {
+        "inputRoles": {
+          "image01": {
+            "kind": "image",
+            "label": "参考图 1",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 1
+          },
+          "image02": {
+            "kind": "image",
+            "label": "参考图 2",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 2
+          },
+          "image03": {
+            "kind": "image",
+            "label": "参考图 3",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 3
+          },
+          "image04": {
+            "kind": "image",
+            "label": "参考图 4",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 4
+          },
+          "image05": {
+            "kind": "image",
+            "label": "参考图 5",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 5
+          },
+          "image06": {
+            "kind": "image",
+            "label": "参考图 6",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 6
+          },
+          "image07": {
+            "kind": "image",
+            "label": "参考图 7",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 7
+          },
+          "image08": {
+            "kind": "image",
+            "label": "参考图 8",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 8
+          },
+          "image09": {
+            "kind": "image",
+            "label": "参考图 9",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 9
+          },
+          "image10": {
+            "kind": "image",
+            "label": "参考图 10",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 10
+          },
+          "image11": {
+            "kind": "image",
+            "label": "参考图 11",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 11
+          },
+          "image12": {
+            "kind": "image",
+            "label": "参考图 12",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 12
+          },
+          "image13": {
+            "kind": "image",
+            "label": "参考图 13",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 13
+          },
+          "image14": {
+            "kind": "image",
+            "label": "参考图 14",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 14
+          },
+          "image15": {
+            "kind": "image",
+            "label": "参考图 15",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 15
+          },
+          "image16": {
+            "kind": "image",
+            "label": "参考图 16",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 16
+          },
+          "mask": {
+            "kind": "image",
+            "label": "编辑遮罩",
+            "description": "与第一张参考图同尺寸的透明 PNG，小于 4 MB；透明区域为编辑区域。",
+            "required": true,
+            "order": 17,
+            "visibleWhen": {
+              "edit_overlay": "mask"
+            }
+          }
+        },
+        "prompt": {
+          "label": "提示词",
+          "placeholder": "描述图像；连接参考图进行编辑，可选遮罩控制局部修改。",
+          "required": true,
+          "maxLength": 32000
+        },
+        "id": "gpt-image-1-mini",
+        "label": "gpt-image-1-mini",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 17,
+        "fields": {
+          "background": {
+            "optionLabels": {
+              "auto": "自动",
+              "opaque": "不透明",
+              "transparent": "透明"
+            },
+            "visibleWhenAny": [
+              {
+                "output_format": "png"
+              },
+              {
+                "output_format": "webp"
+              }
+            ],
+            "type": "string",
+            "label": "背景",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "opaque",
+              "transparent"
+            ]
+          },
+          "edit_overlay": {
+            "optionLabels": {
+              "mask": "遮罩",
+              "none": "无"
+            },
+            "type": "string",
+            "label": "局部编辑",
+            "default": "none",
+            "enum": [
+              "none",
+              "mask"
+            ]
+          },
+          "input_fidelity": {
+            "optionLabels": {
+              "low": "低"
+            },
+            "type": "string",
+            "label": "参考保真度",
+            "default": "low",
+            "enum": [
+              "low"
+            ]
+          },
+          "moderation": {
+            "optionLabels": {
+              "auto": "自动",
+              "low": "宽松"
+            },
+            "type": "string",
+            "label": "内容审核",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "low"
+            ]
+          },
+          "n": {
+            "visibleWhen": {
+              "stream": false
+            },
+            "type": "integer",
+            "label": "生成数量",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10
+          },
+          "output_compression": {
+            "section": "advanced",
+            "visibleWhenAny": [
+              {
+                "output_format": "jpeg"
+              },
+              {
+                "output_format": "webp"
+              }
+            ],
+            "type": "integer",
+            "label": "压缩质量",
+            "default": 100,
+            "minimum": 0,
+            "maximum": 100
+          },
+          "output_format": {
+            "optionLabels": {
+              "jpeg": "JPEG",
+              "png": "PNG",
+              "webp": "WebP"
+            },
+            "type": "string",
+            "label": "输出格式",
+            "default": "png",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ]
+          },
+          "partial_images": {
+            "section": "advanced",
+            "visibleWhen": {
+              "stream": true
+            },
+            "type": "integer",
+            "label": "中间图数量",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 3
+          },
+          "quality": {
+            "optionLabels": {
+              "auto": "自动",
+              "high": "高",
+              "low": "低",
+              "medium": "中"
+            },
+            "type": "string",
+            "label": "质量",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "safety_identifier": {
+            "section": "advanced",
+            "description": "可选的匿名用户标识；留空时由宿主身份生成哈希。",
+            "maxLength": 128,
+            "type": "string",
+            "label": "安全标识"
+          },
+          "size": {
+            "optionLabels": {
+              "1024x1024": "方形 1:1",
+              "1024x1536": "纵向 2:3",
+              "1536x1024": "横向 3:2",
+              "1536x864": "横向 16:9",
+              "2048x2048": "2K 方形",
+              "2160x3840": "4K 纵向",
+              "3840x2160": "4K 横向",
+              "864x1536": "纵向 9:16",
+              "auto": "自动"
+            },
+            "description": "此模型仅支持自动、1024x1024、1024x1536 和 1536x1024。",
+            "maxLength": 32,
+            "type": "string",
+            "label": "分辨率",
+            "control": "resolution",
+            "default": "1024x1024",
+            "enum": [
+              "auto",
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
+            ]
+          },
+          "stream": {
+            "section": "advanced",
+            "description": "仅支持单张。接收中间图事件；仅最终图保存为版本，中断不重新提交。",
+            "type": "boolean",
+            "label": "流式接收",
+            "default": false
+          },
+          "user": {
+            "section": "advanced",
+            "description": "兼容官方弃用参数；优先使用安全标识。",
+            "maxLength": 128,
+            "type": "string",
+            "label": "旧版用户标识"
+          }
+        }
+      },
+      {
+        "inputRoles": {
+          "image01": {
+            "kind": "image",
+            "label": "参考图 1",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 1
+          },
+          "image02": {
+            "kind": "image",
+            "label": "参考图 2",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 2
+          },
+          "image03": {
+            "kind": "image",
+            "label": "参考图 3",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 3
+          },
+          "image04": {
+            "kind": "image",
+            "label": "参考图 4",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 4
+          },
+          "image05": {
+            "kind": "image",
+            "label": "参考图 5",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 5
+          },
+          "image06": {
+            "kind": "image",
+            "label": "参考图 6",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 6
+          },
+          "image07": {
+            "kind": "image",
+            "label": "参考图 7",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 7
+          },
+          "image08": {
+            "kind": "image",
+            "label": "参考图 8",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 8
+          },
+          "image09": {
+            "kind": "image",
+            "label": "参考图 9",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 9
+          },
+          "image10": {
+            "kind": "image",
+            "label": "参考图 10",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 10
+          },
+          "image11": {
+            "kind": "image",
+            "label": "参考图 11",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 11
+          },
+          "image12": {
+            "kind": "image",
+            "label": "参考图 12",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 12
+          },
+          "image13": {
+            "kind": "image",
+            "label": "参考图 13",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 13
+          },
+          "image14": {
+            "kind": "image",
+            "label": "参考图 14",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 14
+          },
+          "image15": {
+            "kind": "image",
+            "label": "参考图 15",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 15
+          },
+          "image16": {
+            "kind": "image",
+            "label": "参考图 16",
+            "description": "PNG/JPEG/WebP，单张小于 50 MB；有参考图时调用编辑接口。",
+            "order": 16
+          },
+          "mask": {
+            "kind": "image",
+            "label": "编辑遮罩",
+            "description": "与第一张参考图同尺寸的透明 PNG，小于 4 MB；透明区域为编辑区域。",
+            "required": true,
+            "order": 17,
+            "visibleWhen": {
+              "edit_overlay": "mask"
+            }
+          }
+        },
+        "prompt": {
+          "label": "提示词",
+          "placeholder": "描述图像；连接参考图进行编辑，可选遮罩控制局部修改。",
+          "required": true,
+          "maxLength": 32000
+        },
+        "id": "chatgpt-image-latest",
+        "label": "chatgpt-image-latest",
+        "capability": "image.generate",
+        "inputKinds": [
+          "image"
+        ],
+        "maxInputs": 17,
+        "fields": {
+          "background": {
+            "optionLabels": {
+              "auto": "自动",
+              "opaque": "不透明",
+              "transparent": "透明"
+            },
+            "visibleWhenAny": [
+              {
+                "output_format": "png"
+              },
+              {
+                "output_format": "webp"
+              }
+            ],
+            "type": "string",
+            "label": "背景",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "opaque",
+              "transparent"
+            ]
+          },
+          "edit_overlay": {
+            "optionLabels": {
+              "mask": "遮罩",
+              "none": "无"
+            },
+            "type": "string",
+            "label": "局部编辑",
+            "default": "none",
+            "enum": [
+              "none",
+              "mask"
+            ]
+          },
+          "input_fidelity": {
+            "optionLabels": {
+              "high": "高",
+              "low": "低"
+            },
+            "type": "string",
+            "label": "参考保真度",
+            "default": "low",
+            "enum": [
+              "low",
+              "high"
+            ]
+          },
+          "moderation": {
+            "optionLabels": {
+              "auto": "自动",
+              "low": "宽松"
+            },
+            "type": "string",
+            "label": "内容审核",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "low"
+            ]
+          },
+          "n": {
+            "visibleWhen": {
+              "stream": false
+            },
+            "type": "integer",
+            "label": "生成数量",
+            "control": "count",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10
+          },
+          "output_compression": {
+            "section": "advanced",
+            "visibleWhenAny": [
+              {
+                "output_format": "jpeg"
+              },
+              {
+                "output_format": "webp"
+              }
+            ],
+            "type": "integer",
+            "label": "压缩质量",
+            "default": 100,
+            "minimum": 0,
+            "maximum": 100
+          },
+          "output_format": {
+            "optionLabels": {
+              "jpeg": "JPEG",
+              "png": "PNG",
+              "webp": "WebP"
+            },
+            "type": "string",
+            "label": "输出格式",
+            "default": "png",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ]
+          },
+          "partial_images": {
+            "section": "advanced",
+            "visibleWhen": {
+              "stream": true
+            },
+            "type": "integer",
+            "label": "中间图数量",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 3
+          },
+          "quality": {
+            "optionLabels": {
+              "auto": "自动",
+              "high": "高",
+              "low": "低",
+              "medium": "中"
+            },
+            "type": "string",
+            "label": "质量",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "safety_identifier": {
+            "section": "advanced",
+            "description": "可选的匿名用户标识；留空时由宿主身份生成哈希。",
+            "maxLength": 128,
+            "type": "string",
+            "label": "安全标识"
+          },
+          "size": {
+            "optionLabels": {
+              "1024x1024": "方形 1:1",
+              "1024x1536": "纵向 2:3",
+              "1536x1024": "横向 3:2",
+              "1536x864": "横向 16:9",
+              "2048x2048": "2K 方形",
+              "2160x3840": "4K 纵向",
+              "3840x2160": "4K 横向",
+              "864x1536": "纵向 9:16",
+              "auto": "自动"
+            },
+            "description": "此模型仅支持自动、1024x1024、1024x1536 和 1536x1024。",
+            "maxLength": 32,
+            "type": "string",
+            "label": "分辨率",
+            "control": "resolution",
+            "default": "1024x1024",
+            "enum": [
+              "auto",
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
+            ]
+          },
+          "stream": {
+            "section": "advanced",
+            "description": "仅支持单张。接收中间图事件；仅最终图保存为版本，中断不重新提交。",
+            "type": "boolean",
+            "label": "流式接收",
+            "default": false
+          },
+          "user": {
+            "section": "advanced",
+            "description": "兼容官方弃用参数；优先使用安全标识。",
+            "maxLength": 128,
+            "type": "string",
+            "label": "旧版用户标识"
+          }
+        }
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 20,
+      "cancelable": false
+    }
+  },
+  "files": []
+}

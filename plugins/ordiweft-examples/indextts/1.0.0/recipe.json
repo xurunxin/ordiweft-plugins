@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/indextts",
+  "releaseVersion": "1.0.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "0611461c1b2bcedb37474332ecc5c6368c6e9e1f",
+    "path": "examples/plugin-go/indextts"
+  },
+  "runtimeImage": "sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c"
+}

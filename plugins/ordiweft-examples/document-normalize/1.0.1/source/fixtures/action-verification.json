@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "portId": "document-normalize",
+  "arguments": {},
+  "inputs": [
+    {
+      "kind": "document",
+      "role": "source",
+      "data": "VGl0bGUNCg0KQm9keQ=="
+    }
+  ],
+  "expectedValue": {
+    "characters": 11,
+    "lines": 3,
+    "sourceSha256": "d58700433ded61bd7cd8d1eb597a7221610a44035bf985074e91d890f5b60b00"
+  },
+  "expectedOutputs": [
+    {
+      "kind": "document",
+      "sha256": "45777c14d90fa79dc6ce71ceb6f81cced62c929c472199547cfd939a54e954c6",
+      "bytes": 11,
+      "mime": "text/plain"
+    }
+  ]
+}

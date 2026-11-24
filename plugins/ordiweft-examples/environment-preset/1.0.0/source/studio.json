@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "target": "director-environment",
+  "name": "柔光摄影棚",
+  "settings": {
+    "lightingPreset": "soft",
+    "lightDirectionDegrees": 65,
+    "groundHeightM": 0,
+    "groundSizeM": 60,
+    "groundVisible": true,
+    "gridVisible": false
+  }
+}

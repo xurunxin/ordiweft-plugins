@@ -1,0 +1,70 @@
+{
+  "contributions": [
+    {
+      "kind": "processor",
+      "id": "media-inspection"
+    }
+  ],
+  "definitions": {
+    "media-inspection": "definitions/media-inspection.json"
+  },
+  "files": [
+    {
+      "bytes": 662,
+      "path": "adapter.mjs",
+      "sha256": "d1d5f3bbbb3aa865cdeff27536440540208445406850a3a002d264c8e3dffad4"
+    },
+    {
+      "bytes": 1050,
+      "path": "definitions/media-inspection.json",
+      "sha256": "f94ef60d312e48c2abb99b4228b3fc1a5198a0c23fbd584eae9ae343e0400bfa"
+    },
+    {
+      "bytes": 11262,
+      "path": "host.mjs",
+      "sha256": "a63c55cff1aa6f745e9be8421379a91c5413067d130891c61616006a4d752383"
+    },
+    {
+      "bytes": 11358,
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "bytes": 366,
+      "path": "NOTICE",
+      "sha256": "263c2e5e78067613b9a1369c84e4df793a98eccd359472c4c6f039752be2c7c0"
+    },
+    {
+      "bytes": 1449,
+      "path": "README.md",
+      "sha256": "c93abc413cbbd25acb3d5fddb92650c43f24ef152662422f263ff577d39c4f31"
+    },
+    {
+      "bytes": 528,
+      "path": "fixtures/action-verification.json",
+      "sha256": "a53b31a03a18ffb550a3927420b347dbd211abbd27d08764b4683ef01b222183"
+    }
+  ],
+  "formatVersion": 1,
+  "hostProtocol": 1,
+  "license": "Apache-2.0",
+  "packageId": "ordiweft-examples/media-inspection",
+  "requirements": [
+    {
+      "operations": [
+        "read"
+      ],
+      "service": "assets",
+      "version": 1
+    },
+    {
+      "operations": [
+        "inspect"
+      ],
+      "service": "media",
+      "version": 1
+    }
+  ],
+  "runtime": "node",
+  "version": "1.0.1"
+}

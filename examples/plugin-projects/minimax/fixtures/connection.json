@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "originCredential": "CHANNEL_URL",
+  "allowHttp": true,
+  "headers": [
+    {
+      "credential": "CHANNEL_TOKEN",
+      "name": "Authorization",
+      "prefix": "Bearer "
+    },
+    {
+      "jobId": true,
+      "name": "X-Ordiweft-Job"
+    }
+  ],
+  "operations": {
+    "generate": {
+      "method": "POST",
+      "path": "/v1/tasks",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate",
+        "digest": "690df09900fa3d25de60da0ce78a681438033c68153acbe25769f93d6e859840"
+      }
+    },
+    "observe": {
+      "method": "GET",
+      "path": "/v1/status",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536,
+      "receiptPath": {
+        "ref": "original-submit",
+        "pointer": "/id"
+      }
+    },
+    "capabilities": {
+      "method": "GET",
+      "path": "/v1/capabilities",
+      "effect": "query",
+      "timeoutMs": 10000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536
+    },
+    "result": {
+      "method": "GET",
+      "path": "/v1/tasks",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 67108864,
+      "receiptPath": {
+        "ref": "original-submit",
+        "pointer": "/id"
+      }
+    },
+    "quote": {
+      "method": "POST",
+      "path": "/v1/quotes",
+      "effect": "query",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "quote",
+        "digest": "ad5d4706d0ce08fb0e1a0f773c15f36ecc7ced0331f9ea973485db04afdabcc1"
+      }
+    }
+  },
+  "downloads": {
+    "media-0": {
+      "sourceOperation": "result",
+      "pointer": "/media/0/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-1": {
+      "sourceOperation": "result",
+      "pointer": "/media/1/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-2": {
+      "sourceOperation": "result",
+      "pointer": "/media/2/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-3": {
+      "sourceOperation": "result",
+      "pointer": "/media/3/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-4": {
+      "sourceOperation": "result",
+      "pointer": "/media/4/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-5": {
+      "sourceOperation": "result",
+      "pointer": "/media/5/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-6": {
+      "sourceOperation": "result",
+      "pointer": "/media/6/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-7": {
+      "sourceOperation": "result",
+      "pointer": "/media/7/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-8": {
+      "sourceOperation": "result",
+      "pointer": "/media/8/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-9": {
+      "sourceOperation": "result",
+      "pointer": "/media/9/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    }
+  },
+  "maxRuntimeMs": 900000,
+  "waits": {
+    "result": {
+      "operation": "observe",
+      "statePointer": "/state",
+      "pending": [
+        "prepared",
+        "dispatching",
+        "running"
+      ],
+      "succeeded": [
+        "done"
+      ],
+      "failed": [
+        "failed",
+        "rejected",
+        "unknown"
+      ],
+      "intervalMs": 1000,
+      "maxAttempts": 800,
+      "timeoutMs": 840000
+    }
+  },
+  "negotiation": {
+    "operation": "capabilities",
+    "required": {
+      "version": 1,
+      "minimumVersion": "0.4.0",
+      "capabilities": [
+        {
+          "id": "channel.tasks",
+          "version": 1
+        },
+        {
+          "id": "channel.minimax-subscription",
+          "version": 1
+        },
+        {
+          "id": "channel.explicit-rejection",
+          "version": 1
+        },
+        {
+          "id": "channel.voice-scope",
+          "version": 1
+        },
+        {
+          "id": "channel.readonly-quote",
+          "version": 1
+        },
+        {
+          "id": "channel.design-models",
+          "version": 1
+        },
+        {
+          "id": "channel.audio-reference",
+          "version": 1
+        },
+        {
+          "id": "channel.design-audio-reference",
+          "version": 1
+        },
+        {
+          "id": "channel.design-video-reference",
+          "version": 1
+        },
+        {
+          "id": "channel.transcription",
+          "version": 1
+        }
+      ]
+    }
+  }
+}

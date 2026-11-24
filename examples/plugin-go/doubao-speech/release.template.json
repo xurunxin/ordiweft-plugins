@@ -1,0 +1,188 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/doubao-speech",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "doubao-speech",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "streams",
+      "version": 1,
+      "operations": [
+        "open",
+        "next",
+        "close"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "context",
+        "checkpoint"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "begin",
+        "write",
+        "stage-buffer"
+      ]
+    }
+  ],
+  "compatibility": {
+    "version": 1,
+    "host": [
+      {
+        "id": "runtime.negotiation",
+        "version": 1
+      },
+      {
+        "id": "connections.voice-request-fields",
+        "version": 1
+      }
+    ],
+    "sdk": {
+      "minimumVersion": "0.1.15",
+      "capabilities": [
+        {
+          "id": "invocation.negotiate",
+          "version": 1
+        }
+      ]
+    }
+  },
+  "generation": {
+    "apiVersion": 2,
+    "id": "doubao-speech",
+    "name": "豆包语音",
+    "version": "1.0.0",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY"
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 20,
+      "cancelable": false
+    },
+    "nodes": [
+      {
+        "id": "speech",
+        "label": "豆包语音合成",
+        "capability": "speech.generate",
+        "model": "seed-tts-2.0"
+      }
+    ],
+    "models": [
+      {
+        "id": "seed-tts-2.0",
+        "label": "豆包语音合成 2.0",
+        "capability": "speech.generate",
+        "voiceKinds": [
+          "official"
+        ],
+        "inputKinds": [],
+        "maxInputs": 0,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "朗读文本",
+          "required": true
+        },
+        "fields": {
+          "voice_id": {
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "maxLength": 128,
+            "default": "zh_female_vv_uranus_bigtts",
+            "description": "从豆包语音控制台选择官方 2.0 音色；当前不接入复刻音色。"
+          },
+          "format": {
+            "type": "string",
+            "label": "文件格式",
+            "default": "mp3",
+            "enum": [
+              "mp3"
+            ]
+          },
+          "sample_rate": {
+            "type": "integer",
+            "label": "采样率",
+            "default": 24000,
+            "enum": [
+              8000,
+              16000,
+              22050,
+              24000,
+              32000,
+              44100,
+              48000
+            ]
+          },
+          "speech_rate": {
+            "type": "integer",
+            "label": "语速（0 正常）",
+            "default": 0,
+            "minimum": -50,
+            "maximum": 100
+          },
+          "loudness_rate": {
+            "type": "integer",
+            "label": "音量（0 正常）",
+            "default": 0,
+            "minimum": -50,
+            "maximum": 100
+          },
+          "context_text": {
+            "type": "string",
+            "label": "语音指令",
+            "control": "textarea",
+            "maxLength": 1000,
+            "description": "例如：用温柔、自然的语气朗读。仅用于官方 2.0 音色，不作为台词。"
+          }
+        },
+        "pricing": {
+          "provider": "doubao-speech",
+          "model": "seed-tts-2.0",
+          "currency": "CNY",
+          "sourceUrl": "https://docs.volcengine.com/docs/DoubaoVoice/Billinginstructions-21",
+          "checkedAt": "1970-01-01",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "character",
+                  "rate": "",
+                  "per": "10000",
+                  "catalogPer": "10000"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "files": []
+}

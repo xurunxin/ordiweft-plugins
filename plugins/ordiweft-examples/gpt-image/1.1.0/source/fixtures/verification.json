@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "generation": {
+    "provider": "gpt-image",
+    "capability": "image.generate",
+    "model": "gpt-image-1.5",
+    "prompt": "Render the original synthetic subject",
+    "parameters": {
+      "size": "1024x1024",
+      "quality": "auto",
+      "n": 1,
+      "background": "auto",
+      "output_format": "png",
+      "moderation": "auto",
+      "stream": false,
+      "edit_overlay": "none",
+      "input_fidelity": "low"
+    }
+  },
+  "inputs": [],
+  "exchanges": [
+    {
+      "callId": "original-submit",
+      "operation": "generate-json",
+      "status": 200,
+      "body": "eyJkYXRhIjpbeyJiNjRfanNvbiI6ImlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFCRUFBQUFOQ0FJQUFBREFHeEpOQUFBQUdVbEVRVlI0bkdMWjV5YkhRQ0pnZ2pGRzlZenFvWU1ld0FBcE5RRS9teFBLalFBQUFBQkpSVTVFcmtKZ2dnPT0ifV0sInVzYWdlIjp7InRvdGFsX3Rva2VucyI6MTAwLCJpbnB1dF90b2tlbnMiOjUwLCJvdXRwdXRfdG9rZW5zIjo1MCwiaW5wdXRfdG9rZW5zX2RldGFpbHMiOnsidGV4dF90b2tlbnMiOjUwLCJpbWFnZV90b2tlbnMiOjB9fX0="
+    }
+  ],
+  "outputSha256": "9fd47a8889a1a9b87e1ec83b9fb024c54f9484cbb7bb991509051e46b70b890b"
+}

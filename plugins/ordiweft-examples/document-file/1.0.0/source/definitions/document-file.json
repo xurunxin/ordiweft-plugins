@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "id": "document-file",
+  "kind": "processor",
+  "action": {
+    "label": "结构文档导出文本",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "paragraphs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8192
+          }
+        }
+      },
+      "required": [
+        "title",
+        "paragraphs"
+      ]
+    },
+    "resultSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "characters": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4194304
+        },
+        "paragraphCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        }
+      },
+      "required": [
+        "characters",
+        "paragraphCount"
+      ]
+    },
+    "resources": {
+      "maxInputs": 0,
+      "maxOutputs": 1,
+      "maxInputBytes": 0,
+      "maxOutputBytes": 4194304,
+      "maxRuntimeMs": 60000
+    }
+  }
+}

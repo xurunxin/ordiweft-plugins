@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "models": {
+    "drama-3": "fish-tts",
+    "s2.1-pro": "fish-tts",
+    "s2.1-pro-free": "fish-tts"
+  },
+  "body": {
+    "text": {
+      "$host": "prompt"
+    },
+    "prosody": {
+      "speed": {
+        "$host": "parameter",
+        "name": "speed",
+        "optional": true
+      },
+      "volume": {
+        "$host": "parameter",
+        "name": "volume",
+        "optional": true
+      }
+    },
+    "format": {
+      "$host": "parameter",
+      "name": "format",
+      "optional": true
+    },
+    "normalize": {
+      "$host": "parameter",
+      "name": "normalize",
+      "optional": true
+    },
+    "temperature": {
+      "$host": "parameter",
+      "name": "temperature",
+      "optional": true
+    },
+    "top_p": {
+      "$host": "parameter",
+      "name": "top_p",
+      "optional": true
+    },
+    "chunk_length": {
+      "$host": "parameter",
+      "name": "chunk_length",
+      "optional": true
+    },
+    "latency": {
+      "$host": "parameter",
+      "name": "latency",
+      "optional": true
+    },
+    "mp3_bitrate": {
+      "$host": "parameter",
+      "name": "mp3_bitrate",
+      "optional": true
+    },
+    "voice_id": {
+      "$host": "parameter",
+      "name": "voice_id",
+      "optional": true
+    },
+    "speakers": {
+      "$host": "parameter",
+      "name": "speakers",
+      "optional": true
+    },
+    "captured_voices": {
+      "$host": "voices",
+      "optional": true
+    }
+  },
+  "fixedModel": "fish-tts",
+  "singleOutput": true
+}

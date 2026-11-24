@@ -1,0 +1,22 @@
+{
+  "name": "@ordiweft-migrations/volcengine",
+  "version": "2.2.1",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "24.20.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "tsc && node --test test/*.test.mjs",
+    "build": "node node_modules/@ordiweft/plugin-maintenance/cli.mjs build"
+  },
+  "dependencies": {
+    "@ordiweft/plugin-host": "file:vendor/ordiweft-plugin-host-0.1.15.tgz"
+  },
+  "devDependencies": {
+    "@ordiweft/plugin-maintenance": "file:vendor/ordiweft-plugin-maintenance-0.2.3.tgz",
+    "typescript": "5.9.3"
+  }
+}

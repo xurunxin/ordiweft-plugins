@@ -1,0 +1,9 @@
+Ordiweft structured document text processor example
+Copyright 2026 Ordiweft contributors
+Licensed under the Apache License, Version 2.0.
+
+Ordiweft plugin Host Services SDK
+Copyright 2026 Ordiweft contributors
+
+This SDK distribution is licensed under the Apache License, Version 2.0.
+It has no runtime npm dependencies and does not include Morpheus.

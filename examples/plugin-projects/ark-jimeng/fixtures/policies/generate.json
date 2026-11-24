@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "models": {
+    "seedance-2.5-auto": "doubao-seedance-2-5-260628",
+    "doubao-seedream-5-5-261028": "doubao-seedream-5-5-261028",
+    "doubao-seedream-5-0-pro-260628": "doubao-seedream-5-0-pro-260628",
+    "doubao-seedream-5-0-flash-260915": "doubao-seedream-5-0-flash-260915",
+    "doubao-seedream-5-0-260128": "doubao-seedream-5-0-260128",
+    "doubao-seedream-4-5-251128": "doubao-seedream-4-5-251128",
+    "doubao-seedream-4-0-250828": "doubao-seedream-4-0-250828",
+    "doubao-seedance-2-5-260628": "doubao-seedance-2-5-260628",
+    "doubao-seedance-2-0-260128": "doubao-seedance-2-0-260128",
+    "doubao-seedance-2-0-fast-260128": "doubao-seedance-2-0-fast-260128",
+    "doubao-seedance-2-0-mini-260615": "doubao-seedance-2-0-mini-260615",
+    "seedance-2.5-final": "doubao-seedance-2-5-260628",
+    "seedream-5.5-auto": "doubao-seedream-5-5-261028",
+    "doubao-seedance-2-5-flash-261115": "doubao-seedance-2-5-flash-261115"
+  },
+  "modelPointer": "/model",
+  "countPointer": "/count",
+  "body": {
+    "model": {
+      "$host": "model"
+    },
+    "jobId": {
+      "$host": "job"
+    },
+    "actor": {
+      "$host": "actor-hash"
+    },
+    "prompt": {
+      "$host": "prompt"
+    },
+    "count": {
+      "$host": "count"
+    },
+    "channel": {
+      "$host": "parameter",
+      "name": "channel",
+      "optional": true
+    },
+    "sourceJob": {
+      "$host": "parameter",
+      "name": "sourceJob",
+      "optional": true
+    },
+    "parameters": {
+      "draft": {
+        "$host": "parameter",
+        "name": "draft",
+        "optional": true
+      },
+      "duration": {
+        "$host": "parameter",
+        "name": "duration",
+        "optional": true
+      },
+      "input_mode": {
+        "$host": "parameter",
+        "name": "input_mode",
+        "optional": true
+      },
+      "ratio": {
+        "$host": "parameter",
+        "name": "ratio",
+        "optional": true
+      },
+      "resolution": {
+        "$host": "parameter",
+        "name": "resolution",
+        "optional": true
+      },
+      "watermark": {
+        "$host": "parameter",
+        "name": "watermark",
+        "optional": true
+      },
+      "aspect_ratio": {
+        "$host": "parameter",
+        "name": "aspect_ratio",
+        "optional": true
+      },
+      "background": {
+        "$host": "parameter",
+        "name": "background",
+        "optional": true
+      },
+      "height": {
+        "$host": "parameter",
+        "name": "height",
+        "optional": true
+      },
+      "layer_decomposition": {
+        "$host": "parameter",
+        "name": "layer_decomposition",
+        "optional": true
+      },
+      "layer_decomposition_options": {
+        "$host": "parameter",
+        "name": "layer_decomposition_options",
+        "optional": true
+      },
+      "layer_size": {
+        "$host": "parameter",
+        "name": "layer_size",
+        "optional": true
+      },
+      "optimize_prompt_options": {
+        "$host": "parameter",
+        "name": "optimize_prompt_options",
+        "optional": true
+      },
+      "output_format": {
+        "$host": "parameter",
+        "name": "output_format",
+        "optional": true
+      },
+      "size": {
+        "$host": "parameter",
+        "name": "size",
+        "optional": true
+      },
+      "width": {
+        "$host": "parameter",
+        "name": "width",
+        "optional": true
+      },
+      "sequential_image_generation": {
+        "$host": "parameter",
+        "name": "sequential_image_generation",
+        "optional": true
+      },
+      "sequential_image_generation_options": {
+        "$host": "parameter",
+        "name": "sequential_image_generation_options",
+        "optional": true
+      },
+      "web_search": {
+        "$host": "parameter",
+        "name": "web_search",
+        "optional": true
+      },
+      "generate_audio": {
+        "$host": "parameter",
+        "name": "generate_audio",
+        "optional": true
+      }
+    },
+    "inputs": {
+      "image": {
+        "$host": "inputs",
+        "kind": "image",
+        "encoding": "data-url"
+      },
+      "video": {
+        "$host": "inputs",
+        "kind": "video",
+        "encoding": "data-url"
+      },
+      "audio": {
+        "$host": "inputs",
+        "kind": "audio",
+        "encoding": "data-url"
+      },
+      "videoURLs": {
+        "$host": "inputs",
+        "kind": "video",
+        "encoding": "public-url"
+      }
+    }
+  }
+}

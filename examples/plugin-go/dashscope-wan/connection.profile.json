@@ -1,0 +1,1148 @@
+{
+  "version": 1,
+  "originCredential": "DASHSCOPE_URL",
+  "headers": [
+    {
+      "name": "Authorization",
+      "credential": "API_KEY",
+      "prefix": "Bearer "
+    },
+    {
+      "name": "X-DashScope-Async",
+      "literal": "enable"
+    },
+    {
+      "name": "X-DashScope-OssResourceResolve",
+      "literal": "enable"
+    }
+  ],
+  "operations": {
+    "generate-0": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-0",
+        "digest": "33e81f60add3483ef6f084d81f5fd87c0ee3cd2ec636074899771c9457701d1f"
+      }
+    },
+    "generate-0-thinking": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-0-thinking",
+        "digest": "5e165156df600120b4e62c4f3aa153e449d6d262c479236481181bcb9ad14ec5"
+      }
+    },
+    "generate-1": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-1",
+        "digest": "6251beeef35d24fe5fb70cb64c3a2d0cd89a9ac9594f4c27854eb69926daec64"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0"
+      }
+    },
+    "generate-2": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-2",
+        "digest": "d4f831bd847c02d283184f22c14df5eeb494ba32b91a1c9375355551595f58da"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0",
+        "upload-1": "original-upload-1"
+      }
+    },
+    "generate-3": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-3",
+        "digest": "9b37b3e064d7aa01f582cbf7e31be97c9bc359bbf9f3b9dab5e3194f76c2291a"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0",
+        "upload-1": "original-upload-1",
+        "upload-2": "original-upload-2"
+      }
+    },
+    "generate-4": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-4",
+        "digest": "6200e74b379e4458afd2b20e085ff21c1c50ff25ee5f68408654a3053bd05df8"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0",
+        "upload-1": "original-upload-1",
+        "upload-2": "original-upload-2",
+        "upload-3": "original-upload-3"
+      }
+    },
+    "generate-5": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-5",
+        "digest": "53efd5fcce48ab4d460bd8f06f10f118c7b11bed47898ae7102ecca479d550fb"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0",
+        "upload-1": "original-upload-1",
+        "upload-2": "original-upload-2",
+        "upload-3": "original-upload-3",
+        "upload-4": "original-upload-4"
+      }
+    },
+    "generate-6": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-6",
+        "digest": "16877d8c81337dad3f60fdd10dcfdda7180ac8cc43cf6d6fda4a2a1d1ac551ba"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0",
+        "upload-1": "original-upload-1",
+        "upload-2": "original-upload-2",
+        "upload-3": "original-upload-3",
+        "upload-4": "original-upload-4",
+        "upload-5": "original-upload-5"
+      }
+    },
+    "generate-7": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-7",
+        "digest": "a51182cf8fb49809fc7c6eed01494e5652c64ba49506fb2a68c6764f1435c1e0"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0",
+        "upload-1": "original-upload-1",
+        "upload-2": "original-upload-2",
+        "upload-3": "original-upload-3",
+        "upload-4": "original-upload-4",
+        "upload-5": "original-upload-5",
+        "upload-6": "original-upload-6"
+      }
+    },
+    "generate-8": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-8",
+        "digest": "06b45d071cedc627acd205733538b67c139896282687363c81bdad5f00573ef4"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0",
+        "upload-1": "original-upload-1",
+        "upload-2": "original-upload-2",
+        "upload-3": "original-upload-3",
+        "upload-4": "original-upload-4",
+        "upload-5": "original-upload-5",
+        "upload-6": "original-upload-6",
+        "upload-7": "original-upload-7"
+      }
+    },
+    "generate-9": {
+      "method": "POST",
+      "path": "/services/aigc/image-generation/generation",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate-9",
+        "digest": "f984095d61fa4f5550193214cef82169fadedf1d42c78a9feead793a7c6fcfea"
+      },
+      "requiresUploads": {
+        "upload-0": "original-upload-0",
+        "upload-1": "original-upload-1",
+        "upload-2": "original-upload-2",
+        "upload-3": "original-upload-3",
+        "upload-4": "original-upload-4",
+        "upload-5": "original-upload-5",
+        "upload-6": "original-upload-6",
+        "upload-7": "original-upload-7",
+        "upload-8": "original-upload-8"
+      }
+    },
+    "observe": {
+      "method": "GET",
+      "path": "/tasks",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536,
+      "receiptPath": {
+        "ref": "original-submit",
+        "pointer": "/output/task_id"
+      }
+    },
+    "upload-0-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-0",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-0-jpg",
+        "digest": "54aadc47cbbfb8661c1a6c70577e4ad09525927aec88f9cfcd0f288747f927ef"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 0
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-0-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-0",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-0-png",
+        "digest": "ddcba94109ff365728a8ff2e56e49d5102163b3f5dde440f4c9499dab198300f"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 0
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-0-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-0",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-0-webp",
+        "digest": "d6b00804a522062c05d3efab3a534b145e63e5a40585af50bc152843ee705f95"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 0
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-1-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-1",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-1-jpg",
+        "digest": "d6b0185c5f479b44c39dd8db216394c2695de417528d2e51da173b838555d4ad"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 1
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-1-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-1",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-1-png",
+        "digest": "016422337ed27ebd4517d31f8072b5a288541d32fe74ab335297e9844a84422e"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 1
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-1-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-1",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-1-webp",
+        "digest": "2d1e713dcd61ce5c0cafa25eabbdcdd78b372b111dedf8f782c9bf6aa3f28fee"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 1
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-2-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-2",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-2-jpg",
+        "digest": "9be0a2605768f1e5c7f27baaeb6e1a504c438b5055b578eeb6c9f94100c1ca86"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 2
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-2-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-2",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-2-png",
+        "digest": "afc4965783711a1c191a28c89c8c5fd08ccf053d24fbc7c44f7f2e0616ab34a5"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 2
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-2-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-2",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-2-webp",
+        "digest": "a53b3035ea0e70422b0e3c3b53047db14ef6e8518887b3b0dd6fab00c9aba094"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 2
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-3-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-3",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-3-jpg",
+        "digest": "2bed65eafce094645a70990b169e645c876e1b05702495ecfce63e4609e99714"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 3
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-3-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-3",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-3-png",
+        "digest": "4c854f98d9b1e533a3ec422eed0739e275c0b68584dadc384ac695aa8893cf8f"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 3
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-3-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-3",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-3-webp",
+        "digest": "2b06172d7d3e72b97073f73483a4870585d05bcf99a931f315d94a322ce19d2a"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 3
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-4-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-4",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-4-jpg",
+        "digest": "7e0a5642b9e60f77b38592c42666e4e05b464d2f65657800181d570bb1b2a8e9"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 4
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-4-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-4",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-4-png",
+        "digest": "e4aef7d03c3b22f6a8db975e5c33f39cac717d40ddb1126ef6de4458bd1f853b"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 4
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-4-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-4",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-4-webp",
+        "digest": "2fcf45eba57636c9852f9e795ded15f6efa596eafd277fc9ac096d3d881e7a41"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 4
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-5-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-5",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-5-jpg",
+        "digest": "144284de33be8c1bc4d63128f00be6ac7d706f28553d6076e5f4b3df9979ce3f"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 5
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-5-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-5",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-5-png",
+        "digest": "1c23c2f6839a6ddba21d0978cd93dc99586ab77a23a7b1aba89dc477a36bd827"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 5
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-5-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-5",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-5-webp",
+        "digest": "0abf6510869aafd11bd21736f0740049e13066b94b3cfa8ceecb61e65b941c29"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 5
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-6-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-6",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-6-jpg",
+        "digest": "143638879e310ebd51dcbf4860b04bf0a31b45a95d9245311bb203eeb728054c"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 6
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-6-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-6",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-6-png",
+        "digest": "4e130d82ae0f0b3bb8fef7e43212b9abef9d2c56ea7cb241a4f5902e4b19ed08"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 6
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-6-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-6",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-6-webp",
+        "digest": "b9c9a2ad2006cc9d307e1573da9675bc99e14ded110f6f1d72fcfc7a216bb558"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 6
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-7-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-7",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-7-jpg",
+        "digest": "d392d1293decce368dca35d2f145a57dd530a8cb2cad342018727605392ee1e0"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 7
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-7-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-7",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-7-png",
+        "digest": "796cad0aa62bc93f8264b338c6f2ab9f61d33d1ee0274d35573a2db167a0a27e"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 7
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-7-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-7",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-7-webp",
+        "digest": "1a51995f853d2ff0eba012a2e13f41b7e57886ff705c586b8b1c57402916e984"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 7
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-8-jpg": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-8",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-8-jpg",
+        "digest": "4bde826d57814293731d033c3f0a49e1a1c7cfbcde2ccdfa441e2606dcbab668"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.jpg",
+          "index": 8
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-8-png": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-8",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-8-png",
+        "digest": "c3942b6074862b31de1fd78c5a90af3e7d2d3f006356a9b8c932dd2e29d0c64a"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.png",
+          "index": 8
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-8-webp": {
+      "method": "POST",
+      "path": "/",
+      "effect": "upload",
+      "slot": "upload-8",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 22020096,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-8-webp",
+        "digest": "56f11755215942cc233952f424e759f0ea0564246dd6bf2d88ce804138e4e84e"
+      },
+      "multipart": [
+        {
+          "name": "file",
+          "filename": "reference.webp",
+          "index": 8
+        }
+      ],
+      "receiptTarget": {
+        "ref": "original-policy",
+        "pointer": "/data/upload_host",
+        "hosts": [
+          "*.oss-cn-beijing.aliyuncs.com",
+          "*.oss-ap-southeast-1.aliyuncs.com"
+        ]
+      }
+    },
+    "upload-policy": {
+      "method": "GET",
+      "path": "/uploads",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "upload-policy",
+        "digest": "d0f9797fb14f998de69b2b6c08988729efccb71c9303042c25dbed37464989e0"
+      },
+      "hostOnlyResponse": true,
+      "queryParameters": true
+    }
+  },
+  "downloads": {
+    "image-0": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/0/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-1": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/1/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-10": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/10/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-11": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/11/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-2": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/2/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-3": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/3/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-4": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/4/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-5": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/5/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-6": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/6/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-7": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/7/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-8": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/8/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "image-9": {
+      "sourceOperation": "observe",
+      "pointer": "/output/choices/0/message/content/9/image",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    }
+  },
+  "taskIO": {
+    "maxCalls": 1024,
+    "maxRequestBytes": 268435456,
+    "maxResponseBytes": 268435456
+  },
+  "maxRuntimeMs": 900000,
+  "waits": {
+    "result": {
+      "operation": "observe",
+      "statePointer": "/output/task_status",
+      "pending": [
+        "PENDING",
+        "RUNNING"
+      ],
+      "succeeded": [
+        "SUCCEEDED"
+      ],
+      "failed": [
+        "FAILED",
+        "CANCELED",
+        "UNKNOWN"
+      ],
+      "intervalMs": 3000,
+      "maxAttempts": 280,
+      "timeoutMs": 840000
+    }
+  }
+}

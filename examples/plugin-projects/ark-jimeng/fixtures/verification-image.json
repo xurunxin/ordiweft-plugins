@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "generation": {
+    "provider": "volcengine",
+    "capability": "image.generate",
+    "model": "seedream-5.5-auto",
+    "prompt": "A blue ceramic sphere, synthetic fixture",
+    "parameters": {
+      "size": "1.5K",
+      "aspect_ratio": "1:1",
+      "watermark": false,
+      "channel": "auto"
+    }
+  },
+  "inputs": [],
+  "exchanges": [
+    {
+      "callId": "original-submit",
+      "operation": "capabilities",
+      "status": 200,
+      "body": "eyJ2ZXJzaW9uIjoxLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiIwLjUuMCIsImNhcGFiaWxpdGllcyI6W3siaWQiOiJjaGFubmVsLnRhc2tzIiwidmVyc2lvbiI6MX0seyJpZCI6ImNoYW5uZWwub3JpZ2luYWwtY29tbWFuZCIsInZlcnNpb24iOjF9LHsiaWQiOiJjaGFubmVsLnBpbm5lZC1yZXN1bHRzIiwidmVyc2lvbiI6MX0seyJpZCI6ImNoYW5uZWwuY2xpLWRyYWZ0LXRpY2tldCIsInZlcnNpb24iOjF9LHsiaWQiOiJjaGFubmVsLmNsaS1pbWFnZS13YWxsZXQiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5leHBsaWNpdC1yZWplY3Rpb24iLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5qb3VybmFsIiwidmVyc2lvbiI6M30seyJpZCI6ImNoYW5uZWwuY2xpLXZpZGVvLXBhcmFtZXRlcnMiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5pbW11dGFibGUtZHJhZnQiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5jbGktcXVvdGUtc2NvcGUiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5jbGktc3VibWl0LWZlbmNlIiwidmVyc2lvbiI6MX0seyJpZCI6ImNoYW5uZWwucmVhZG9ubHktcXVvdGUiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5kZWZhdWx0LXBhcmFtZXRlcnMiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5pbWFnZS1yZXZpZXciLCJ2ZXJzaW9uIjoxfV0sInByb2ZpbGUiOiJlNGQ3ZjkzYWQ0N2U3NDVlODJiNGU2YzQyNjY5YzcwZTJlYWRmMDU5Zjk5YmNhNzRiOWQyOWZjZmFkNWFhNTA5In0=",
+      "channelProbe": true
+    },
+    {
+      "callId": "original-submit",
+      "operation": "generate",
+      "status": 202,
+      "body": "eyJpZCI6Im9yaWdpbmFsLWltYWdlLWZpeHR1cmUiLCJzdGF0ZSI6InJ1bm5pbmciLCJyb3V0ZSI6ImNsaSJ9"
+    },
+    {
+      "callId": "original-observation",
+      "operation": "capabilities",
+      "status": 200,
+      "body": "eyJ2ZXJzaW9uIjoxLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiIwLjUuMCIsImNhcGFiaWxpdGllcyI6W3siaWQiOiJjaGFubmVsLnRhc2tzIiwidmVyc2lvbiI6MX0seyJpZCI6ImNoYW5uZWwub3JpZ2luYWwtY29tbWFuZCIsInZlcnNpb24iOjF9LHsiaWQiOiJjaGFubmVsLnBpbm5lZC1yZXN1bHRzIiwidmVyc2lvbiI6MX0seyJpZCI6ImNoYW5uZWwuY2xpLWRyYWZ0LXRpY2tldCIsInZlcnNpb24iOjF9LHsiaWQiOiJjaGFubmVsLmNsaS1pbWFnZS13YWxsZXQiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5leHBsaWNpdC1yZWplY3Rpb24iLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5qb3VybmFsIiwidmVyc2lvbiI6M30seyJpZCI6ImNoYW5uZWwuY2xpLXZpZGVvLXBhcmFtZXRlcnMiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5pbW11dGFibGUtZHJhZnQiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5jbGktcXVvdGUtc2NvcGUiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5jbGktc3VibWl0LWZlbmNlIiwidmVyc2lvbiI6MX0seyJpZCI6ImNoYW5uZWwucmVhZG9ubHktcXVvdGUiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5kZWZhdWx0LXBhcmFtZXRlcnMiLCJ2ZXJzaW9uIjoxfSx7ImlkIjoiY2hhbm5lbC5pbWFnZS1yZXZpZXciLCJ2ZXJzaW9uIjoxfV0sInByb2ZpbGUiOiJlNGQ3ZjkzYWQ0N2U3NDVlODJiNGU2YzQyNjY5YzcwZTJlYWRmMDU5Zjk5YmNhNzRiOWQyOWZjZmFkNWFhNTA5In0=",
+      "channelProbe": true,
+      "waitAttempt": 0
+    },
+    {
+      "callId": "original-observation",
+      "operation": "observe",
+      "status": 200,
+      "body": "eyJpZCI6Im9yaWdpbmFsLWltYWdlLWZpeHR1cmUiLCJzdGF0ZSI6ImRvbmUiLCJyb3V0ZSI6ImNsaSIsIm1lZGlhIjpbeyJraW5kIjoiaW1hZ2UiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUuY29tL29yaWdpbmFsLWltYWdlLnBuZyJ9XX0=",
+      "waitAttempt": 0
+    }
+  ],
+  "outputSha256": "7fbe3086e4c6aa8998c0d51c7c89622b00b712b7344393e38e38befe67acb456",
+  "downloads": [
+    {
+      "callId": "original-download-0",
+      "name": "media-0",
+      "sourceWaitId": "original-observation",
+      "status": 200,
+      "body": "iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAH0lEQVR4nAASAO3/AgAAAAAAAAAAAgAAAAAAAAAAAwAASAAFd16GPQAAAABJRU5ErkJggg=="
+    }
+  ]
+}

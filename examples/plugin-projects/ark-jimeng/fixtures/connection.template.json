@@ -1,0 +1,756 @@
+{
+  "version": 1,
+  "originCredential": "CHANNEL_URL",
+  "allowHttp": true,
+  "headers": [
+    {
+      "name": "Authorization",
+      "credential": "CHANNEL_TOKEN",
+      "prefix": "Bearer "
+    },
+    {
+      "name": "X-Ordiweft-Job",
+      "jobId": true
+    }
+  ],
+  "operations": {
+    "generate": {
+      "method": "POST",
+      "path": "/v1/tasks",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "generate",
+        "digest": "REQUIRES_CLI_POLICY_DIGEST"
+      }
+    },
+    "observe": {
+      "method": "GET",
+      "path": "/v1/tasks",
+      "effect": "query",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536,
+      "receiptPath": {
+        "ref": "original-submit",
+        "pointer": "/id"
+      }
+    },
+    "capabilities": {
+      "method": "GET",
+      "path": "/v1/capabilities",
+      "effect": "query",
+      "timeoutMs": 10000,
+      "maxRequestBytes": 0,
+      "maxResponseBytes": 65536
+    },
+    "quote": {
+      "method": "POST",
+      "path": "/v1/quotes",
+      "effect": "query",
+      "contentType": "application/json",
+      "timeoutMs": 30000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 65536,
+      "jsonPolicy": {
+        "operation": "quote",
+        "digest": "REQUIRES_QUOTE_POLICY_DIGEST"
+      }
+    }
+  },
+  "downloads": {
+    "media-0": {
+      "sourceOperation": "observe",
+      "pointer": "/media/0/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-1": {
+      "sourceOperation": "observe",
+      "pointer": "/media/1/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-2": {
+      "sourceOperation": "observe",
+      "pointer": "/media/2/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-3": {
+      "sourceOperation": "observe",
+      "pointer": "/media/3/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-4": {
+      "sourceOperation": "observe",
+      "pointer": "/media/4/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-5": {
+      "sourceOperation": "observe",
+      "pointer": "/media/5/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-6": {
+      "sourceOperation": "observe",
+      "pointer": "/media/6/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-7": {
+      "sourceOperation": "observe",
+      "pointer": "/media/7/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-8": {
+      "sourceOperation": "observe",
+      "pointer": "/media/8/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-9": {
+      "sourceOperation": "observe",
+      "pointer": "/media/9/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-10": {
+      "sourceOperation": "observe",
+      "pointer": "/media/10/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-11": {
+      "sourceOperation": "observe",
+      "pointer": "/media/11/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-12": {
+      "sourceOperation": "observe",
+      "pointer": "/media/12/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-13": {
+      "sourceOperation": "observe",
+      "pointer": "/media/13/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-14": {
+      "sourceOperation": "observe",
+      "pointer": "/media/14/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-15": {
+      "sourceOperation": "observe",
+      "pointer": "/media/15/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-16": {
+      "sourceOperation": "observe",
+      "pointer": "/media/16/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-17": {
+      "sourceOperation": "observe",
+      "pointer": "/media/17/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-18": {
+      "sourceOperation": "observe",
+      "pointer": "/media/18/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-19": {
+      "sourceOperation": "observe",
+      "pointer": "/media/19/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-20": {
+      "sourceOperation": "observe",
+      "pointer": "/media/20/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-21": {
+      "sourceOperation": "observe",
+      "pointer": "/media/21/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-22": {
+      "sourceOperation": "observe",
+      "pointer": "/media/22/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-23": {
+      "sourceOperation": "observe",
+      "pointer": "/media/23/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-24": {
+      "sourceOperation": "observe",
+      "pointer": "/media/24/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-25": {
+      "sourceOperation": "observe",
+      "pointer": "/media/25/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-26": {
+      "sourceOperation": "observe",
+      "pointer": "/media/26/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-27": {
+      "sourceOperation": "observe",
+      "pointer": "/media/27/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-28": {
+      "sourceOperation": "observe",
+      "pointer": "/media/28/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-29": {
+      "sourceOperation": "observe",
+      "pointer": "/media/29/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-30": {
+      "sourceOperation": "observe",
+      "pointer": "/media/30/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-31": {
+      "sourceOperation": "observe",
+      "pointer": "/media/31/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-32": {
+      "sourceOperation": "observe",
+      "pointer": "/media/32/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-33": {
+      "sourceOperation": "observe",
+      "pointer": "/media/33/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-34": {
+      "sourceOperation": "observe",
+      "pointer": "/media/34/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-35": {
+      "sourceOperation": "observe",
+      "pointer": "/media/35/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-36": {
+      "sourceOperation": "observe",
+      "pointer": "/media/36/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-37": {
+      "sourceOperation": "observe",
+      "pointer": "/media/37/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-38": {
+      "sourceOperation": "observe",
+      "pointer": "/media/38/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-39": {
+      "sourceOperation": "observe",
+      "pointer": "/media/39/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-40": {
+      "sourceOperation": "observe",
+      "pointer": "/media/40/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-41": {
+      "sourceOperation": "observe",
+      "pointer": "/media/41/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-42": {
+      "sourceOperation": "observe",
+      "pointer": "/media/42/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-43": {
+      "sourceOperation": "observe",
+      "pointer": "/media/43/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-44": {
+      "sourceOperation": "observe",
+      "pointer": "/media/44/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-45": {
+      "sourceOperation": "observe",
+      "pointer": "/media/45/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-46": {
+      "sourceOperation": "observe",
+      "pointer": "/media/46/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-47": {
+      "sourceOperation": "observe",
+      "pointer": "/media/47/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-48": {
+      "sourceOperation": "observe",
+      "pointer": "/media/48/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-49": {
+      "sourceOperation": "observe",
+      "pointer": "/media/49/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-50": {
+      "sourceOperation": "observe",
+      "pointer": "/media/50/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-51": {
+      "sourceOperation": "observe",
+      "pointer": "/media/51/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-52": {
+      "sourceOperation": "observe",
+      "pointer": "/media/52/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-53": {
+      "sourceOperation": "observe",
+      "pointer": "/media/53/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-54": {
+      "sourceOperation": "observe",
+      "pointer": "/media/54/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-55": {
+      "sourceOperation": "observe",
+      "pointer": "/media/55/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-56": {
+      "sourceOperation": "observe",
+      "pointer": "/media/56/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-57": {
+      "sourceOperation": "observe",
+      "pointer": "/media/57/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-58": {
+      "sourceOperation": "observe",
+      "pointer": "/media/58/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-59": {
+      "sourceOperation": "observe",
+      "pointer": "/media/59/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-60": {
+      "sourceOperation": "observe",
+      "pointer": "/media/60/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-61": {
+      "sourceOperation": "observe",
+      "pointer": "/media/61/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-62": {
+      "sourceOperation": "observe",
+      "pointer": "/media/62/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-63": {
+      "sourceOperation": "observe",
+      "pointer": "/media/63/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-64": {
+      "sourceOperation": "observe",
+      "pointer": "/media/64/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-65": {
+      "sourceOperation": "observe",
+      "pointer": "/media/65/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-66": {
+      "sourceOperation": "observe",
+      "pointer": "/media/66/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-67": {
+      "sourceOperation": "observe",
+      "pointer": "/media/67/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-68": {
+      "sourceOperation": "observe",
+      "pointer": "/media/68/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-69": {
+      "sourceOperation": "observe",
+      "pointer": "/media/69/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-70": {
+      "sourceOperation": "observe",
+      "pointer": "/media/70/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-71": {
+      "sourceOperation": "observe",
+      "pointer": "/media/71/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-72": {
+      "sourceOperation": "observe",
+      "pointer": "/media/72/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-73": {
+      "sourceOperation": "observe",
+      "pointer": "/media/73/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-74": {
+      "sourceOperation": "observe",
+      "pointer": "/media/74/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-75": {
+      "sourceOperation": "observe",
+      "pointer": "/media/75/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-76": {
+      "sourceOperation": "observe",
+      "pointer": "/media/76/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-77": {
+      "sourceOperation": "observe",
+      "pointer": "/media/77/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-78": {
+      "sourceOperation": "observe",
+      "pointer": "/media/78/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-79": {
+      "sourceOperation": "observe",
+      "pointer": "/media/79/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-80": {
+      "sourceOperation": "observe",
+      "pointer": "/media/80/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-81": {
+      "sourceOperation": "observe",
+      "pointer": "/media/81/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-82": {
+      "sourceOperation": "observe",
+      "pointer": "/media/82/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-83": {
+      "sourceOperation": "observe",
+      "pointer": "/media/83/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-84": {
+      "sourceOperation": "observe",
+      "pointer": "/media/84/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-85": {
+      "sourceOperation": "observe",
+      "pointer": "/media/85/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-86": {
+      "sourceOperation": "observe",
+      "pointer": "/media/86/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-87": {
+      "sourceOperation": "observe",
+      "pointer": "/media/87/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-88": {
+      "sourceOperation": "observe",
+      "pointer": "/media/88/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-89": {
+      "sourceOperation": "observe",
+      "pointer": "/media/89/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-90": {
+      "sourceOperation": "observe",
+      "pointer": "/media/90/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-91": {
+      "sourceOperation": "observe",
+      "pointer": "/media/91/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-92": {
+      "sourceOperation": "observe",
+      "pointer": "/media/92/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-93": {
+      "sourceOperation": "observe",
+      "pointer": "/media/93/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-94": {
+      "sourceOperation": "observe",
+      "pointer": "/media/94/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-95": {
+      "sourceOperation": "observe",
+      "pointer": "/media/95/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-96": {
+      "sourceOperation": "observe",
+      "pointer": "/media/96/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-97": {
+      "sourceOperation": "observe",
+      "pointer": "/media/97/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-98": {
+      "sourceOperation": "observe",
+      "pointer": "/media/98/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    },
+    "media-99": {
+      "sourceOperation": "observe",
+      "pointer": "/media/99/url",
+      "maxBytes": 67108864,
+      "timeoutMs": 120000
+    }
+  },
+  "maxRuntimeMs": 900000,
+  "waits": {
+    "result": {
+      "operation": "observe",
+      "statePointer": "/state",
+      "pending": [
+        "prepared",
+        "dispatching",
+        "running"
+      ],
+      "succeeded": [
+        "done"
+      ],
+      "failed": [
+        "failed",
+        "rejected",
+        "unknown"
+      ],
+      "intervalMs": 1000,
+      "maxAttempts": 800,
+      "timeoutMs": 840000
+    }
+  },
+  "negotiation": {
+    "operation": "capabilities",
+    "required": {
+      "version": 1,
+      "minimumVersion": "0.5.0",
+      "capabilities": [
+        {
+          "id": "channel.tasks",
+          "version": 1
+        },
+        {
+          "id": "channel.original-command",
+          "version": 1
+        },
+        {
+          "id": "channel.pinned-results",
+          "version": 1
+        },
+        {
+          "id": "channel.cli-draft-ticket",
+          "version": 1
+        },
+        {
+          "id": "channel.cli-image-wallet",
+          "version": 1
+        },
+        {
+          "id": "channel.explicit-rejection",
+          "version": 1
+        },
+        {
+          "id": "channel.journal",
+          "version": 3
+        },
+        {
+          "id": "channel.cli-video-parameters",
+          "version": 1
+        },
+        {
+          "id": "channel.immutable-draft",
+          "version": 1
+        },
+        {
+          "id": "channel.cli-quote-scope",
+          "version": 1
+        },
+        {
+          "id": "channel.cli-submit-fence",
+          "version": 1
+        },
+        {
+          "id": "channel.readonly-quote",
+          "version": 1
+        },
+        {
+          "id": "channel.default-parameters",
+          "version": 1
+        },
+        {
+          "id": "channel.image-review",
+          "version": 1
+        }
+      ]
+    }
+  },
+  "imageReview": true
+}

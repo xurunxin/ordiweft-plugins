@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/text-analysis-node",
+  "releaseVersion": "1.0.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "bd2e58919594d0c9aafabc357cedc95d2ef5039e",
+    "path": "examples/plugin-node/text-analysis-node"
+  },
+  "runtimeImage": "sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c"
+}

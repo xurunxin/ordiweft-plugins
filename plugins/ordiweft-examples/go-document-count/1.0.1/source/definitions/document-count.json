@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "id": "document-count",
+  "kind": "processor",
+  "action": {
+    "label": "原文档统计",
+    "inputSchema": {"type":"object","additionalProperties":false,"properties":{},"description":"统计一份 UTF-8 原文档，不改动原件。"},
+    "resultSchema": {
+      "type":"object","additionalProperties":false,
+      "properties": {
+        "characters":{"type":"integer","minimum":1,"maximum":1048576,"title":"字符数"},
+        "words":{"type":"integer","minimum":0,"maximum":1048576,"title":"空白分词数"},
+        "sourceSha256":{"type":"string","pattern":"^[a-f0-9]{64}$","title":"原文档摘要"}
+      },
+      "required":["characters","words","sourceSha256"]
+    },
+    "resources":{"minInputs":1,"maxInputs":1,"maxOutputs":0,"maxInputBytes":1048576,"maxOutputBytes":4096,"maxRuntimeMs":60000},
+    "inputRoles":[{"id":"source","label":"原文档","kinds":["document"],"mimeTypes":["text/plain"],"min":1,"max":1}]
+  }
+}

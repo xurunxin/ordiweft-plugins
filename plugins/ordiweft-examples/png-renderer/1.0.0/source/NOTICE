@@ -1,0 +1,4 @@
+Ordiweft external PNG renderer example
+Copyright 2026 Ordiweft contributors
+Original package and standalone worker code are Apache-2.0.
+This package does not include Morpheus or install a worker service.

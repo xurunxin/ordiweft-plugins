@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "bytes": 111,
+      "path": "definitions/review.json",
+      "sha256": "5dddc7042a3b4f454d995ddd0dfcae7bf000f77207a94a0743d582518f393d2f"
+    },
+    {
+      "bytes": 627,
+      "path": "skills/review/SKILL.md",
+      "sha256": "dc7fd87ff7fc13bbf05a78f692e9ac203100b3e501661f5adc86d0f7ebb6ee66"
+    },
+    {
+      "bytes": 11358,
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "bytes": 142,
+      "path": "NOTICE",
+      "sha256": "d5cb56beecfd096b9792017379aad410c036ecab284d6b28fc450bc236460477"
+    }
+  ],
+  "contributions": [
+    {
+      "kind": "content",
+      "id": "review"
+    }
+  ],
+  "formatVersion": 1,
+  "definitions": {
+    "review": "definitions/review.json"
+  },
+  "version": "1.0.0",
+  "hostProtocol": 1,
+  "runtime": "data",
+  "packageId": "ordiweft-examples/review-skill",
+  "license": "Apache-2.0",
+  "requirements": []
+}

@@ -1,0 +1,50 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-examples/director-models",
+  "version": "1.0.1",
+  "license": "Apache-2.0",
+  "runtime": "data",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "models",
+      "kind": "content"
+    }
+  ],
+  "requirements": [],
+  "definitions": {
+    "models": "definitions/models.json"
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 125,
+      "sha256": "de936cca4254fa94921e9149a7b9757c380e7e139c9f3eedfdd4d1c5608a2cca"
+    },
+    {
+      "path": "definitions/models.json",
+      "bytes": 133,
+      "sha256": "34a9a4c3e35a7df604ce6dd012d993160c4e05091ca3144ed935722e21b61080"
+    },
+    {
+      "path": "models.json",
+      "bytes": 396,
+      "sha256": "079fbf300ec847edcfaf91b2a64fccbb1835f270774b443efc0337132486a45f"
+    },
+    {
+      "path": "models/triangle.glb",
+      "bytes": 424,
+      "sha256": "11783abc0a1e5d3d234ea90c61a48cb5a85f8bd3625f0e2cb94dbef30e73d892"
+    },
+    {
+      "path": "README.md",
+      "bytes": 826,
+      "sha256": "7f47012dae445a4c003f636a2b3ba2f00c76ecbf5e2e661674157888436bfbd4"
+    }
+  ]
+}

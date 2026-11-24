@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-examples/doubao-audio",
+  "releaseVersion": "1.0.1",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/Ordiweft",
+    "commit": "84cb1eba7179dffc2cb42468e8ec0ed1c7a16e82",
+    "path": "examples/plugin-go/doubao-audio"
+  },
+  "runtimeImage": "sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c"
+}
