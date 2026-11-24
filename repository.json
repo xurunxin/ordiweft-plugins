@@ -5,9 +5,13 @@
   "publication": "manual-tuf",
   "hostSource": {
     "repository": "https://github.com/xurunxin/Ordiweft",
-    "commit": "bd8bf8b417786cc8fe8bae3bd8fea79898be6cc8"
+    "commit": "91b20aea54376e27564229953e65daea5c1a5cad"
   },
   "retainedHostSources": [
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "bd8bf8b417786cc8fe8bae3bd8fea79898be6cc8"
+    },
     {
       "repository": "https://github.com/xurunxin/Ordiweft",
       "commit": "bd2e58919594d0c9aafabc357cedc95d2ef5039e"
