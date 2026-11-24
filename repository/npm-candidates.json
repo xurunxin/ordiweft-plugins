@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "repositoryId": "ordiweft-official-npm",
+  "entries": [
+    {
+      "packageId": "ordiweft-migrations/dashscope",
+      "version": "1.0.0",
+      "npmPackage": "@xurunxin/ordiweft-dashscope",
+      "releaseDigest": "b52d75f5e2503505fede04c9b9f7aef2d83a57ffdab8b8132512a8ca09c33aba",
+      "target": "packages/ordiweft-migrations/dashscope/1.0.0/b52d75f5e2503505fede04c9b9f7aef2d83a57ffdab8b8132512a8ca09c33aba.zip",
+      "sha256": "e8e7245c1180048ba08348910178d092b04a42a7a73b9ae4767b20c13c671309",
+      "bytes": 8286
+    },
+    {
+      "packageId": "ordiweft-migrations/dashscope",
+      "version": "1.1.0",
+      "npmPackage": "@xurunxin/ordiweft-dashscope",
+      "releaseDigest": "c69b4882bd3b21a5735d0d9418d5e6e9ac921844e92374865186ef1e177acc93",
+      "target": "packages/ordiweft-migrations/dashscope/1.1.0/c69b4882bd3b21a5735d0d9418d5e6e9ac921844e92374865186ef1e177acc93.zip",
+      "sha256": "b2c5bcf9dfe636e293a0de483e235539177cb375e14d920617fec4d454119d96",
+      "bytes": 3289317
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+name: Prepare official npm release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Reviewed Bailian version
+        type: choice
+        required: true
+        options: ["1.0.0", "1.1.0"]
+
+permissions:
+  contents: read
+
+jobs:
+  stage:
+    if: github.repository == 'xurunxin/ordiweft-plugins' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: npm-release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          repository: xurunxin/Ordiweft
+          ref: bd8bf8b417786cc8fe8bae3bd8fea79898be6cc8
+          path: host
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
+        with:
+          go-version-file: host/go.mod
+          cache: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: "24.20.0"
+          package-manager-cache: false
+      - name: Check repository and reproduce the approved ZIP
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          node scripts/registry.mjs check
+          (cd host && go build -mod=readonly -trimpath -o "$RUNNER_TEMP/ordiweft-plugin" ./cmd/ordiweft-plugin)
+          "$RUNNER_TEMP/ordiweft-plugin" pack \
+            -root "plugins/ordiweft-migrations/dashscope/$VERSION/source" \
+            -out "$RUNNER_TEMP/plugin.zip"
+          node scripts/npm-release.mjs "$VERSION" "$RUNNER_TEMP/plugin.zip" "$RUNNER_TEMP/npm-bailian"
+      - name: Submit the package for npm approval
+        env:
+          NPM_CONFIG_REGISTRY: https://registry.npmjs.org
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/npm-bailian"
+          npm stage publish --ignore-scripts --access public

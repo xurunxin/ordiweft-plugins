@@ -1,6 +1,6 @@
 # Ordiweft 插件源码仓库
 
-保存可审阅源码、固定配方与发布提案，使独立部署可以通过 Ordiweft 的签名目录或离线包消费插件。当前为未发布开发仓库；内容尚未发行，也没有官方信任根、线上目录、自动合并或部署。
+保存可审阅源码、固定配方与发布提案。Ordiweft 支持从官方 npm 清单、TUF 签名目录或离线 ZIP 安装插件。已批准用于官方 npm 安装的版本以 [发布清单](repository/npm-releases.json) 为准。
 
 原创工具与模板采用 [Apache-2.0](LICENSE)，保留 [NOTICE](NOTICE)；每个包携带自己的许可与来源。Morpheus 保持其现有许可，本仓库不分发 Morpheus 或其依赖。
 
@@ -46,6 +46,20 @@ node scripts/registry.mjs build <CLI绝对路径> <CLI的SHA256> <仓外新目�
 输出 ZIP 与 build-proof.json。v3证明分别记录实际制品SHA/字节数、宿主release digest、选择的CLI摘要/配置的工具源码提交，以及逐包原源码位置/提交和配方JSON序列化摘要recipeDigest；JSON.parse后JSON.stringify的UTF-8字节参与摘要，避免CRLF/LF差异。新工具可以打包旧原源码，不把旧源码错误标为工具提交。prepare重新核对原配方来源和ZIP；v2仍按原配方字节SHA读取，不改写历史证明。retainedHostSources用于读取历史证明；缺逐包来源的v1证明不能声称不同源码提交，其提案仅保留原共享工具提交的来源范围，不补造原路径或配方指纹。
 
 这些是待复核的构建记录，不是签名、命名空间授权或构建证明服务；配置的工具提交不能单凭文件自称得到认证，维护者仍须独立确认所提供CLI摘要与真实构建来源。所有输出不覆盖已有文件，失败保留现场供检查。文件完整性以真实宿主CLI为准，不在这里复制另一份release摘要算法。
+
+## npm 发布与上架
+
+百炼用 `@xurunxin/ordiweft-dashscope` 分发原 ZIP。包保留原许可，只有 ZIP、npm 元数据与许可文件。内置插件 ID 为 `ordiweft-migrations/dashscope`。已审阅的试点版本及原 ZIP 摘要记录在 [候选清单](repository/npm-candidates.json)。
+
+首次发布由维护者在工作站登录 npm，提交暂存并完成 npm 的本人确认。后续在 npm 包设置中绑定 Trusted Publisher，使用组织/用户名 `xurunxin`、仓库 `ordiweft-plugins`、工作流 `npm-release.yml`、环境 `npm-release`，授予 stage 权限。GitHub 环境限定 `main`，在 Actions 页面手动运行审核过的版本。工作流复现原 ZIP 并交给 npm 暂存，维护者核对后批准公开发布。[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
+
+```powershell
+node scripts/npm-release.mjs 1.1.0 <原始ZIP> <仓外新包目录>
+npm pack <仓外新包目录> --ignore-scripts --pack-destination <仓外归档目录>
+npm stage publish <生成的tgz> --ignore-scripts --access public
+```
+
+公开发布后，从 registry 下载该精确版本，核对内部 ZIP 摘要，再在单独 PR 中把相应候选条目加入正式清单并增加 `revision`。仅在保护的 `main` 合并审核通过的目录。撤回时保留条目并设置 `withdrawn:true`，再增加修订。已上架版本的摘要、包名和长度保持原值。TUF 发布继续使用下述签名流程。
 
 ## 候选与撤回提案
 
