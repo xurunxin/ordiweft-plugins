@@ -6,12 +6,13 @@ import {fileURLToPath} from 'node:url'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const repositoryURL = 'https://github.com/xurunxin/ordiweft-plugins'
 const registry = 'https://registry.npmjs.org'
+const bailianPackage = 'ordiweft-migrations/dashscope'
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex')
 
-async function prepare(version, archivePath, destination) {
+async function prepare(packageId, version, archivePath, destination) {
   const {entries} = JSON.parse(await readFile(path.join(root, 'repository/npm-candidates.json'), 'utf8'))
-  const candidates = entries.filter(entry => entry.version === version && entry.packageId === 'ordiweft-migrations/dashscope')
-  if (candidates.length !== 1) throw new Error('Select one reviewed Bailian candidate.')
+  const candidates = entries.filter(entry => entry.packageId === packageId && entry.version === version)
+  if (candidates.length !== 1) throw new Error('Select one reviewed npm candidate by package ID and version.')
   const entry = candidates[0]
   const zip = await lstat(archivePath)
   if (!zip.isFile() || zip.size !== entry.bytes) throw new Error('Candidate ZIP length or type differs.')
@@ -28,7 +29,9 @@ async function prepare(version, archivePath, destination) {
   const packageJSON = {
     name: entry.npmPackage,
     version: entry.version,
-    description: 'Prebuilt Bailian channel plugin for Ordiweft',
+    description: packageId === bailianPackage
+      ? 'Prebuilt Bailian channel plugin for Ordiweft'
+      : `Prebuilt ${packageId} plugin for Ordiweft`,
     license: 'Apache-2.0',
     repository: {type: 'git', url: 'git+' + repositoryURL + '.git'},
     files: ['plugin.zip', 'NOTICE'],
@@ -44,7 +47,8 @@ async function prepare(version, archivePath, destination) {
 
 try {
   const args = process.argv.slice(2)
-  if (args.length !== 3) throw new Error('Usage: node scripts/npm-release.mjs <version> <original ZIP> <new package directory>')
+  if (args.length === 3) args.unshift(bailianPackage)
+  if (args.length !== 4) throw new Error('Usage: node scripts/npm-release.mjs <package ID> <version> <original ZIP> <new package directory>')
   await prepare(...args)
 } catch (error) {
   console.error(error.message)

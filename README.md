@@ -49,12 +49,12 @@ node scripts/registry.mjs build <CLI绝对路径> <CLI的SHA256> <仓外新目�
 
 ## npm 发布与上架
 
-百炼用 `@daoxialiuren/ordiweft-dashscope` 分发原 ZIP。包保留原许可，只有 ZIP、npm 元数据与许可文件。内置插件 ID 为 `ordiweft-migrations/dashscope`。已审阅的试点版本及原 ZIP 摘要记录在 [候选清单](repository/npm-candidates.json)。
+百炼使用 `@daoxialiuren/ordiweft-dashscope` 分发 `ordiweft-migrations/dashscope`。SeedAudio 的待发布候选使用 `@daoxialiuren/ordiweft-doubao-audio` 分发 `ordiweft-examples/doubao-audio`，沿用 provider `doubao-audio`。包只包含原 ZIP、npm 元数据与许可文件。可提交暂存的精确版本和摘要见 [候选清单](repository/npm-candidates.json)。
 
-首次发布由维护者以 npm 账号 `daoxialiuren` 在工作站提交暂存并完成本人确认。后续在 npm 包设置中绑定 Trusted Publisher，使用 GitHub 仓库所有者 `xurunxin`、仓库 `ordiweft-plugins`、工作流 `npm-release.yml`、环境 `npm-release`，授予 stage 权限。GitHub 环境限定 `main`，在 Actions 页面手动运行审核过的版本。工作流复现原 ZIP 并交给 npm 暂存，维护者核对后批准公开发布。[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
+首次发布由维护者使用对 `@daoxialiuren` 有相应权限的 npm 凭据提交暂存，再由维护者完成确认。后续在 npm 包设置中绑定 Trusted Publisher，使用 GitHub 仓库所有者 `xurunxin`、仓库 `ordiweft-plugins`、工作流 `npm-release.yml`、环境 `npm-release`，授予 stage 权限。GitHub 环境限定 `main`，在 Actions 页面手动选择包 ID 和审核过的版本。工作流复现原 ZIP 并交给 npm 暂存，维护者核对后批准公开发布。[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
 
 ```powershell
-node scripts/npm-release.mjs 1.1.0 <原始ZIP> <仓外新包目录>
+node scripts/npm-release.mjs ordiweft-examples/doubao-audio 1.0.3 <原始ZIP> <仓外新包目录>
 npm pack <仓外新包目录> --ignore-scripts --pack-destination <仓外归档目录>
 npm stage publish <生成的tgz> --ignore-scripts --access public
 ```

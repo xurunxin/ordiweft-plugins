@@ -77,6 +77,7 @@ test('real host packing and catalog proposals preserve immutable original bytes'
   assert.equal(bytes.length,artifact.bytes)
   assert.deepEqual(bytes,await fs.readFile(path.join(second,artifact.filename)),'same original package must pack identically')
  }
+ await verifyNpmCandidates(proof.artifacts,first,dir)
  const selectionPath=path.join(dir,'selection.json'),proposalPath=path.join(dir,'candidate.json')
  const original=proof.artifacts[0]
  const selection={version:1,expectedBuildSHA256:sha(proofBody),decisions:[{key:original.key,state:'candidate',reason:'synthetic integration review only'}]}
@@ -148,6 +149,39 @@ test('real host packing and catalog proposals preserve immutable original bytes'
  result=run(repo,['prepare',proofPath,selectionPath,path.join(dir,'changed-artifact.json')]);assert.notEqual(result.status,0)
  assert.match(result.stderr,/Artifact bytes changed/)
 })
+
+async function verifyNpmCandidates(artifacts,built,dir){
+ const pack=(...args)=>spawnSync(process.execPath,[path.join(root,'scripts/npm-release.mjs'),...args],{encoding:'utf8',windowsHide:true,timeout:15000})
+ const seedId='ordiweft-examples/doubao-audio'
+ const seed=artifacts.find(item=>item.key===`${seedId}/1.0.3`)
+ const bailian=artifacts.find(item=>item.key==='ordiweft-migrations/dashscope/1.1.0')
+ const seedZIP=path.join(built,seed.filename), seedOut=path.join(dir,'npm-seedaudio')
+ const bailianOut=path.join(dir,'npm-bailian')
+ for(const [args,out,name,original]of [
+  [[seedId,'1.0.3',seedZIP,seedOut],seedOut,'@daoxialiuren/ordiweft-doubao-audio',seed],
+  [['1.1.0',path.join(built,bailian.filename),bailianOut],bailianOut,'@daoxialiuren/ordiweft-dashscope',bailian],
+ ]){
+  const result=pack(...args)
+  assert.equal(result.status,0,result.stderr)
+  const metadata=JSON.parse(await fs.readFile(path.join(out,'package.json')))
+  assert.equal(metadata.name,name)
+  assert.equal(metadata.version,original.version)
+  assert.equal(sha(await fs.readFile(path.join(out,'plugin.zip'))),original.sha256)
+ }
+ const badOut=path.join(dir,'npm-invalid')
+ const wrongCandidate=pack(seedId,'1.1.0',seedZIP,badOut)
+ assert.notEqual(wrongCandidate.status,0);assert.match(wrongCandidate.stderr,/Select one reviewed npm candidate/)
+ const tampered=await fs.readFile(seedZIP)
+ tampered[0]^=1
+ const tamperedZIP=path.join(dir,'tampered-seedaudio.zip')
+ await fs.writeFile(tamperedZIP,tampered)
+ const wrongBytes=pack(seedId,'1.0.3',tamperedZIP,badOut)
+ assert.notEqual(wrongBytes.status,0);assert.match(wrongBytes.stderr,/Candidate ZIP SHA-256 differs/)
+ await assert.rejects(fs.access(badOut),{code:'ENOENT'})
+ const repeated=pack(seedId,'1.0.3',seedZIP,seedOut)
+ assert.notEqual(repeated.status,0);assert.match(repeated.stderr,/EEXIST/)
+ assert.equal(sha(await fs.readFile(path.join(seedOut,'plugin.zip'))),seed.sha256)
+}
 
 test('actual host verifier rejects changed source; wrong CLI digest never builds', {skip:!tool||!toolSHA?'explicit trusted host CLI and SHA-256 required':false}, async t=>{
  const {repo,dir}=await fixture(t)
