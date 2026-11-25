@@ -8,7 +8,11 @@ on:
         type: choice
         required: true
         default: ordiweft-migrations/dashscope
-        options: ["ordiweft-migrations/dashscope", "ordiweft-examples/doubao-audio"]
+        options:
+          - ordiweft-migrations/dashscope
+          - ordiweft-examples/doubao-audio
+          - ordiweft-migrations/doubao-speech
+          - ordiweft-examples/indextts
       version:
         description: Reviewed release version
         type: string

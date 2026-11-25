@@ -36,6 +36,8 @@ node scripts/build-plugin-go-example.mjs --example gpt-image --sdk <公开SDK绝
 
 豆包语音使用 `--example doubao-speech`，沿用原生渠道的官方 2.0 模型、参数和计量字段。宿主需提供 `connections.voice-request-fields` v1。候选验证、原生授权、活动版本切换与回退使用现有宿主接口。
 
+豆包语音 `1.0.0` 的[固定配方](../plugins/ordiweft-migrations/doubao-speech/1.0.0/recipe.json)绑定外仓提交 `d926f40468b96a30c8aa22cb8858b2939726473e`、宿主 SDK 提交 `6ed4d8675eb8c071d126b3743d1acc3f7cddabcb` 和 Go 1.27.0。IndexTTS 的 [1.0.0 配方](../plugins/ordiweft-examples/indextts/1.0.0/recipe.json)继续复现原 ZIP。两个 npm 候选见[候选清单](../repository/npm-candidates.json)。
+
 Fish Audio 使用 `--example fish-audio`。宿主需支持 `connections.fish-audio-tts`、`connections.repeated-form-fields` 及 1.1.0 安装夹具的音色和回执验证。合成、零样本合成、设计候选排序及私有克隆在隔离 Linux 中分别验证。豆包语音和 Fish Audio 构建需使用包含各自上述能力的宿主 SDK。
 
 ## 保留原配方

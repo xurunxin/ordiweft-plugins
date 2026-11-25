@@ -53,6 +53,17 @@ test('static process metadata requires an immutable sandbox image without runnin
  assert.match(result.stderr,/Executable runtime image must be immutable/)
 })
 
+test('speech recipe refuses a source commit that differs from its frozen build',async t=>{
+ const {repo}=await fixture(t)
+ const recipePath=path.join(repo,'plugins/ordiweft-migrations/doubao-speech/1.0.0/recipe.json')
+ const recipe=JSON.parse(await fs.readFile(recipePath))
+ recipe.source.commit='0'.repeat(40)
+ await fs.writeFile(recipePath,JSON.stringify(recipe))
+ const result=run(repo,['check'])
+ assert.notEqual(result.status,0)
+ assert.match(result.stderr,/Speech adapter build provenance differs/)
+})
+
 test('real host packing and catalog proposals preserve immutable original bytes', {skip:!tool||!toolSHA?'explicit trusted host CLI and SHA-256 required':false}, async t=>{
  const {repo,dir}=await fixture(t)
  const first=path.join(dir,'build-one'),second=path.join(dir,'build-two')
@@ -157,10 +168,19 @@ async function verifyNpmCandidates(artifacts,built,dir){
  const bailian=artifacts.find(item=>item.key==='ordiweft-migrations/dashscope/1.1.0')
  const seedZIP=path.join(built,seed.filename), seedOut=path.join(dir,'npm-seedaudio')
  const bailianOut=path.join(dir,'npm-bailian')
- for(const [args,out,name,original]of [
+ const releases=[
   [[seedId,'1.0.3',seedZIP,seedOut],seedOut,'@daoxialiuren/ordiweft-doubao-audio',seed],
   [['1.1.0',path.join(built,bailian.filename),bailianOut],bailianOut,'@daoxialiuren/ordiweft-dashscope',bailian],
+ ]
+ for(const [id,name]of [
+  ['ordiweft-migrations/doubao-speech','@daoxialiuren/ordiweft-doubao-speech'],
+  ['ordiweft-examples/indextts','@daoxialiuren/ordiweft-indextts'],
  ]){
+  const original=artifacts.find(item=>item.key===`${id}/1.0.0`)
+  const out=path.join(dir,'npm-'+id.split('/')[1])
+  releases.push([[id,'1.0.0',path.join(built,original.filename),out],out,name,original])
+ }
+ for(const [args,out,name,original]of releases){
   const result=pack(...args)
   assert.equal(result.status,0,result.stderr)
   const metadata=JSON.parse(await fs.readFile(path.join(out,'package.json')))

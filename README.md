@@ -14,7 +14,7 @@
 
 ## 当前可用范围
 
-仓库保存26个不可变版本，覆盖内容/提示词模板/显式Skill、声明式表单与动作节点、文档/素材处理器、片场素材与环境预设、外部worker声明，以及IndexTTS、百炼Wan图片、GPT Image和SeedAudio代表候选。每个版本携带固定来源、配方、完整文件清单与LICENSE/NOTICE；静态Go包另保存公开SDK、Go许可、预构建入口和原构建证明。它们保留原package/provider/model ID与旧版本，不自动替换完整渠道或已有节点/任务。具体能力和验收范围以各固定记录为准。
+仓库保存 29 个不可变版本，覆盖内容与提示词模板、显式 Skill、声明式节点、文档与素材处理、片场素材与环境预设、外部 worker 声明，以及 IndexTTS、百炼、GPT Image、SeedAudio 和豆包语音。每个版本携带固定来源、配方、完整文件清单与 LICENSE/NOTICE。静态 Go 包另保存公开 SDK、Go 许可、预构建入口和原构建证明。渠道接管由管理员验证和激活。具体能力和验收范围见各版本记录。
 
 GPT Image 1.1.4逐张流式解码当前图片字段，显式请求64MiB临时盘并移交输出buffer。它需要支持sandbox.scratchBytes和outputs.stage-buffer的宿主，旧严格工具拒绝新字段。原25个版本的源码/配方和制品保持；整个渠道的大输入组合、真实账号、完整平台与正式发行并未由这些代表路径自动完成。
 
@@ -49,7 +49,9 @@ node scripts/registry.mjs build <CLI绝对路径> <CLI的SHA256> <仓外新目�
 
 ## npm 发布与上架
 
-百炼使用 `@daoxialiuren/ordiweft-dashscope` 分发 `ordiweft-migrations/dashscope`。SeedAudio 的待发布候选使用 `@daoxialiuren/ordiweft-doubao-audio` 分发 `ordiweft-examples/doubao-audio`，沿用 provider `doubao-audio`。包只包含原 ZIP、npm 元数据与许可文件。可提交暂存的精确版本和摘要见 [候选清单](repository/npm-candidates.json)。
+百炼使用 `@daoxialiuren/ordiweft-dashscope` 分发 `ordiweft-migrations/dashscope`。SeedAudio 使用 `@daoxialiuren/ordiweft-doubao-audio` 分发 `ordiweft-examples/doubao-audio`，沿用 provider `doubao-audio`。包只包含原 ZIP、npm 元数据与许可文件。可提交暂存的精确版本和摘要见 [候选清单](repository/npm-candidates.json)。
+
+豆包语音和 IndexTTS 的候选分别使用 `@daoxialiuren/ordiweft-doubao-speech` 与 `@daoxialiuren/ordiweft-indextts`，沿用原渠道 ID `doubao-speech` 和 `indextts`。IndexTTS 沿用既有固定 ZIP，安装后仍需管理员绑定自己的推理服务。
 
 首次发布由维护者使用对 `@daoxialiuren` 有相应权限的 npm 凭据提交暂存，再由维护者完成确认。后续在 npm 包设置中绑定 Trusted Publisher，使用 GitHub 仓库所有者 `xurunxin`、仓库 `ordiweft-plugins`、工作流 `npm-release.yml`、环境 `npm-release`，授予 stage 权限。GitHub 环境限定 `main`，在 Actions 页面手动选择包 ID 和审核过的版本。工作流复现原 ZIP 并交给 npm 暂存，维护者核对后批准公开发布。[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
 
