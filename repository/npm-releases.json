@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repositoryId": "ordiweft-official-npm",
-  "revision": 2,
+  "revision": 3,
   "entries": [
     {
       "packageId": "ordiweft-migrations/dashscope",
@@ -20,6 +20,15 @@
       "target": "packages/ordiweft-migrations/dashscope/1.1.0/c69b4882bd3b21a5735d0d9418d5e6e9ac921844e92374865186ef1e177acc93.zip",
       "sha256": "b2c5bcf9dfe636e293a0de483e235539177cb375e14d920617fec4d454119d96",
       "bytes": 3289317
+    },
+    {
+      "packageId": "ordiweft-examples/doubao-audio",
+      "version": "1.0.3",
+      "npmPackage": "@daoxialiuren/ordiweft-doubao-audio",
+      "releaseDigest": "741dd3ad36d1c15442228f1f9812af73e2580f515d9f28eba5708c7772b58a1b",
+      "target": "packages/ordiweft-examples/doubao-audio/1.0.3/741dd3ad36d1c15442228f1f9812af73e2580f515d9f28eba5708c7772b58a1b.zip",
+      "sha256": "e5c4da871f3dae58c2bc4e20ce6f28cb6e622dbf0c137d1d91b93b295f4524b9",
+      "bytes": 4460213
     }
   ]
 }
