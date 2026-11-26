@@ -8,7 +8,7 @@ func CollectionManifest(version string) aigc.Manifest {
 	return aigc.Manifest{
 		ID: Provider, Name: "ComfyUI 工作流", Version: version, APIVersion: 2, Runtime: "builtin", Auth: "server",
 		Secrets: []string{}, Nodes: []aigc.Node{}, Models: []aigc.Model{},
-		Scheduling: aigc.Scheduling{Independent: true, Concurrency: aigc.RemoteHostConcurrency, MaxQueued: 100, Cancelable: false},
+		Scheduling: aigc.Scheduling{Independent: true, Concurrency: 1, MaxQueued: 20, Cancelable: false},
 	}
 }
 
