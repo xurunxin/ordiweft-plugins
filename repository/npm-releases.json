@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repositoryId": "ordiweft-official-npm",
-  "revision": 4,
+  "revision": 5,
   "entries": [
     {
       "packageId": "ordiweft-migrations/dashscope",
@@ -92,6 +92,15 @@
       "target": "packages/ordiweft-migrations/tapnow-web/1.0.0/116f3ae609dcc0445c451495af8e878321d1b6ccc80ec8042e202e5a4309776c.zip",
       "sha256": "2e17c9bdd55d6b14f180a1892534bd8accbcad6232f4561f16bd6df8f7185d38",
       "bytes": 5391
+    },
+    {
+      "packageId": "ordiweft-migrations/comfyui",
+      "version": "1.0.0",
+      "npmPackage": "@daoxialiuren/ordiweft-comfyui",
+      "releaseDigest": "c17c90f1932d743914abc2e75b8247fe9e8b922bc8a98f29c6a8e53105f7ae7f",
+      "target": "packages/ordiweft-migrations/comfyui/1.0.0/c17c90f1932d743914abc2e75b8247fe9e8b922bc8a98f29c6a8e53105f7ae7f.zip",
+      "sha256": "11dde3e74a091fece2166fcf06bf2e9eabaf89c3ec9df2fb4ef8f2dda9fd3536",
+      "bytes": 5253
     }
   ]
 }
