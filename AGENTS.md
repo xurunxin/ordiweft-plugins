@@ -1,5 +1,6 @@
 # Plugin repository maintenance
 
+- Develop and maintain plugin-specific integrations in this repository. Check existing implementations and releases first. Add host support in Ordiweft when needed, and update the [integration guide](docs/official-plugin-builds.md) and affected plugin documentation when the integration changes.
 - Keep Apache-2.0 and each package's LICENSE/NOTICE. Morpheus is not redistributed here.
 - Use PowerShell 7 without a profile and the workstation RTK proxy. Document original commands.
 - Sources, recipes, review records and unsigned catalog proposals are separate. Never install dependencies, execute package code, accept install hooks, read deployment secrets or create signing keys during check/build.
