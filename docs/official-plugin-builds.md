@@ -2,6 +2,14 @@
 
 这批源码从 Ordiweft `08fad08976b66036a846542d711c9822f88f4bb2` 导入。各包保留 `LICENSE`、`NOTICE`、版本、原 provider 和模型 ID。
 
+## 开发与接入
+
+1. 接入新供应商、模型或功能前，先查下方源码入口、相关插件的 manifest 和[官方 npm 版本清单](../repository/npm-releases.json)。已有实现优先扩展或复用。核对界面可用性时，再确认目标部署的宿主支持、已安装及活动版本、渠道和模型开关、凭据与权限。
+2. 在本仓库维护插件代码、模型声明和发行配方。现有 SDK 或宿主运行时缺少接入能力时，在 [Ordiweft](https://github.com/xurunxin/Ordiweft) 补齐所需契约和共用能力，并用兼容宿主验证安装、配置与调用。
+3. 接入变更随文档更新。本页记录源码入口、发行包和宿主依赖，插件 README 记录配置、模型能力及验证方式。官方插件按 [npm 发布与上架流程](../README.md#npm-发布与上架)发行，核对公开版本和制品摘要后更新官方清单，供部署从插件中心安装。
+
+## 插件源码与部署依赖
+
 | 插件 | 源码 | 包 ID | 部署依赖 |
 | --- | --- | --- | --- |
 | Codex 图片订阅 | [codex-image](../examples/plugin-go/codex-image) | `ordiweft-migrations/codex` | 宿主受信 Codex 登录 |
