@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repositoryId": "ordiweft-official-npm",
-  "revision": 4,
+  "revision": 5,
   "entries": [
     {
       "packageId": "ordiweft-migrations/dashscope",
@@ -92,6 +92,15 @@
       "target": "packages/ordiweft-migrations/tapnow-web/1.0.0/116f3ae609dcc0445c451495af8e878321d1b6ccc80ec8042e202e5a4309776c.zip",
       "sha256": "2e17c9bdd55d6b14f180a1892534bd8accbcad6232f4561f16bd6df8f7185d38",
       "bytes": 5391
+    },
+    {
+      "packageId": "ordiweft-migrations/higgsfield",
+      "version": "1.1.0",
+      "npmPackage": "@daoxialiuren/ordiweft-higgsfield",
+      "releaseDigest": "518dbd5f81e1d2e1162b2a6a5fc557f6a6b46fc53564fd9ede7c2627be7b1ee9",
+      "target": "packages/ordiweft-migrations/higgsfield/1.1.0/518dbd5f81e1d2e1162b2a6a5fc557f6a6b46fc53564fd9ede7c2627be7b1ee9.zip",
+      "sha256": "33ed43fe2aebb6d152540bfd61b0688298ba59032f964bff66b2c8dd6a7acba4",
+      "bytes": 6737762
     }
   ]
 }
