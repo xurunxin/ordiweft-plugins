@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repositoryId": "ordiweft-official-npm",
-  "revision": 5,
+  "revision": 6,
   "entries": [
     {
       "packageId": "ordiweft-migrations/dashscope",
@@ -101,6 +101,15 @@
       "target": "packages/ordiweft-migrations/comfyui/1.0.0/c17c90f1932d743914abc2e75b8247fe9e8b922bc8a98f29c6a8e53105f7ae7f.zip",
       "sha256": "11dde3e74a091fece2166fcf06bf2e9eabaf89c3ec9df2fb4ef8f2dda9fd3536",
       "bytes": 5253
+    },
+    {
+      "packageId": "ordiweft-migrations/higgsfield",
+      "version": "1.1.0",
+      "npmPackage": "@daoxialiuren/ordiweft-higgsfield",
+      "releaseDigest": "518dbd5f81e1d2e1162b2a6a5fc557f6a6b46fc53564fd9ede7c2627be7b1ee9",
+      "target": "packages/ordiweft-migrations/higgsfield/1.1.0/518dbd5f81e1d2e1162b2a6a5fc557f6a6b46fc53564fd9ede7c2627be7b1ee9.zip",
+      "sha256": "33ed43fe2aebb6d152540bfd61b0688298ba59032f964bff66b2c8dd6a7acba4",
+      "bytes": 6737762
     }
   ]
 }
