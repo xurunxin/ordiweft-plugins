@@ -47,6 +47,15 @@
       "target": "packages/ordiweft-examples/indextts/1.0.0/220544b440fde864ea0f20d0f99fc2fd5c154cd82c1675f3ff722c5961bea1f6.zip",
       "sha256": "a4b2d30002b6daa8993800ab3cc7c02308bfad489451504db9cfaf0fa307d08d",
       "bytes": 4415450
+    },
+    {
+      "packageId": "ordiweft-migrations/fish-audio",
+      "version": "1.1.0",
+      "npmPackage": "@daoxialiuren/ordiweft-fish-audio",
+      "releaseDigest": "cfab9e0a3c8aa6c511b71de28384da6d2a0cea345bed32b8d91d47deedf63772",
+      "target": "packages/ordiweft-migrations/fish-audio/1.1.0/cfab9e0a3c8aa6c511b71de28384da6d2a0cea345bed32b8d91d47deedf63772.zip",
+      "sha256": "8b23343fcdf9918b7fb722d2ef022449ae1894d4cdd0148b2cdd666dec926bc9",
+      "bytes": 4550128
     }
   ]
 }
