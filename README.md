@@ -57,6 +57,8 @@ node scripts/registry.mjs build <CLI绝对路径> <CLI的SHA256> <仓外新目�
 
 Fish Audio 的候选使用 `@daoxialiuren/ordiweft-fish-audio` 分发 `ordiweft-migrations/fish-audio`，沿用 `fish-audio` 渠道 ID。
 
+ComfyUI 工作流使用 `@daoxialiuren/ordiweft-comfyui` 分发 `ordiweft-migrations/comfyui`。宿主需要支持 `comfy-workflows-v1`，工作流图和连接由管理员在各自部署中导入和配置。
+
 首次发布由维护者使用对 `@daoxialiuren` 有相应权限的 npm 凭据提交暂存，再由维护者完成确认。后续在 npm 包设置中绑定 Trusted Publisher，使用 GitHub 仓库所有者 `xurunxin`、仓库 `ordiweft-plugins`、工作流 `npm-release.yml`、环境 `npm-release`，授予 stage 权限。GitHub 环境限定 `main`，在 Actions 页面手动选择包 ID 和审核过的版本。工作流复现原 ZIP 并交给 npm 暂存，维护者核对后批准公开发布。[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
 
 ```powershell

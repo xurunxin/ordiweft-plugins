@@ -5,9 +5,13 @@
   "publication": "manual-tuf",
   "hostSource": {
     "repository": "https://github.com/xurunxin/Ordiweft",
-    "commit": "398e93d3d5f82709a9a302a58bc4852bab43b5b5"
+    "commit": "05c2a029fb34607ffaf5d2c6ab26026b149a68c3"
   },
   "retainedHostSources": [
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "8f048c26f292adcb06d491271e76108671c2303f"
+    },
     {
       "repository": "https://github.com/xurunxin/Ordiweft",
       "commit": "3e211b8b4ae573e1850da42002a90478914e1bf3"
@@ -108,6 +112,7 @@
     "ordiweft-migrations/breeze-tts-local/1.0.0",
     "ordiweft-migrations/tapnow/1.0.0",
     "ordiweft-migrations/tapnow-web/1.0.0",
+    "ordiweft-migrations/comfyui/1.0.0",
     "ordiweft-migrations/higgsfield/1.1.0"
   ]
 }

@@ -1,0 +1,50 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/comfyui",
+  "version": "1.0.0",
+  "runtime": "data",
+  "providerProfile": "comfy-workflows-v1",
+  "license": "Apache-2.0",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "comfyui",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [],
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 71,
+      "sha256": "2a59af75fd422bfaa94891a6ec3a536cee7ebfbd9ba65874e8f9fa762d7bc54f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 196,
+      "sha256": "88762774108abffd524277ee87a4f05e729db382e08dd6e2858c0a091a00aac1"
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "comfyui",
+    "name": "ComfyUI 工作流",
+    "version": "1.0.0",
+    "runtime": "builtin",
+    "auth": "server",
+    "secrets": [],
+    "nodes": [],
+    "models": [],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 1,
+      "maxQueued": 20,
+      "cancelable": false
+    }
+  }
+}
