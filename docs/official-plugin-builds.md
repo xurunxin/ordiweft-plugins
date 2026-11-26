@@ -40,6 +40,8 @@ node scripts/build-plugin-go-example.mjs --example gpt-image --sdk <公开SDK绝
 
 Fish Audio 使用 `--example fish-audio`。宿主需支持 `connections.fish-audio-tts`、`connections.repeated-form-fields` 及 1.1.0 安装夹具的音色和回执验证。合成、零样本合成、设计候选排序及私有克隆在隔离 Linux 中分别验证。豆包语音和 Fish Audio 构建需使用包含各自上述能力的宿主 SDK。
 
+Fish Audio `1.1.0` 的[固定配方](../plugins/ordiweft-migrations/fish-audio/1.1.0/recipe.json)使用外仓提交 `d926f40468b96a30c8aa22cb8858b2939726473e`、宿主 SDK 提交 `c538cddb70fcf3a7f2a47c5cc7b9872d78ae345f` 和 Go 1.27.0。npm 包为 `@daoxialiuren/ordiweft-fish-audio`。安装包的音色搜索和详情通过宿主只读目录处理。
+
 ## 保留原配方
 
 [社区包草稿 PR #1](https://github.com/xurunxin/ordiweft-plugins/pull/1) 固定 26 个候选版本的路径和历史来源。SeedAudio 1.0.3 与百炼万相 1.0.0 可以直接复用各自原 `portable-pack` 配方。发布既有版本时使用原配方及原制品摘要，本页的源码构建入口用于开发新版本。

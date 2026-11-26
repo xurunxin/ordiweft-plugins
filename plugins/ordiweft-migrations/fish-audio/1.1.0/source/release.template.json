@@ -1,0 +1,747 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/fish-audio",
+  "version": "1.1.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "kind": "provider",
+      "id": "fish-audio"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "read",
+        "decode",
+        "release"
+      ]
+    },
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint"
+      ]
+    },
+    {
+      "service": "media",
+      "version": 1,
+      "operations": [
+        "derive"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    }
+  ],
+  "compatibility": {
+    "version": 1,
+    "host": [
+      {
+        "id": "runtime.negotiation",
+        "version": 1
+      },
+      {
+        "id": "connections.fish-audio-tts",
+        "version": 1
+      },
+      {
+        "id": "connections.repeated-form-fields",
+        "version": 1
+      },
+      {
+        "id": "generation.voice-bindings",
+        "version": 1
+      },
+      {
+        "id": "outputs.voice-identity",
+        "version": 1
+      }
+    ],
+    "sdk": {
+      "minimumVersion": "0.1.15",
+      "capabilities": [
+        {
+          "id": "invocation.negotiate",
+          "version": 1
+        }
+      ]
+    }
+  },
+  "generation": {
+    "apiVersion": 2,
+    "id": "fish-audio",
+    "name": "Fish Audio",
+    "version": "1.0.0",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY"
+    ],
+    "nodes": [
+      {
+        "id": "speech",
+        "label": "Fish Audio 语音合成",
+        "capability": "speech.generate",
+        "model": "drama-3"
+      },
+      {
+        "id": "voice-design",
+        "label": "Fish Audio 声音设计",
+        "capability": "voice.design",
+        "model": "voice-design-1"
+      },
+      {
+        "id": "voice-clone",
+        "label": "Fish Audio 声音克隆",
+        "capability": "voice.design",
+        "model": "voice-clone"
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 30,
+      "cancelable": false
+    },
+    "models": [
+      {
+        "id": "drama-3",
+        "pricing": {
+          "provider": "fish-audio",
+          "model": "drama-3",
+          "currency": "USD",
+          "sourceUrl": "https://docs.fish.audio/developer-guide/models-pricing/pricing-and-rate-limits",
+          "checkedAt": "2026-11-17",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "utf8_byte",
+                  "rate": "50",
+                  "per": "1000000",
+                  "catalogPer": "1000000"
+                }
+              ]
+            }
+          ]
+        },
+        "label": "Drama 3 · 导演式多角色语音",
+        "capability": "speech.generate",
+        "maxVoices": 16,
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "台词 / 多角色剧本",
+          "required": true,
+          "maxLength": 20000,
+          "placeholder": "<|speaker:0|>[温柔地安慰] 别担心，<whisper>我在这里。</whisper>\n<|speaker:1|>[松了一口气] 谢谢你。[pause] 我好多了。"
+        },
+        "inputRoles": {
+          "speaker": {
+            "kind": "audio",
+            "label": "零样本克隆参考音频",
+            "description": "连接录音或已选中的声音设计候选；不能同时连接音色 ID。"
+          }
+        },
+        "fields": {
+          "voice_id": {
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "maxLength": 128,
+            "description": "未连音色时使用。多个说话人可在下方填写有序音色列表；连接音色将覆盖这些草稿。"
+          },
+          "speakers": {
+            "type": "array",
+            "label": "多说话人音色（从 0 开始）",
+            "default": [],
+            "description": "每行一个音色 ID，最多 16 个；顺序对应台词中的 <|speaker:N|>。有音色连线时以连线顺序为准。",
+            "items": {
+              "type": "string",
+              "label": "音色 ID",
+              "maxLength": 128
+            }
+          },
+          "reference_text": {
+            "type": "string",
+            "label": "参考录音原文",
+            "control": "textarea",
+            "maxLength": 10000,
+            "description": "只用于 audio-in 零样本克隆，是录音中已经说过的内容；不是待合成台词。推荐 10–30 秒清晰单人录音。"
+          },
+          "format": {
+            "type": "string",
+            "label": "文件格式",
+            "default": "mp3",
+            "enum": [
+              "mp3",
+              "wav"
+            ]
+          },
+          "speed": {
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2,
+            "step": 0.05
+          },
+          "volume": {
+            "type": "number",
+            "label": "音量（dB）",
+            "default": 0,
+            "minimum": -20,
+            "maximum": 20
+          },
+          "normalize": {
+            "type": "boolean",
+            "label": "文本规范化",
+            "default": true
+          },
+          "temperature": {
+            "type": "number",
+            "label": "表达变化",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "top_p": {
+            "type": "number",
+            "label": "采样多样性",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "chunk_length": {
+            "type": "integer",
+            "label": "文本分块长度",
+            "default": 300,
+            "minimum": 100,
+            "maximum": 300,
+            "section": "advanced"
+          },
+          "latency": {
+            "type": "string",
+            "label": "延迟模式",
+            "default": "normal",
+            "enum": [
+              "normal",
+              "balanced",
+              "low"
+            ],
+            "section": "advanced",
+            "optionLabels": {
+              "normal": "音质优先",
+              "balanced": "平衡",
+              "low": "低延迟"
+            }
+          },
+          "mp3_bitrate": {
+            "type": "integer",
+            "label": "MP3 比特率",
+            "default": 128,
+            "enum": [
+              64,
+              128,
+              192
+            ],
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "section": "advanced"
+          }
+        }
+      },
+      {
+        "id": "s2.1-pro",
+        "pricing": {
+          "provider": "fish-audio",
+          "model": "s2.1-pro",
+          "currency": "USD",
+          "sourceUrl": "https://docs.fish.audio/developer-guide/models-pricing/pricing-and-rate-limits",
+          "checkedAt": "2026-11-17",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "utf8_byte",
+                  "rate": "15",
+                  "per": "1000000",
+                  "catalogPer": "1000000"
+                }
+              ]
+            }
+          ]
+        },
+        "label": "S2.1 Pro",
+        "capability": "speech.generate",
+        "maxVoices": 16,
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "台词 / 多角色剧本",
+          "required": true,
+          "maxLength": 20000,
+          "placeholder": "<|speaker:0|>[soft tone] 别担心，[whispering] 我在这里。\n<|speaker:1|>[relieved] 谢谢你。[break] 我好多了。"
+        },
+        "inputRoles": {
+          "speaker": {
+            "kind": "audio",
+            "label": "零样本克隆参考音频",
+            "description": "连接录音或已选中的声音设计候选；不能同时连接音色 ID。"
+          }
+        },
+        "fields": {
+          "voice_id": {
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "maxLength": 128,
+            "description": "未连音色时使用。多个说话人可在下方填写有序音色列表；连接音色将覆盖这些草稿。"
+          },
+          "speakers": {
+            "type": "array",
+            "label": "多说话人音色（从 0 开始）",
+            "default": [],
+            "description": "每行一个音色 ID，最多 16 个；顺序对应台词中的 <|speaker:N|>。有音色连线时以连线顺序为准。",
+            "items": {
+              "type": "string",
+              "label": "音色 ID",
+              "maxLength": 128
+            }
+          },
+          "reference_text": {
+            "type": "string",
+            "label": "参考录音原文",
+            "control": "textarea",
+            "maxLength": 10000,
+            "description": "只用于 audio-in 零样本克隆，是录音中已经说过的内容；不是待合成台词。推荐 10–30 秒清晰单人录音。"
+          },
+          "format": {
+            "type": "string",
+            "label": "文件格式",
+            "default": "mp3",
+            "enum": [
+              "mp3",
+              "wav"
+            ]
+          },
+          "speed": {
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2,
+            "step": 0.05
+          },
+          "volume": {
+            "type": "number",
+            "label": "音量（dB）",
+            "default": 0,
+            "minimum": -20,
+            "maximum": 20
+          },
+          "normalize": {
+            "type": "boolean",
+            "label": "文本规范化",
+            "default": true
+          },
+          "temperature": {
+            "type": "number",
+            "label": "表达变化",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "top_p": {
+            "type": "number",
+            "label": "采样多样性",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "chunk_length": {
+            "type": "integer",
+            "label": "文本分块长度",
+            "default": 300,
+            "minimum": 100,
+            "maximum": 300,
+            "section": "advanced"
+          },
+          "latency": {
+            "type": "string",
+            "label": "延迟模式",
+            "default": "normal",
+            "enum": [
+              "normal",
+              "balanced",
+              "low"
+            ],
+            "section": "advanced",
+            "optionLabels": {
+              "normal": "音质优先",
+              "balanced": "平衡",
+              "low": "低延迟"
+            }
+          },
+          "mp3_bitrate": {
+            "type": "integer",
+            "label": "MP3 比特率",
+            "default": 128,
+            "enum": [
+              64,
+              128,
+              192
+            ],
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "section": "advanced"
+          }
+        }
+      },
+      {
+        "id": "s2.1-pro-free",
+        "pricing": {
+          "provider": "fish-audio",
+          "model": "s2.1-pro-free",
+          "currency": "USD",
+          "sourceUrl": "https://docs.fish.audio/developer-guide/models-pricing/pricing-and-rate-limits",
+          "checkedAt": "2026-11-17",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "utf8_byte",
+                  "rate": "0",
+                  "per": "1000000",
+                  "catalogPer": "1000000"
+                }
+              ]
+            }
+          ]
+        },
+        "label": "S2.1 Pro · 开发者免费层",
+        "capability": "speech.generate",
+        "maxVoices": 16,
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "台词 / 多角色剧本",
+          "required": true,
+          "maxLength": 20000,
+          "placeholder": "<|speaker:0|>[soft tone] 别担心，[whispering] 我在这里。\n<|speaker:1|>[relieved] 谢谢你。[break] 我好多了。"
+        },
+        "inputRoles": {
+          "speaker": {
+            "kind": "audio",
+            "label": "零样本克隆参考音频",
+            "description": "连接录音或已选中的声音设计候选；不能同时连接音色 ID。"
+          }
+        },
+        "fields": {
+          "voice_id": {
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "maxLength": 128,
+            "description": "未连音色时使用。多个说话人可在下方填写有序音色列表；连接音色将覆盖这些草稿。"
+          },
+          "speakers": {
+            "type": "array",
+            "label": "多说话人音色（从 0 开始）",
+            "default": [],
+            "description": "每行一个音色 ID，最多 16 个；顺序对应台词中的 <|speaker:N|>。有音色连线时以连线顺序为准。",
+            "items": {
+              "type": "string",
+              "label": "音色 ID",
+              "maxLength": 128
+            }
+          },
+          "reference_text": {
+            "type": "string",
+            "label": "参考录音原文",
+            "control": "textarea",
+            "maxLength": 10000,
+            "description": "只用于 audio-in 零样本克隆，是录音中已经说过的内容；不是待合成台词。推荐 10–30 秒清晰单人录音。"
+          },
+          "format": {
+            "type": "string",
+            "label": "文件格式",
+            "default": "mp3",
+            "enum": [
+              "mp3",
+              "wav"
+            ]
+          },
+          "speed": {
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2,
+            "step": 0.05
+          },
+          "volume": {
+            "type": "number",
+            "label": "音量（dB）",
+            "default": 0,
+            "minimum": -20,
+            "maximum": 20
+          },
+          "normalize": {
+            "type": "boolean",
+            "label": "文本规范化",
+            "default": true
+          },
+          "temperature": {
+            "type": "number",
+            "label": "表达变化",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "top_p": {
+            "type": "number",
+            "label": "采样多样性",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "chunk_length": {
+            "type": "integer",
+            "label": "文本分块长度",
+            "default": 300,
+            "minimum": 100,
+            "maximum": 300,
+            "section": "advanced"
+          },
+          "latency": {
+            "type": "string",
+            "label": "延迟模式",
+            "default": "normal",
+            "enum": [
+              "normal",
+              "balanced",
+              "low"
+            ],
+            "section": "advanced",
+            "optionLabels": {
+              "normal": "音质优先",
+              "balanced": "平衡",
+              "low": "低延迟"
+            }
+          },
+          "mp3_bitrate": {
+            "type": "integer",
+            "label": "MP3 比特率",
+            "default": 128,
+            "enum": [
+              64,
+              128,
+              192
+            ],
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "section": "advanced"
+          }
+        }
+      },
+      {
+        "id": "voice-design-1",
+        "pricing": {
+          "provider": "fish-audio",
+          "model": "voice-design-1",
+          "currency": "USD",
+          "sourceUrl": "https://docs.fish.audio/developer-guide/models-pricing/pricing-and-rate-limits",
+          "checkedAt": "2026-11-17",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "job",
+                  "rate": "0.01",
+                  "per": "1",
+                  "catalogPer": "1"
+                }
+              ]
+            }
+          ]
+        },
+        "label": "声音设计 · 候选音频",
+        "capability": "voice.design",
+        "voiceOutput": "none",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "声音设计描述",
+          "required": true,
+          "maxLength": 2000,
+          "placeholder": "成熟温暖的中文女声，音色自然、吐字清晰，像在和老朋友聊天。"
+        },
+        "fields": {
+          "reference_text": {
+            "type": "string",
+            "label": "试听文本",
+            "control": "textarea",
+            "maxLength": 150,
+            "default": "你好，很高兴认识你。让我们一起开始今天的故事。",
+            "description": "候选只输出音频；选中满意版本，用 audio-out 连接 TTS，或连接声音克隆保存为音色。"
+          },
+          "language": {
+            "type": "string",
+            "label": "试听语言",
+            "default": "zh",
+            "enum": [
+              "zh",
+              "en",
+              "ja",
+              "ko",
+              "fr",
+              "de",
+              "es"
+            ]
+          },
+          "n": {
+            "type": "integer",
+            "label": "候选数量",
+            "control": "count",
+            "default": 2,
+            "minimum": 1,
+            "maximum": 4
+          },
+          "speed": {
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 3
+          },
+          "num_step": {
+            "type": "integer",
+            "label": "扩散步数",
+            "default": 32,
+            "minimum": 1,
+            "maximum": 128,
+            "section": "advanced"
+          },
+          "guidance_scale": {
+            "type": "number",
+            "label": "描述引导强度",
+            "default": 2,
+            "minimum": 0,
+            "maximum": 20,
+            "section": "advanced"
+          },
+          "instruct_guidance_scale": {
+            "type": "number",
+            "label": "指令引导强度",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 20,
+            "section": "advanced"
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子",
+            "control": "seed",
+            "minimum": 0,
+            "maximum": 2147483647,
+            "section": "advanced"
+          }
+        }
+      },
+      {
+        "id": "voice-clone",
+        "label": "声音克隆 · 保存私有音色",
+        "capability": "voice.design",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 20,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "音色备注",
+          "required": false,
+          "maxLength": 2000,
+          "placeholder": "可选备注，不作为朗读内容"
+        },
+        "fields": {
+          "title": {
+            "type": "string",
+            "label": "音色名称",
+            "default": "画布克隆音色",
+            "required": true,
+            "maxLength": 80
+          },
+          "texts": {
+            "type": "array",
+            "label": "参考录音原文（可选）",
+            "default": [],
+            "items": {
+              "type": "string",
+              "label": "对应录音原文",
+              "maxLength": 10000
+            },
+            "description": "每行对应一段输入录音，顺序与连线一致；全部留空时由 Fish 自动转写。最多 20 段。"
+          },
+          "enhance_audio_quality": {
+            "type": "boolean",
+            "label": "提升录音质量",
+            "default": true
+          }
+        }
+      }
+    ]
+  }
+}

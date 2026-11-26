@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "models": {
+    "voice-clone": "voice-clone"
+  },
+  "body": {
+    "type": "tts",
+    "title": {
+      "$host": "parameter",
+      "name": "title"
+    },
+    "train_mode": "fast",
+    "visibility": "private",
+    "description": {
+      "$host": "prompt"
+    },
+    "enhance_audio_quality": {
+      "$host": "parameter",
+      "name": "enhance_audio_quality",
+      "optional": true
+    },
+    "generate_sample": "false",
+    "texts": {
+      "$host": "parameter",
+      "name": "texts",
+      "optional": true
+    }
+  },
+  "fixedModel": "voice-clone",
+  "singleOutput": true
+}

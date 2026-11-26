@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "origin": "https://api.fish.audio",
+  "headers": [
+    {
+      "name": "Authorization",
+      "credential": "API_KEY",
+      "prefix": "Bearer "
+    }
+  ],
+  "operations": {
+    "clone": {
+      "method": "POST",
+      "path": "/model",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "multipart/form-data",
+      "timeoutMs": 720000,
+      "maxRequestBytes": 44040192,
+      "maxResponseBytes": 2097152,
+      "jsonPolicy": {
+        "operation": "clone",
+        "digest": "213bb082a59c31ab0434c021b50442046b2a229547cbafa5fe02a0796db97306"
+      },
+      "multipart": [
+        {
+          "name": "voices",
+          "filename": "reference-0",
+          "index": 0,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-1",
+          "index": 1,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-2",
+          "index": 2,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-3",
+          "index": 3,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-4",
+          "index": 4,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-5",
+          "index": 5,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-6",
+          "index": 6,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-7",
+          "index": 7,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-8",
+          "index": 8,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-9",
+          "index": 9,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-10",
+          "index": 10,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-11",
+          "index": 11,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-12",
+          "index": 12,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-13",
+          "index": 13,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-14",
+          "index": 14,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-15",
+          "index": 15,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-16",
+          "index": 16,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-17",
+          "index": 17,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-18",
+          "index": 18,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        },
+        {
+          "name": "voices",
+          "filename": "reference-19",
+          "index": 19,
+          "optional": true,
+          "extensionsByMime": {
+            "audio/mpeg": ".mp3",
+            "audio/wav": ".wav"
+          }
+        }
+      ],
+      "repeatedFormFields": [
+        "texts"
+      ]
+    },
+    "design": {
+      "method": "POST",
+      "path": "/v1/voice-design",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 720000,
+      "maxRequestBytes": 131072,
+      "maxResponseBytes": 67108864,
+      "jsonPolicy": {
+        "operation": "design",
+        "digest": "d9806545eab0483d8f9f7d6e14742449e7d008a6dbbd55717dab4f2cc328be44"
+      }
+    },
+    "speech": {
+      "fishAudioTts": "speech",
+      "method": "POST",
+      "path": "/v1/tts",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 720000,
+      "maxRequestBytes": 262144,
+      "maxResponseBytes": 41943040,
+      "jsonPolicy": {
+        "operation": "speech",
+        "digest": "4c9afc7ff9ab7f8bc88b87e531dcb916f05addd67dab040ad0ddc61ef988796e"
+      }
+    },
+    "zero-shot": {
+      "fishAudioTts": "zero-shot",
+      "method": "POST",
+      "path": "/v1/tts",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 720000,
+      "maxRequestBytes": 67108864,
+      "maxResponseBytes": 41943040,
+      "jsonPolicy": {
+        "operation": "zero-shot",
+        "digest": "df20c9c0bf4733897449bf83bb6525a8175a679d94f0f4162fba150cfccf5976"
+      }
+    }
+  }
+}
