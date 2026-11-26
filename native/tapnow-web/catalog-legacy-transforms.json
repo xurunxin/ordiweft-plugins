@@ -1,0 +1,330 @@
+{
+  "MiniMax-H3": [
+    "4a8bb7237fbc6cc177a504bfc302562f6b14dcfdf85f779ae27c7ccc2aff1b00",
+    "63a80d097a3b56109b6bf1ac2148cd28047d85e4e3fe4b0591c4255da61c6d05"
+  ],
+  "MiniMax-H3-Max": [
+    "4a8bb7237fbc6cc177a504bfc302562f6b14dcfdf85f779ae27c7ccc2aff1b00",
+    "63a80d097a3b56109b6bf1ac2148cd28047d85e4e3fe4b0591c4255da61c6d05"
+  ],
+  "MiniMax-Hailuo-2.3": [
+    "7fdc1c787381c5f72fce907f1f2daf6579cc334f847f8802b3b668a9e199035d",
+    "4c09bf7a09c120bd28e48409399c539857816e06951c560751b97f1cc1f2625d"
+  ],
+  "MiniMax-Hailuo-2.3-Fast": [
+    "7fdc1c787381c5f72fce907f1f2daf6579cc334f847f8802b3b668a9e199035d",
+    "4c09bf7a09c120bd28e48409399c539857816e06951c560751b97f1cc1f2625d"
+  ],
+  "depth-anything-video": [
+    "cdbab792b9271c2b905c7a6e9fb663575d18bef2be01f1c96c82d81ebe16dfb2"
+  ],
+  "doubao-seedance-lite": [
+    "a36c42610435ec4a3bfb7efd16fff1acc9608a71bd44a34e05fdb248a0f79c25",
+    "e7a0ca5564ef2d91247a68272ac61fb73bb7788ce85905fe4d6920d862790c1f"
+  ],
+  "doubao-seedance-pro": [
+    "a36c42610435ec4a3bfb7efd16fff1acc9608a71bd44a34e05fdb248a0f79c25",
+    "e7a0ca5564ef2d91247a68272ac61fb73bb7788ce85905fe4d6920d862790c1f"
+  ],
+  "doubao-seedream-4.0": [
+    "be74dc3d26eb26ba5899d4d51e79467e383963c3e25d3c6bc41d9d2e55a45a54",
+    "b6d08c9bf1110354f9cb82a626877f969dc0e5bc8685ea9020739bfe389364e4"
+  ],
+  "doubao-seedream-4.5": [
+    "929f8aecc93302350626374cfbe0060d1f7ca7ae075a769c20ef597bbd0b8cab",
+    "d7a8d2bc8ae4289f3ac2f987857913372127f6037f0c4b693923e6f123913edc"
+  ],
+  "doubao-seedream-5.0-lite": [
+    "1aa23cbf88d9ee7878617b8093b48d8309dcc27d42cf8076b52e328bca7c59d1",
+    "93d1c022d1b0b5dee0c510d43102b57b0ba6a516e93ae8ad18be2c0cfbc50ce9"
+  ],
+  "doubao-seedream-5.0-pro": [
+    "8eabd4d6a02e7410381d0c07f66c02b3707629534b7b5fb6790291efb62e06ee",
+    "ecfc4d837f2e0da8505e6fdb5750a99691f1c3bbd09e57b2ae5461ca03654778"
+  ],
+  "doubao-seedream-5.5": [
+    "8eabd4d6a02e7410381d0c07f66c02b3707629534b7b5fb6790291efb62e06ee",
+    "ecfc4d837f2e0da8505e6fdb5750a99691f1c3bbd09e57b2ae5461ca03654778"
+  ],
+  "fal-recraft-v4": [
+    "6c173d53f6538c97e48b51fabbbf2538ad517a4335d0d614b0d018dc091a0183",
+    "5925e2a6a6773402a8977a40c3ecd247bfc1774b700fc01f064290e1bfb9f1b8"
+  ],
+  "fal-recraft-v4-vector": [
+    "63d48ab3cd724f3de677dfb164ee33a94581f14ce2901d8868790e6b550bd9ad",
+    "21afa77d1b143911ce35d2ea2be71bb1d3ff0bd2340693feb1c91587afa2a655"
+  ],
+  "flux-2-pro": [
+    "3086a1e6abd00d9a44a603cb4fc0dae8c1ece8e48157933e2c13177ae424fe55",
+    "86caeb5c49f98cc032b3a2121b821498066542d8872ed723f09bd0f20570cec6"
+  ],
+  "flux-3": [
+    "89f506954b1da4dbcbd6d387c0c8a6d7688d75c94f95f6a170cb35f5b7d6b847"
+  ],
+  "flux-kontext-max": [
+    "522b9bad39b55064a4e6a919d62d2c568449e8e58b1ce34c0e97dbf8f0df540a",
+    "ef4c827ceca2068be6281f0062508a63676c2a81a678136c359e290f00c2a49e"
+  ],
+  "flux-kontext-pro": [
+    "522b9bad39b55064a4e6a919d62d2c568449e8e58b1ce34c0e97dbf8f0df540a",
+    "ef4c827ceca2068be6281f0062508a63676c2a81a678136c359e290f00c2a49e"
+  ],
+  "gemini-omni-1.1-flash": [
+    "8204b20daf237830b524a35f3c54cc0e27990959d6ec7192aeaae63d12f09e6f"
+  ],
+  "gemini-omni-flash": [
+    "8204b20daf237830b524a35f3c54cc0e27990959d6ec7192aeaae63d12f09e6f"
+  ],
+  "gpt-image-1": [
+    "90032f14f4c2681855f9e1de4433e4bc5483d2c57b8b02ef801ab15c3636c9ad",
+    "569f7bbbede5643c4adc7e886089c7535fbc05316aeacda4df53e38804344d6c"
+  ],
+  "gpt-image-2": [
+    "4e08e4b92f20a907c5113b53a1212ff1c084895f3c027ec9dc33896e59d69d66",
+    "1a3d48fa02d9094c7a8fc3663cb9beb367a16d5bf0ff9ea9c2cc5ad4b1cbe128"
+  ],
+  "gpt-image-2.5-flare": [
+    "4e08e4b92f20a907c5113b53a1212ff1c084895f3c027ec9dc33896e59d69d66",
+    "1a3d48fa02d9094c7a8fc3663cb9beb367a16d5bf0ff9ea9c2cc5ad4b1cbe128"
+  ],
+  "gpt-image-2.5-sunburst": [
+    "4e08e4b92f20a907c5113b53a1212ff1c084895f3c027ec9dc33896e59d69d66",
+    "1a3d48fa02d9094c7a8fc3663cb9beb367a16d5bf0ff9ea9c2cc5ad4b1cbe128"
+  ],
+  "gpt-image-2.6-flare": [
+    "f99b1a5185c79d5988d23e48fa1d7b9394f613485d9e9cf56706cf43a6cefe1b",
+    "ab64eef6b127549dfb8f81ba01615588725fce4bb6fbeefd904ecb431165ac5f"
+  ],
+  "gpt-image-2.6-sunburst": [
+    "f99b1a5185c79d5988d23e48fa1d7b9394f613485d9e9cf56706cf43a6cefe1b",
+    "ab64eef6b127549dfb8f81ba01615588725fce4bb6fbeefd904ecb431165ac5f"
+  ],
+  "grok-2-image": [
+    "ed6fc94f59e3cc0dcf95c51204ad809be56861af2cfd3f7c41cee0ef632313a1",
+    "e04c3cdc7855a32d107f6a7cff5629a3d8a0af90a454e3feaac978b6340a2461"
+  ],
+  "grok-imagine-image": [
+    "ed6fc94f59e3cc0dcf95c51204ad809be56861af2cfd3f7c41cee0ef632313a1",
+    "e04c3cdc7855a32d107f6a7cff5629a3d8a0af90a454e3feaac978b6340a2461"
+  ],
+  "grok-imagine-image-quality": [
+    "ed6fc94f59e3cc0dcf95c51204ad809be56861af2cfd3f7c41cee0ef632313a1",
+    "e04c3cdc7855a32d107f6a7cff5629a3d8a0af90a454e3feaac978b6340a2461"
+  ],
+  "grok-imagine-video": [
+    "b42a59cb95bc73d15dc867f77f9506a82942f0ad45cd188c8f6a4244f1203bc8"
+  ],
+  "grok-imagine-video-1.5": [
+    "b42a59cb95bc73d15dc867f77f9506a82942f0ad45cd188c8f6a4244f1203bc8"
+  ],
+  "happyhorse-1.0": [
+    "ab4ab9a9b73e4dcba48e1eca154826169bf52b1277b5c1309223e7ed29f929d1"
+  ],
+  "happyhorse-1.0-edit": [
+    "ab4ab9a9b73e4dcba48e1eca154826169bf52b1277b5c1309223e7ed29f929d1"
+  ],
+  "happyhorse-1.1": [
+    "bc5b5cfd373bedba11bb8c4f84a393e26108458d24f64dfe501be79e540a63c0"
+  ],
+  "hunyuan-image-3.5-preview": [
+    "afccf46701870f8b4f85ec36a667387f72518ba88b6829c5712c1465315aae86",
+    "cc52e89731772ecbec78d49e3736d313c6045b3346142974ff0029747dbb8529"
+  ],
+  "imagen-4.0": [
+    "a7b6d3787daf3f3bd3e0f603aa8892beb412f9c67c81bbf873373600892cdfff",
+    "c7d51ca917c6b76ac3200208dec28c616e8f352529276f95c5558d18aa337d6a"
+  ],
+  "kling": [
+    "a6edf46b4028d764bf876b1877025f666bf09ec2347cc7e56bb13d2568eca81e"
+  ],
+  "kling-4.0-preview": [
+    "f41abe3756ec8fdf96e407560d3fae65860d83c7094fd2b0b15c5f99dc6f8672",
+    "08b77240910bd68e0b3d69a0a9c156846ac5ba0407a03bdaf6a6452dc8d8f97c"
+  ],
+  "kling-motion-control": [
+    "ad39bbbbc83cf55a0cc80628f15b624f624adaf27b7aeddaba47623f887b2dc5"
+  ],
+  "kling-o3-video-edit": [
+    "923ef5f064f0da5c3a8632bc32b91a2c0946845536016c0e0c28de87d675fbad"
+  ],
+  "kling-v2-5-turbo-pro": [
+    "205570513d5f03305b7e49f9f4b699be2940d9d0bff98e852160d72374d7239d"
+  ],
+  "kling-v2-6": [
+    "b315e8f602c4ec75f1b32457db60a92de64f93866deb8235b3d58e8e1779ecc2"
+  ],
+  "kling-v3-pro": [
+    "589ff64978c6d8c1bf7d91f04bdc26a104906cb109a3ceeeb56f6cd57c943847"
+  ],
+  "kling-video-o1": [
+    "d176b0c316fd0496b1e37c5c3afed6076e8c5bfa1ce13165bb74e902e35ab41e",
+    "32ff1727456aeb99eca58a2ef4a9d6cafad11a1f64250cad1fe3acf093b60a1b"
+  ],
+  "kling-video-o1-edit": [
+    "7aba72b7a486e864d7b137d85d47cdb89ceaa7cc175bc7c619dde955456b16e0"
+  ],
+  "kling-video-o3": [
+    "a34d83ff07f0fafebeee5c4ed66152de082723a21566d6404dcd26e1e2f33288"
+  ],
+  "kling-video-o3-edit": [
+    "2513997dd2a4cb26cea21503a6992557bfd6061dc31e4b9478396e96c9ea63c8"
+  ],
+  "midjourney-niji7": [
+    "99e005485fd19953164744925d64bf0dc4fb480498e2437ec0943f8addc01a9c",
+    "2760afc2eb1397c4732845c25fca1119b5659c42d62b4603e1d1f3a407ace1df"
+  ],
+  "midjourney-v7": [
+    "99e005485fd19953164744925d64bf0dc4fb480498e2437ec0943f8addc01a9c",
+    "2760afc2eb1397c4732845c25fca1119b5659c42d62b4603e1d1f3a407ace1df"
+  ],
+  "midjourney-v8.1": [
+    "99e005485fd19953164744925d64bf0dc4fb480498e2437ec0943f8addc01a9c",
+    "2760afc2eb1397c4732845c25fca1119b5659c42d62b4603e1d1f3a407ace1df"
+  ],
+  "midjourney-v8.2": [
+    "99e005485fd19953164744925d64bf0dc4fb480498e2437ec0943f8addc01a9c",
+    "2760afc2eb1397c4732845c25fca1119b5659c42d62b4603e1d1f3a407ace1df"
+  ],
+  "midjourney-video": [
+    "aafe9a8e1d613e9e46c8d6ce62cff1b5a5897720e049bd8b0ed4325a7b966267"
+  ],
+  "minimax": [
+    "7fdc1c787381c5f72fce907f1f2daf6579cc334f847f8802b3b668a9e199035d",
+    "4c09bf7a09c120bd28e48409399c539857816e06951c560751b97f1cc1f2625d"
+  ],
+  "nano-banana": [
+    "bafdfddbf6203991f8325b560568a197412b6da12b534377f0c6efad6fd66c24",
+    "7c364cc0a75f80a3e5ad1db285fae540b9ba7f22d823f043fcb3123ac7ef748a"
+  ],
+  "nano-banana-2": [
+    "42ce96e161af11808709eec6b8cba87d6a37ffdc37d7662a5c5252e51ec68a3b",
+    "48aebc6af7d5f2ab3097b3a06bf956e8d7e071e1ae39a7b599a5eaf1ceeb61a5"
+  ],
+  "nano-banana-2.1": [
+    "c505be732b9ffa74c448ae68811d92d7a5a59c780673ff92f6acdfd7b7ccec18",
+    "6dbbf59ba8319aac5d0d049d87f936844eca9560a1e70314e6fc03cd9974224b"
+  ],
+  "nano-banana-flash": [
+    "f004e68d8756f7e338f76d9dce2be6ccf71f3f899a68d5cc42ebe17b54e8d6db",
+    "951992a4fbf2ed22ef9fa6daffbc375d32cf7011fbb5b048afb9a9ad360c18fd"
+  ],
+  "nano-banana-flash-lite": [
+    "b741ddbe6acdc0d095451b2d1cbbaa4d804958b7b99e7ebed2a74c3b2faa8a8f",
+    "18bedd39e38e2fe906c3620549542a78eb60f4075248c09e190aba947604c42d"
+  ],
+  "omnihuman-1.5": [
+    "51ad63acad3007b31b4a0e0fd4f730d45f1884e97fa2630945a4d2da895652bf"
+  ],
+  "pixverse-v5": [
+    "20918d1b5cd461932ecf0abc6bb965138a2d9f16eabf99db7a94250c6f5ce940"
+  ],
+  "pixverse-v5.5": [
+    "b00024cb8042a2918d401aa63f4f075851604d0828213f9bf37cf717b43a3296"
+  ],
+  "reve-2.1": [
+    "1049ba1f3a4ff48ce9951c59a28fded5b3124e78d0abdfe9afefa7efc8fc2388",
+    "f6fd102d0fa896296f881898d4018f9597075b9a52385c3136eae9699b41a937"
+  ],
+  "seedance-1.5-pro": [
+    "1efecf1982b5f1796dad9ca83e6fe2f076ed77202d7e552e6828ba3c50b0c4aa"
+  ],
+  "seedance-2.0": [
+    "0ebeea13a7bb84cc316fa333f5b1925974163f7549e71847689cf299ff357194",
+    "4ea082bcd9f4a20d3f590dc4cf9173e6b465598cbdda21c64c4d3e6cb2a26c30"
+  ],
+  "seedance-2.0-fast": [
+    "0c89a469967a8b2cd466ba05f1610f7e2ad2ecbf482218a22e49cc164caa25ff",
+    "b38ade9cb0946b70fb7d713c4c9e4420cb85beb6931555ed1fbe626039d07388"
+  ],
+  "seedance-2.0-mini": [
+    "0e79dc6c74d8677c74732b7bb074c1ed556d7acb6f382d0ea1693968297535e5",
+    "8684e079e561d23206a499b3523495af6019e82ce05dc82aadf4bb9424264983"
+  ],
+  "seedance-2.5": [
+    "f71416bf31e10f74449457843ebafdb756c4a3a29d17c05656399ac99afde870",
+    "faa575cbac0c6e9b035e9818a71f6a52f863582ed3dd87e35e16fde63dfafde4"
+  ],
+  "seedance-2.5-4k": [
+    "f0e465bf3cc3eb6400f08f44c1b0b2c1e055c17efb73c66ab26a6c19564ce8b2",
+    "e534ea3eecd44fa49aeb1a54c7a214d125c9e5808866b09218119683d7b15769"
+  ],
+  "seedance-2.5-draft": [
+    "61ac5cc427e4670234bb45539b3fbf216d0a8d9abab1be95e5e3fac0910c22a0",
+    "ade59b50f855ab4426391c87e9eef7b5f1b3d84423a54ea5207133396246d146"
+  ],
+  "sora-2-pro": [
+    "91adc1d1c81664dd0337b130ce36ec4ec0885162147ae3a7b6a073923f15bb5c",
+    "a3df6755ec66cb99c7c4ab428318414bae6f8ffb65f6a4966624d64e50e1ddee"
+  ],
+  "sora-2-standard": [
+    "91adc1d1c81664dd0337b130ce36ec4ec0885162147ae3a7b6a073923f15bb5c",
+    "a3df6755ec66cb99c7c4ab428318414bae6f8ffb65f6a4966624d64e50e1ddee"
+  ],
+  "tamar-google-gemini-pro": [
+    "42ce96e161af11808709eec6b8cba87d6a37ffdc37d7662a5c5252e51ec68a3b",
+    "48aebc6af7d5f2ab3097b3a06bf956e8d7e071e1ae39a7b599a5eaf1ceeb61a5"
+  ],
+  "tapnow-image-turbo": [
+    "ab126d9f82b22a0bd54686379722ab4b7e0e5e8731d0ee7fa3e78d2475bfacee",
+    "393d3559af2ff3e3c83c94d2ea5968c794e9bcd8977e8eee5e397d64aa00ca76"
+  ],
+  "veo2": [
+    "882b17504cb3191c967aebfb18a88198bb3f58b4eb846c29ded64894af2c0594"
+  ],
+  "veo3": [
+    "882b17504cb3191c967aebfb18a88198bb3f58b4eb846c29ded64894af2c0594"
+  ],
+  "veo3-fast": [
+    "882b17504cb3191c967aebfb18a88198bb3f58b4eb846c29ded64894af2c0594"
+  ],
+  "veo3.1": [
+    "882b17504cb3191c967aebfb18a88198bb3f58b4eb846c29ded64894af2c0594"
+  ],
+  "veo3.1-fast": [
+    "882b17504cb3191c967aebfb18a88198bb3f58b4eb846c29ded64894af2c0594"
+  ],
+  "veo3.1-lite": [
+    "733d1ed1e717c691fa8d3fb5de7a1401cfbe8aa071c2cdfae79b9ffb8f792001"
+  ],
+  "veo3.1-lite-extend": [
+    "f5d454fe54ceea80c222b654e8e4c4220919fab066fbf1b63659f0ec3a7cf276"
+  ],
+  "viduq1": [
+    "2aa923416e06862f58299ac5cae7d22b22ca57cfd2bc7190155e97beef673056",
+    "04514ff4fa04e29f5e3b6d3333a3f388b447351f65d9903808c2644b287dfffa"
+  ],
+  "viduq2": [
+    "2aa923416e06862f58299ac5cae7d22b22ca57cfd2bc7190155e97beef673056",
+    "04514ff4fa04e29f5e3b6d3333a3f388b447351f65d9903808c2644b287dfffa"
+  ],
+  "viduq2-pro": [
+    "2aa923416e06862f58299ac5cae7d22b22ca57cfd2bc7190155e97beef673056",
+    "04514ff4fa04e29f5e3b6d3333a3f388b447351f65d9903808c2644b287dfffa"
+  ],
+  "viduq2-turbo": [
+    "2aa923416e06862f58299ac5cae7d22b22ca57cfd2bc7190155e97beef673056",
+    "04514ff4fa04e29f5e3b6d3333a3f388b447351f65d9903808c2644b287dfffa"
+  ],
+  "viduq3-pro": [
+    "b161f2749c1aac4adbc36310b399e082b05f8ecc686c1632d6ffb59de7211203"
+  ],
+  "wan3.0-video": [
+    "ccb0fb564d5ccf484c70585f554b475d59fe982eec3f29b23926aa9fb8f97e71"
+  ],
+  "wanxiang-i2v-flash": [
+    "52e382683e9d5a6d9b3923002ed6ac06c74ab0268d224888ef404bb84a534bd8"
+  ],
+  "wanxiang-plus": [
+    "0d3d60d2c206d180837f7280d2b065c48287f751cfd5428d7b619d0385964737"
+  ],
+  "wanxiang-preview": [
+    "c578eb9fed0fbec92d2e4cf71bdf677384e5b6bcb4c63b66ecc9c0260a1ef6fd"
+  ],
+  "wanxiang-v2-6": [
+    "748761e545e21216245840452430a679ada658f9ac710c814b067d96f1c1bf1e"
+  ],
+  "world-edit": [
+    "b2ef1c9ca75b7052beba19dfee7223a9a6f60c353af99e2a3326ba67629b243d",
+    "1b825347cdf2a169af9eb531f45f61cbbff5d6717d6b839cf3da4f69939d635b"
+  ]
+}
