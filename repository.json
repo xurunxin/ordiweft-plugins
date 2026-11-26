@@ -94,6 +94,7 @@
     "ordiweft-examples/gpt-image/1.1.4",
     "ordiweft-migrations/dashscope/1.0.0",
     "ordiweft-migrations/dashscope/1.1.0",
-    "ordiweft-migrations/doubao-speech/1.0.0"
+    "ordiweft-migrations/doubao-speech/1.0.0",
+    "ordiweft-migrations/fish-audio/1.1.0"
   ]
 }

@@ -1,0 +1,1239 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/fish-audio",
+  "version": "1.1.0",
+  "license": "Apache-2.0",
+  "runtime": "process",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "kind": "provider",
+      "id": "fish-audio"
+    }
+  ],
+  "requirements": [
+    {
+      "service": "assets",
+      "version": 1,
+      "operations": [
+        "read",
+        "decode",
+        "release"
+      ]
+    },
+    {
+      "service": "connections",
+      "version": 1,
+      "operations": [
+        "request"
+      ]
+    },
+    {
+      "service": "jobs",
+      "version": 1,
+      "operations": [
+        "checkpoint"
+      ]
+    },
+    {
+      "service": "media",
+      "version": 1,
+      "operations": [
+        "derive"
+      ]
+    },
+    {
+      "service": "outputs",
+      "version": 1,
+      "operations": [
+        "stage"
+      ]
+    }
+  ],
+  "compatibility": {
+    "version": 1,
+    "host": [
+      {
+        "id": "runtime.negotiation",
+        "version": 1
+      },
+      {
+        "id": "connections.fish-audio-tts",
+        "version": 1
+      },
+      {
+        "id": "connections.repeated-form-fields",
+        "version": 1
+      },
+      {
+        "id": "generation.voice-bindings",
+        "version": 1
+      },
+      {
+        "id": "outputs.voice-identity",
+        "version": 1
+      }
+    ],
+    "sdk": {
+      "minimumVersion": "0.1.15",
+      "capabilities": [
+        {
+          "id": "invocation.negotiate",
+          "version": 1
+        }
+      ]
+    }
+  },
+  "generation": {
+    "apiVersion": 2,
+    "id": "fish-audio",
+    "name": "Fish Audio",
+    "version": "1.0.0",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY"
+    ],
+    "nodes": [
+      {
+        "id": "speech",
+        "label": "Fish Audio 语音合成",
+        "capability": "speech.generate",
+        "model": "drama-3"
+      },
+      {
+        "id": "voice-design",
+        "label": "Fish Audio 声音设计",
+        "capability": "voice.design",
+        "model": "voice-design-1"
+      },
+      {
+        "id": "voice-clone",
+        "label": "Fish Audio 声音克隆",
+        "capability": "voice.design",
+        "model": "voice-clone"
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 30,
+      "cancelable": false
+    },
+    "models": [
+      {
+        "id": "drama-3",
+        "pricing": {
+          "provider": "fish-audio",
+          "model": "drama-3",
+          "currency": "USD",
+          "sourceUrl": "https://docs.fish.audio/developer-guide/models-pricing/pricing-and-rate-limits",
+          "checkedAt": "2026-11-17",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "utf8_byte",
+                  "rate": "50",
+                  "per": "1000000",
+                  "catalogPer": "1000000"
+                }
+              ]
+            }
+          ]
+        },
+        "label": "Drama 3 · 导演式多角色语音",
+        "capability": "speech.generate",
+        "maxVoices": 16,
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "台词 / 多角色剧本",
+          "required": true,
+          "maxLength": 20000,
+          "placeholder": "<|speaker:0|>[温柔地安慰] 别担心，<whisper>我在这里。</whisper>\n<|speaker:1|>[松了一口气] 谢谢你。[pause] 我好多了。"
+        },
+        "inputRoles": {
+          "speaker": {
+            "kind": "audio",
+            "label": "零样本克隆参考音频",
+            "description": "连接录音或已选中的声音设计候选；不能同时连接音色 ID。"
+          }
+        },
+        "fields": {
+          "voice_id": {
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "maxLength": 128,
+            "description": "未连音色时使用。多个说话人可在下方填写有序音色列表；连接音色将覆盖这些草稿。"
+          },
+          "speakers": {
+            "type": "array",
+            "label": "多说话人音色（从 0 开始）",
+            "default": [],
+            "description": "每行一个音色 ID，最多 16 个；顺序对应台词中的 <|speaker:N|>。有音色连线时以连线顺序为准。",
+            "items": {
+              "type": "string",
+              "label": "音色 ID",
+              "maxLength": 128
+            }
+          },
+          "reference_text": {
+            "type": "string",
+            "label": "参考录音原文",
+            "control": "textarea",
+            "maxLength": 10000,
+            "description": "只用于 audio-in 零样本克隆，是录音中已经说过的内容；不是待合成台词。推荐 10–30 秒清晰单人录音。"
+          },
+          "format": {
+            "type": "string",
+            "label": "文件格式",
+            "default": "mp3",
+            "enum": [
+              "mp3",
+              "wav"
+            ]
+          },
+          "speed": {
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2,
+            "step": 0.05
+          },
+          "volume": {
+            "type": "number",
+            "label": "音量（dB）",
+            "default": 0,
+            "minimum": -20,
+            "maximum": 20
+          },
+          "normalize": {
+            "type": "boolean",
+            "label": "文本规范化",
+            "default": true
+          },
+          "temperature": {
+            "type": "number",
+            "label": "表达变化",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "top_p": {
+            "type": "number",
+            "label": "采样多样性",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "chunk_length": {
+            "type": "integer",
+            "label": "文本分块长度",
+            "default": 300,
+            "minimum": 100,
+            "maximum": 300,
+            "section": "advanced"
+          },
+          "latency": {
+            "type": "string",
+            "label": "延迟模式",
+            "default": "normal",
+            "enum": [
+              "normal",
+              "balanced",
+              "low"
+            ],
+            "section": "advanced",
+            "optionLabels": {
+              "normal": "音质优先",
+              "balanced": "平衡",
+              "low": "低延迟"
+            }
+          },
+          "mp3_bitrate": {
+            "type": "integer",
+            "label": "MP3 比特率",
+            "default": 128,
+            "enum": [
+              64,
+              128,
+              192
+            ],
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "section": "advanced"
+          }
+        }
+      },
+      {
+        "id": "s2.1-pro",
+        "pricing": {
+          "provider": "fish-audio",
+          "model": "s2.1-pro",
+          "currency": "USD",
+          "sourceUrl": "https://docs.fish.audio/developer-guide/models-pricing/pricing-and-rate-limits",
+          "checkedAt": "2026-11-17",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "utf8_byte",
+                  "rate": "15",
+                  "per": "1000000",
+                  "catalogPer": "1000000"
+                }
+              ]
+            }
+          ]
+        },
+        "label": "S2.1 Pro",
+        "capability": "speech.generate",
+        "maxVoices": 16,
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "台词 / 多角色剧本",
+          "required": true,
+          "maxLength": 20000,
+          "placeholder": "<|speaker:0|>[soft tone] 别担心，[whispering] 我在这里。\n<|speaker:1|>[relieved] 谢谢你。[break] 我好多了。"
+        },
+        "inputRoles": {
+          "speaker": {
+            "kind": "audio",
+            "label": "零样本克隆参考音频",
+            "description": "连接录音或已选中的声音设计候选；不能同时连接音色 ID。"
+          }
+        },
+        "fields": {
+          "voice_id": {
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "maxLength": 128,
+            "description": "未连音色时使用。多个说话人可在下方填写有序音色列表；连接音色将覆盖这些草稿。"
+          },
+          "speakers": {
+            "type": "array",
+            "label": "多说话人音色（从 0 开始）",
+            "default": [],
+            "description": "每行一个音色 ID，最多 16 个；顺序对应台词中的 <|speaker:N|>。有音色连线时以连线顺序为准。",
+            "items": {
+              "type": "string",
+              "label": "音色 ID",
+              "maxLength": 128
+            }
+          },
+          "reference_text": {
+            "type": "string",
+            "label": "参考录音原文",
+            "control": "textarea",
+            "maxLength": 10000,
+            "description": "只用于 audio-in 零样本克隆，是录音中已经说过的内容；不是待合成台词。推荐 10–30 秒清晰单人录音。"
+          },
+          "format": {
+            "type": "string",
+            "label": "文件格式",
+            "default": "mp3",
+            "enum": [
+              "mp3",
+              "wav"
+            ]
+          },
+          "speed": {
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2,
+            "step": 0.05
+          },
+          "volume": {
+            "type": "number",
+            "label": "音量（dB）",
+            "default": 0,
+            "minimum": -20,
+            "maximum": 20
+          },
+          "normalize": {
+            "type": "boolean",
+            "label": "文本规范化",
+            "default": true
+          },
+          "temperature": {
+            "type": "number",
+            "label": "表达变化",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "top_p": {
+            "type": "number",
+            "label": "采样多样性",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "chunk_length": {
+            "type": "integer",
+            "label": "文本分块长度",
+            "default": 300,
+            "minimum": 100,
+            "maximum": 300,
+            "section": "advanced"
+          },
+          "latency": {
+            "type": "string",
+            "label": "延迟模式",
+            "default": "normal",
+            "enum": [
+              "normal",
+              "balanced",
+              "low"
+            ],
+            "section": "advanced",
+            "optionLabels": {
+              "normal": "音质优先",
+              "balanced": "平衡",
+              "low": "低延迟"
+            }
+          },
+          "mp3_bitrate": {
+            "type": "integer",
+            "label": "MP3 比特率",
+            "default": 128,
+            "enum": [
+              64,
+              128,
+              192
+            ],
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "section": "advanced"
+          }
+        }
+      },
+      {
+        "id": "s2.1-pro-free",
+        "pricing": {
+          "provider": "fish-audio",
+          "model": "s2.1-pro-free",
+          "currency": "USD",
+          "sourceUrl": "https://docs.fish.audio/developer-guide/models-pricing/pricing-and-rate-limits",
+          "checkedAt": "2026-11-17",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "utf8_byte",
+                  "rate": "0",
+                  "per": "1000000",
+                  "catalogPer": "1000000"
+                }
+              ]
+            }
+          ]
+        },
+        "label": "S2.1 Pro · 开发者免费层",
+        "capability": "speech.generate",
+        "maxVoices": 16,
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "台词 / 多角色剧本",
+          "required": true,
+          "maxLength": 20000,
+          "placeholder": "<|speaker:0|>[soft tone] 别担心，[whispering] 我在这里。\n<|speaker:1|>[relieved] 谢谢你。[break] 我好多了。"
+        },
+        "inputRoles": {
+          "speaker": {
+            "kind": "audio",
+            "label": "零样本克隆参考音频",
+            "description": "连接录音或已选中的声音设计候选；不能同时连接音色 ID。"
+          }
+        },
+        "fields": {
+          "voice_id": {
+            "type": "string",
+            "label": "音色 ID",
+            "control": "voice",
+            "maxLength": 128,
+            "description": "未连音色时使用。多个说话人可在下方填写有序音色列表；连接音色将覆盖这些草稿。"
+          },
+          "speakers": {
+            "type": "array",
+            "label": "多说话人音色（从 0 开始）",
+            "default": [],
+            "description": "每行一个音色 ID，最多 16 个；顺序对应台词中的 <|speaker:N|>。有音色连线时以连线顺序为准。",
+            "items": {
+              "type": "string",
+              "label": "音色 ID",
+              "maxLength": 128
+            }
+          },
+          "reference_text": {
+            "type": "string",
+            "label": "参考录音原文",
+            "control": "textarea",
+            "maxLength": 10000,
+            "description": "只用于 audio-in 零样本克隆，是录音中已经说过的内容；不是待合成台词。推荐 10–30 秒清晰单人录音。"
+          },
+          "format": {
+            "type": "string",
+            "label": "文件格式",
+            "default": "mp3",
+            "enum": [
+              "mp3",
+              "wav"
+            ]
+          },
+          "speed": {
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 2,
+            "step": 0.05
+          },
+          "volume": {
+            "type": "number",
+            "label": "音量（dB）",
+            "default": 0,
+            "minimum": -20,
+            "maximum": 20
+          },
+          "normalize": {
+            "type": "boolean",
+            "label": "文本规范化",
+            "default": true
+          },
+          "temperature": {
+            "type": "number",
+            "label": "表达变化",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "top_p": {
+            "type": "number",
+            "label": "采样多样性",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "step": 0.05,
+            "section": "advanced"
+          },
+          "chunk_length": {
+            "type": "integer",
+            "label": "文本分块长度",
+            "default": 300,
+            "minimum": 100,
+            "maximum": 300,
+            "section": "advanced"
+          },
+          "latency": {
+            "type": "string",
+            "label": "延迟模式",
+            "default": "normal",
+            "enum": [
+              "normal",
+              "balanced",
+              "low"
+            ],
+            "section": "advanced",
+            "optionLabels": {
+              "normal": "音质优先",
+              "balanced": "平衡",
+              "low": "低延迟"
+            }
+          },
+          "mp3_bitrate": {
+            "type": "integer",
+            "label": "MP3 比特率",
+            "default": 128,
+            "enum": [
+              64,
+              128,
+              192
+            ],
+            "visibleWhen": {
+              "format": "mp3"
+            },
+            "section": "advanced"
+          }
+        }
+      },
+      {
+        "id": "voice-design-1",
+        "pricing": {
+          "provider": "fish-audio",
+          "model": "voice-design-1",
+          "currency": "USD",
+          "sourceUrl": "https://docs.fish.audio/developer-guide/models-pricing/pricing-and-rate-limits",
+          "checkedAt": "2026-11-17",
+          "rules": [
+            {
+              "components": [
+                {
+                  "unit": "job",
+                  "rate": "0.01",
+                  "per": "1",
+                  "catalogPer": "1"
+                }
+              ]
+            }
+          ]
+        },
+        "label": "声音设计 · 候选音频",
+        "capability": "voice.design",
+        "voiceOutput": "none",
+        "inputKinds": [],
+        "maxInputs": 0,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "声音设计描述",
+          "required": true,
+          "maxLength": 2000,
+          "placeholder": "成熟温暖的中文女声，音色自然、吐字清晰，像在和老朋友聊天。"
+        },
+        "fields": {
+          "reference_text": {
+            "type": "string",
+            "label": "试听文本",
+            "control": "textarea",
+            "maxLength": 150,
+            "default": "你好，很高兴认识你。让我们一起开始今天的故事。",
+            "description": "候选只输出音频；选中满意版本，用 audio-out 连接 TTS，或连接声音克隆保存为音色。"
+          },
+          "language": {
+            "type": "string",
+            "label": "试听语言",
+            "default": "zh",
+            "enum": [
+              "zh",
+              "en",
+              "ja",
+              "ko",
+              "fr",
+              "de",
+              "es"
+            ]
+          },
+          "n": {
+            "type": "integer",
+            "label": "候选数量",
+            "control": "count",
+            "default": 2,
+            "minimum": 1,
+            "maximum": 4
+          },
+          "speed": {
+            "type": "number",
+            "label": "语速",
+            "default": 1,
+            "minimum": 0.5,
+            "maximum": 3
+          },
+          "num_step": {
+            "type": "integer",
+            "label": "扩散步数",
+            "default": 32,
+            "minimum": 1,
+            "maximum": 128,
+            "section": "advanced"
+          },
+          "guidance_scale": {
+            "type": "number",
+            "label": "描述引导强度",
+            "default": 2,
+            "minimum": 0,
+            "maximum": 20,
+            "section": "advanced"
+          },
+          "instruct_guidance_scale": {
+            "type": "number",
+            "label": "指令引导强度",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 20,
+            "section": "advanced"
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子",
+            "control": "seed",
+            "minimum": 0,
+            "maximum": 2147483647,
+            "section": "advanced"
+          }
+        }
+      },
+      {
+        "id": "voice-clone",
+        "label": "声音克隆 · 保存私有音色",
+        "capability": "voice.design",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 20,
+        "outputKinds": [
+          "audio"
+        ],
+        "prompt": {
+          "label": "音色备注",
+          "required": false,
+          "maxLength": 2000,
+          "placeholder": "可选备注，不作为朗读内容"
+        },
+        "fields": {
+          "title": {
+            "type": "string",
+            "label": "音色名称",
+            "default": "画布克隆音色",
+            "required": true,
+            "maxLength": 80
+          },
+          "texts": {
+            "type": "array",
+            "label": "参考录音原文（可选）",
+            "default": [],
+            "items": {
+              "type": "string",
+              "label": "对应录音原文",
+              "maxLength": 10000
+            },
+            "description": "每行对应一段输入录音，顺序与连线一致；全部留空时由 Fish 自动转写。最多 20 段。"
+          },
+          "enhance_audio_quality": {
+            "type": "boolean",
+            "label": "提升录音质量",
+            "default": true
+          }
+        }
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 136,
+      "sha256": "1f05655db421d9e4e4e4fc2e0e666a75930275dc6dabaf2ac1a1ae4192bdf536"
+    },
+    {
+      "path": "README.md",
+      "bytes": 990,
+      "sha256": "d3a3bee2b0536e5a577642fddd21023c7f9ed39eef19f990b4ecfe8ecc48897e"
+    },
+    {
+      "path": "adapter",
+      "bytes": 7423414,
+      "sha256": "85242e595c59e33e654db36345b8f0280d5b38bc42f4139df0fd5572c2a2fe72"
+    },
+    {
+      "path": "build-proof.json",
+      "bytes": 16655,
+      "sha256": "49c566edfc3d06e16139e0d4d67690550a3281191a77b541f107a1a9f247d1f5"
+    },
+    {
+      "path": "connection.profile.json",
+      "bytes": 6908,
+      "sha256": "7aec1e691b26b9e4dddee44783dcd1187d81673e841ff471894fca64942c6b9f"
+    },
+    {
+      "path": "fixtures/verification-design.json",
+      "bytes": 6579,
+      "sha256": "fa8bba7e762754b4777f52bef20b6f5e48b69bd7b0f4db5546b0f358dc49728f"
+    },
+    {
+      "path": "fixtures/verification-speech.json",
+      "bytes": 2681,
+      "sha256": "03822013a2a27679156c6db627c0ebc41d6697e764fb802cf505dce7c0d4da6f"
+    },
+    {
+      "path": "fixtures/verification-zero-shot.json",
+      "bytes": 4985,
+      "sha256": "2a4860cd2493732c236dbc8a351c46f338ef35ca713ecc5ef60b042b87496e65"
+    },
+    {
+      "path": "fixtures/verification.json",
+      "bytes": 5487,
+      "sha256": "a3f5513ff667a3ea5e3a714d92d51351806a1c8199f9bf39819912389dbd4eea"
+    },
+    {
+      "path": "go.mod",
+      "bytes": 150,
+      "sha256": "58b4f0a8ebc9f24535bcae26ce8f9b2d23be79f954c9285b1816fc6e27578ba4"
+    },
+    {
+      "path": "licenses/Go-LICENSE",
+      "bytes": 1453,
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "licenses/Go-PATENTS",
+      "bytes": 1303,
+      "sha256": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc"
+    },
+    {
+      "path": "licenses/Go-fiat-crypto-edwards25519-scalar.go.txt",
+      "bytes": 11561,
+      "sha256": "b9bc9ba5a2160dccee62ccbb4371c90c5d1c654d55b8ae08f33fa29c58876050"
+    },
+    {
+      "path": "licenses/Go-fiat-crypto-p256_ordinv.go.txt",
+      "bytes": 22179,
+      "sha256": "175611bd57870e7aa046836a21c223696c3f14f3ceefc3ec1b5db04604b5e5d6"
+    },
+    {
+      "path": "licenses/Go-math-log.go.txt",
+      "bytes": 3953,
+      "sha256": "d8675d3d9c665ec0db5cc15478c03efb244301bfa1268d02ae1861bf6f2812ab"
+    },
+    {
+      "path": "licenses/Go-memmove_amd64.s",
+      "bytes": 13183,
+      "sha256": "1d239c1a965baf43cbdfb82a5144d33aadd95d20ff95becf8347a93ddf08985d"
+    },
+    {
+      "path": "main.go",
+      "bytes": 6580,
+      "sha256": "663e6712732555e12a7584b8033304d38fc28944b8d081030f6db60f159faa48"
+    },
+    {
+      "path": "policies/clone.json",
+      "bytes": 596,
+      "sha256": "2da8df857804e59301cd017ab5de53acfff139a80b555df1192a265e720993e5"
+    },
+    {
+      "path": "policies/design.json",
+      "bytes": 998,
+      "sha256": "bc14d8d5b65841d557cd8c735392dc0ac0e8d47d2ef8c7a33f9a3b46fdd39126"
+    },
+    {
+      "path": "policies/speech.json",
+      "bytes": 1483,
+      "sha256": "2f98dda0c30bbdc7f09694641d57010603b3e6e0fd2199f5c40466cd3a810819"
+    },
+    {
+      "path": "policies/zero-shot.json",
+      "bytes": 1448,
+      "sha256": "53720e4ddca95fe91eb0846d6779dc6d25f8ae2c6e157d43d35770062f974eb3"
+    },
+    {
+      "path": "release.template.json",
+      "bytes": 21004,
+      "sha256": "94ed31a5c19ba9dc069737f2a1dfd4ed4c073e28c99f145e5ac478abc079cd94"
+    },
+    {
+      "path": "sdk/.ordiweft-go-sdk-export",
+      "bytes": 14,
+      "sha256": "046cc5496f50c1d3b1f2caa344af31b9cda425d74d81c452cd0bab7e92d83c9d"
+    },
+    {
+      "path": "sdk/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/NOTICE",
+      "bytes": 115,
+      "sha256": "59f17e8af0291ec7cb607f8c10f93cf991b6d884bd98eadae8a06f1be4be483a"
+    },
+    {
+      "path": "sdk/README.md",
+      "bytes": 923,
+      "sha256": "88396dc14a04b3a40e5f09aba9d8f90e0e7649d166bf8c978fa6dca00ed2a091"
+    },
+    {
+      "path": "sdk/go.mod",
+      "bytes": 47,
+      "sha256": "f759ce39bfcd976fa5da453e6b698637c776e6d08978a3f6a86627ba28b7f0b9"
+    },
+    {
+      "path": "sdk/pkg/aigc/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/pkg/aigc/NOTICE",
+      "bytes": 197,
+      "sha256": "06f58a68d24cbe46029a090e3275b5147fb37026b1fed7ad5f07d52b5ef6c840"
+    },
+    {
+      "path": "sdk/pkg/aigc/catalog.go",
+      "bytes": 2236,
+      "sha256": "fbcf080f780362fcb2bec30d84badaa54c5340f939eac62bdaa49206fb178fca"
+    },
+    {
+      "path": "sdk/pkg/aigc/input_modes.go",
+      "bytes": 3220,
+      "sha256": "fa8a558db726a59a978cd74edf64ceb337cd80fcd54a415190db5b1be153fd5f"
+    },
+    {
+      "path": "sdk/pkg/aigc/input_roles.go",
+      "bytes": 1964,
+      "sha256": "3bc48091cdc548334d57dbd0257a8ec27c8fdc73c6af0e0190c4a2fb80b1f389"
+    },
+    {
+      "path": "sdk/pkg/aigc/options.go",
+      "bytes": 3897,
+      "sha256": "0b4f2a31986cd5107be6b713ae176d07cda51692407ab946e49f834bd238004f"
+    },
+    {
+      "path": "sdk/pkg/aigc/output_count.go",
+      "bytes": 3238,
+      "sha256": "ac53eae6e57010a6765198330083a20b40478fc9979acf042bacfb1d00eff0b0"
+    },
+    {
+      "path": "sdk/pkg/aigc/pricing.go",
+      "bytes": 3174,
+      "sha256": "df5607a7d8487e11d3341ee1b9e82890e7b1b6dc9914d9c15e04d0cc2c86a758"
+    },
+    {
+      "path": "sdk/pkg/aigc/schema.go",
+      "bytes": 6660,
+      "sha256": "7981a0d089c5692271892f24082abbf4af2d06b988bca4329b9b17781b91c5e4"
+    },
+    {
+      "path": "sdk/pkg/aigc/sdk.go",
+      "bytes": 22747,
+      "sha256": "958cee1794f36b786c9241f15868cef21b556c52282cd103536c6f4ee860de14"
+    },
+    {
+      "path": "sdk/pkg/aigc/transcription.go",
+      "bytes": 3905,
+      "sha256": "95e3d9eb1785f43bdb8c8cfbac9cf90dbb2ec1d60dc6860ce5e07146c73c8e1e"
+    },
+    {
+      "path": "sdk/pkg/aigc/video_draft.go",
+      "bytes": 1547,
+      "sha256": "69b0130455aa061e5bbdd48368756767eeafbef4216c95c8272ddca7a58ec277"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/NOTICE",
+      "bytes": 307,
+      "sha256": "2787b7a123d744afa70e06c9d1fbdfd7da9e1b4b46c5e67a23a476825e752e22"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action.go",
+      "bytes": 4489,
+      "sha256": "c5f0b252d98def9041486171b5706879acf906d4a943f34a985aa62ab71c15d3"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_client.go",
+      "bytes": 1273,
+      "sha256": "7ade36de140f93e47139fb4cb264477ddcfda18ba349e4e20abeac932fa57f5c"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_roles.go",
+      "bytes": 2577,
+      "sha256": "fd6306cd59abff713e4ec1dfe2f542a464e78119b1074e84ef949841abcc0073"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_runtime.go",
+      "bytes": 676,
+      "sha256": "0bfbdd45ffe4a42b500ff1bd3c2426c828840260bcf9f818567657a66add32d0"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/action_verification.go",
+      "bytes": 3437,
+      "sha256": "d65a523c30c76f855c8a21c0e50cdecbdfa9eafda3d60087c63915f57331ae23"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/archive.go",
+      "bytes": 2410,
+      "sha256": "365f09881b1e66b152b283c2b58bcbfc05dd26ad31b2689f5bd48b1161fd0fea"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_bundle.go",
+      "bytes": 2269,
+      "sha256": "cc43f480adc1c932ef551c83d0b3e2e2618fb3671dd0151e05622292d6ccbb33"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_client.go",
+      "bytes": 765,
+      "sha256": "93781bd2197cd6342cb6e4c872393db1b3640a60ab1b0be8b8c3046314dd72c6"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_decode.go",
+      "bytes": 2505,
+      "sha256": "0189073a23d27c459351ec61ac5d5fe78926b1d5f2a571f85ebded55350a7906"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/asset_reader.go",
+      "bytes": 2907,
+      "sha256": "fa9fcc6992b9a329c82686069b97829b7c741333ac0d140b19007206976e5449"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/bailian_executor.go",
+      "bytes": 2246,
+      "sha256": "4d541c6074a1c6e5acd4d7b3cf4b4d954a94488a2b8f993f6c86df980f3298cd"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/bailian_profile.go",
+      "bytes": 846,
+      "sha256": "f5a61e6f16d34745dae5ea5cfa8d9f36f7010164146608c6617ef65551b912e5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/channel.go",
+      "bytes": 1588,
+      "sha256": "59103edc2857aa538982b27bccd05ca1f4173ae9d29e4ae32093864eea0f1759"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/client.go",
+      "bytes": 4113,
+      "sha256": "9fe044a5290494b0a297f291fd10ff08753fbe9821d2974e687c14c762071518"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/compatibility.go",
+      "bytes": 9391,
+      "sha256": "e42178670fdbdc12a109fb9a9075520c2cc21935b27fd4022a163ec9b4b5cf7a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/connection_policy.go",
+      "bytes": 17800,
+      "sha256": "3fc53f4d98168af258976664e66c73ab5df0a962c4b9468a30916cf909b8a815"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/contract.go",
+      "bytes": 10643,
+      "sha256": "e03803e54c5dc8b513da14cf219b7c35d5a5ee65b0c9becbeff109200072ac42"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/definition.go",
+      "bytes": 8139,
+      "sha256": "a62df1794e82669fd1a29443c68e1a74bb08969000166865bf093cb640c0bd86"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/download.go",
+      "bytes": 1372,
+      "sha256": "4e88bce8181d405a0b76ccca3218d1137701fe7f0672d3a29d55827ec5116bf5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/execution.go",
+      "bytes": 1743,
+      "sha256": "e600665c83e07aba17e0757682c1c1292273df8b217cebcefc26cf4d6cd93afe"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/files.go",
+      "bytes": 2528,
+      "sha256": "065ee2a6a80d5db72286ea438218dea22c6eedf2f53250038dc4b2b6eb3131d5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/generation_client.go",
+      "bytes": 1323,
+      "sha256": "3b7565f70f183284048adfbac9743726bcf2f7caf34228873ca817531e84c0a8"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/input_body.go",
+      "bytes": 1387,
+      "sha256": "4de1e9334660219506189258dd5d922f886411a11288de7f725afbcc1a106d69"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/input_key.go",
+      "bytes": 2023,
+      "sha256": "0fdcba016957bcc90b1c0e1865d7adef46b5b542397c7f8d8f9a93cc66d855d8"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/job_context.go",
+      "bytes": 623,
+      "sha256": "b9bf706c9cee8c33bb8d25a249946a5f598bf87488c44c01a676ae0ed396eef1"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/json_policy.go",
+      "bytes": 23105,
+      "sha256": "1345fc6b281ea00a0a2672f9357ce6af8398c2f1913d4eb4c9b35a932c121932"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/media.go",
+      "bytes": 1108,
+      "sha256": "431cfd428b46189e70b4248a1a5c595c16677b865811e840791a7e1bb17d26b1"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/multipart_policy.go",
+      "bytes": 9553,
+      "sha256": "e02bc9bec1fe6fed60520332909944fd36571ad6dc18aa2067bb720d9399186a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/node_snapshot.go",
+      "bytes": 5408,
+      "sha256": "a346e3e4b28b25eaa4fdcda28dbbaff699beb7b8f56e92f652463b48ef69c12a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/oauth_authorization.go",
+      "bytes": 2408,
+      "sha256": "ea416312fe4fb605aaea9bbdcb2b46aff41a3b64da3ddf961d210cf31a64cd1f"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/output_client.go",
+      "bytes": 776,
+      "sha256": "980c4950672b296443d8113b195d1253ba864e63d3ffebf615f547685bf41aea"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/output_reader.go",
+      "bytes": 4263,
+      "sha256": "3a087b8ad8aaedbcd00f22d62a98eca95d3d616ca6ef7a05290637d6d534a1e2"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/policy_set.go",
+      "bytes": 845,
+      "sha256": "bc1481431b2e0b7ca6f9d9cb6344e53754e451c59ba27329101c08a74f5f600d"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/preset.go",
+      "bytes": 1198,
+      "sha256": "0f9a0dabcccee217c5bdd18d3f490515f8c833a6643de570840720b38767c16e"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/private_client_channel.go",
+      "bytes": 1897,
+      "sha256": "acfd97f34f164b144522c0874a686e39683a88e7666d5e6313a517553c0141b8"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/protocol.go",
+      "bytes": 3857,
+      "sha256": "44d3cb8cf6a1900bee16c89539b4b3deeda2cac4febf70e2167da65db34191f5"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/provider_runtime.go",
+      "bytes": 490,
+      "sha256": "e476e030799b695a2d19d57cbb73deaded9f802b41451b575dcf7034cc126094"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/query_policy.go",
+      "bytes": 996,
+      "sha256": "ce1fe01fe8764e597a7a23543d9929964a572ee405ee0448281b6067bea51e89"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/receipt_target.go",
+      "bytes": 2451,
+      "sha256": "b073cb50a90cf3dd856985b4c28573e998c58a5b0ca9e04f6fc55b8398ca755a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/request_conditions.go",
+      "bytes": 3953,
+      "sha256": "6e81d4529c63798acfb4fb545514f9affec1a3a178cfcfda034607ccab3d7d9c"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/request_input.go",
+      "bytes": 6519,
+      "sha256": "5e1faf21b1ffb878c5c06c0c96bc7f10270a30f7a4fa22b56567b247ee4025af"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/request_transform.go",
+      "bytes": 4484,
+      "sha256": "d066575b3aa3129871f1d389ffb5308386be35860c708e2fb9cdcd56d93b31cd"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/stream.go",
+      "bytes": 357,
+      "sha256": "b5c600a5a5c09a4f9ce099f4e1154b6073e8e64f47167ccb11140e34a0d87202"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/stream_reader.go",
+      "bytes": 2313,
+      "sha256": "9b0de026bd70841b8ce5bb1b47c0abc8fde53ca4bcc2953933e4f614a4491ebd"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/submission.go",
+      "bytes": 6039,
+      "sha256": "bc14e01c8f395beddf555a55f1c271bc9cd3612a77f8d73cadec151dfd71676e"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task.go",
+      "bytes": 3160,
+      "sha256": "cc6e2b70d5db01ae0fcc2575645097bfb35453ba22da6074f1a32fa164b2298b"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task_io.go",
+      "bytes": 1063,
+      "sha256": "10fab0e830d89ce224d9708d28d5579e5d0c83b8e2c2652ac2a24e509bb45638"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/task_runtime.go",
+      "bytes": 343,
+      "sha256": "57d060d0ff01c6041c9738f29cd970d9de085beaaccaf86c59027549df6feaed"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/verification.go",
+      "bytes": 7708,
+      "sha256": "2e18a1042166d0b0a4410fa160b17b9845291a49ff76ec10d0de4b7e48353bc9"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/verification_context.go",
+      "bytes": 737,
+      "sha256": "8dd77d40c6288fc45021ff8961a1898a6a26d3761ebc3c21763080be10546187"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/wait_policy.go",
+      "bytes": 1959,
+      "sha256": "6312112e6a0b2cf12e65aed92b711ffcbb928a4b77495438210d50fbbd5df527"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/worker.go",
+      "bytes": 7206,
+      "sha256": "ec9d44413cd46c0df40f897824a26bad0c2f5f2bd7dea85e7a10b4d7ab02805a"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/worker_policy.go",
+      "bytes": 1666,
+      "sha256": "ed32804b4e03e4e4e01d2378e6d510d84649d77a590649b52b299a065c59e46d"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/workspace.go",
+      "bytes": 4427,
+      "sha256": "198bcf1fca0c40dea756e964aa9d3443faffa4edb8f94b046c4bcc6f60149fad"
+    },
+    {
+      "path": "sdk/pkg/pluginhost/workspace_build.go",
+      "bytes": 2645,
+      "sha256": "800a5c63aa80cbf15298ccdfb3cd172223efea068949f1cd289797e53dff5bad"
+    },
+    {
+      "path": "sdk/sdk-export.json",
+      "bytes": 12119,
+      "sha256": "3faa57cdb2e21a53c2df4e66f48bba1c4685cdb7a49218ceacc0774c8e896080"
+    }
+  ]
+}
