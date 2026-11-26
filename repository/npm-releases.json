@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repositoryId": "ordiweft-official-npm",
-  "revision": 2,
+  "revision": 3,
   "entries": [
     {
       "packageId": "ordiweft-migrations/dashscope",
@@ -20,6 +20,42 @@
       "target": "packages/ordiweft-migrations/dashscope/1.1.0/c69b4882bd3b21a5735d0d9418d5e6e9ac921844e92374865186ef1e177acc93.zip",
       "sha256": "b2c5bcf9dfe636e293a0de483e235539177cb375e14d920617fec4d454119d96",
       "bytes": 3289317
+    },
+    {
+      "packageId": "ordiweft-examples/doubao-audio",
+      "version": "1.0.3",
+      "npmPackage": "@daoxialiuren/ordiweft-doubao-audio",
+      "releaseDigest": "741dd3ad36d1c15442228f1f9812af73e2580f515d9f28eba5708c7772b58a1b",
+      "target": "packages/ordiweft-examples/doubao-audio/1.0.3/741dd3ad36d1c15442228f1f9812af73e2580f515d9f28eba5708c7772b58a1b.zip",
+      "sha256": "e5c4da871f3dae58c2bc4e20ce6f28cb6e622dbf0c137d1d91b93b295f4524b9",
+      "bytes": 4460213
+    },
+    {
+      "packageId": "ordiweft-migrations/doubao-speech",
+      "version": "1.0.0",
+      "npmPackage": "@daoxialiuren/ordiweft-doubao-speech",
+      "releaseDigest": "dfb11d7d61a892fd9d17300f09db3a24bb862e87d4422a3245a19e198fa24ca3",
+      "target": "packages/ordiweft-migrations/doubao-speech/1.0.0/dfb11d7d61a892fd9d17300f09db3a24bb862e87d4422a3245a19e198fa24ca3.zip",
+      "sha256": "4cb09ad0d58f706c0d0102fc739653aae452842256850fd3d340cc26d32956b6",
+      "bytes": 4532094
+    },
+    {
+      "packageId": "ordiweft-examples/indextts",
+      "version": "1.0.0",
+      "npmPackage": "@daoxialiuren/ordiweft-indextts",
+      "releaseDigest": "220544b440fde864ea0f20d0f99fc2fd5c154cd82c1675f3ff722c5961bea1f6",
+      "target": "packages/ordiweft-examples/indextts/1.0.0/220544b440fde864ea0f20d0f99fc2fd5c154cd82c1675f3ff722c5961bea1f6.zip",
+      "sha256": "a4b2d30002b6daa8993800ab3cc7c02308bfad489451504db9cfaf0fa307d08d",
+      "bytes": 4415450
+    },
+    {
+      "packageId": "ordiweft-migrations/fish-audio",
+      "version": "1.1.0",
+      "npmPackage": "@daoxialiuren/ordiweft-fish-audio",
+      "releaseDigest": "cfab9e0a3c8aa6c511b71de28384da6d2a0cea345bed32b8d91d47deedf63772",
+      "target": "packages/ordiweft-migrations/fish-audio/1.1.0/cfab9e0a3c8aa6c511b71de28384da6d2a0cea345bed32b8d91d47deedf63772.zip",
+      "sha256": "8b23343fcdf9918b7fb722d2ef022449ae1894d4cdd0148b2cdd666dec926bc9",
+      "bytes": 4550128
     }
   ]
 }
