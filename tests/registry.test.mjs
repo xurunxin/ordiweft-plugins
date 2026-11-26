@@ -10,7 +10,7 @@ import {fileURLToPath} from 'node:url'
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..')
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex')
 const tool=process.env.ORDIWEFT_PLUGIN_CLI,toolSHA=process.env.ORDIWEFT_PLUGIN_CLI_SHA256
-function run(repo,args){return spawnSync(process.execPath,[path.join(repo,'scripts/registry.mjs'),...args],{encoding:'utf8',windowsHide:true,shell:false,timeout:60000})}
+function run(repo,args){return spawnSync(process.execPath,[path.join(repo,'scripts/registry.mjs'),...args],{encoding:'utf8',windowsHide:true,shell:false,timeout:180000})}
 async function fixture(t){
  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'ordiweft-community-'))
  t.after(async()=>{

@@ -1,0 +1,61 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/tapnow",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "data",
+  "providerProfile": "tapnow-host-v1",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "tapnow",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [],
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 61,
+      "sha256": "e9c89b229753e29de0f7ba60dcc97af991b589b05eed904421afafc8a20306d9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 296,
+      "sha256": "f0a1efa2512016d0e42cf555bb9e5eff33f2eeeee1eef7ab31ac76528967d10f"
+    }
+  ],
+  "generation": {
+    "apiVersion": 1,
+    "id": "tapnow",
+    "name": "TapNow MCP",
+    "version": "1.0.0",
+    "runtime": "builtin",
+    "auth": "oauth",
+    "secrets": [],
+    "nodes": [
+      {
+        "id": "image",
+        "label": "图片生成（MCP）",
+        "capability": "image.generate"
+      },
+      {
+        "id": "video",
+        "label": "视频生成（MCP）",
+        "capability": "video.generate"
+      }
+    ],
+    "models": [],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 20,
+      "cancelable": false
+    }
+  }
+}

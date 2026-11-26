@@ -1,0 +1,61 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/tapnow-web",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "data",
+  "providerProfile": "tapnow-host-v1",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "tapnow-web",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [],
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 65,
+      "sha256": "fe8fb946b209cc86b85ba2be6c4432703b144786d43bc78f2aebab30a4005427"
+    },
+    {
+      "path": "README.md",
+      "bytes": 300,
+      "sha256": "e39f13f4839e628ec35a68ae29ddb25fea7b676753cb8b3b9ba394cf69c8df8d"
+    }
+  ],
+  "generation": {
+    "apiVersion": 1,
+    "id": "tapnow-web",
+    "name": "TapNow Web",
+    "version": "1.0.0",
+    "runtime": "builtin",
+    "auth": "web-account",
+    "secrets": [],
+    "nodes": [
+      {
+        "id": "tapnow-image",
+        "label": "图片生成（积分）",
+        "capability": "image.generate"
+      },
+      {
+        "id": "tapnow-video",
+        "label": "视频生成（积分）",
+        "capability": "video.generate"
+      }
+    ],
+    "models": [],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 64,
+      "maxQueued": 20,
+      "cancelable": false
+    }
+  }
+}

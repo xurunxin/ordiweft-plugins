@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-migrations/tapnow-web",
+  "releaseVersion": "1.0.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/ordiweft-plugins",
+    "commit": "5d71a2372f9902587b2d50a933dd3bee30fec631",
+    "path": "native/tapnow-web"
+  }
+}

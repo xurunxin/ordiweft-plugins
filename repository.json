@@ -5,7 +5,7 @@
   "publication": "manual-tuf",
   "hostSource": {
     "repository": "https://github.com/xurunxin/Ordiweft",
-    "commit": "91b20aea54376e27564229953e65daea5c1a5cad"
+    "commit": "3e211b8b4ae573e1850da42002a90478914e1bf3"
   },
   "retainedHostSources": [
     {
@@ -63,6 +63,10 @@
     {
       "repository": "https://github.com/xurunxin/Ordiweft",
       "commit": "8934478d93dd2d1b71af61e27ab468c7774b1664"
+    },
+    {
+      "repository": "https://github.com/xurunxin/Ordiweft",
+      "commit": "91b20aea54376e27564229953e65daea5c1a5cad"
     }
   ],
   "packages": [
@@ -95,6 +99,10 @@
     "ordiweft-migrations/dashscope/1.0.0",
     "ordiweft-migrations/dashscope/1.1.0",
     "ordiweft-migrations/doubao-speech/1.0.0",
-    "ordiweft-migrations/fish-audio/1.1.0"
+    "ordiweft-migrations/fish-audio/1.1.0",
+    "ordiweft-migrations/breeze-tts-api/1.0.0",
+    "ordiweft-migrations/breeze-tts-local/1.0.0",
+    "ordiweft-migrations/tapnow/1.0.0",
+    "ordiweft-migrations/tapnow-web/1.0.0"
   ]
 }
