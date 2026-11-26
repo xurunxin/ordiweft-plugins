@@ -18,6 +18,7 @@ on:
           - ordiweft-migrations/breeze-tts-local
           - ordiweft-migrations/tapnow
           - ordiweft-migrations/tapnow-web
+          - ordiweft-migrations/comfyui
       version:
         description: Reviewed release version
         type: string
@@ -41,7 +42,7 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: xurunxin/Ordiweft
-          ref: 3e211b8b4ae573e1850da42002a90478914e1bf3
+          ref: 8f048c26f292adcb06d491271e76108671c2303f
           path: host
           persist-credentials: false
       - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16

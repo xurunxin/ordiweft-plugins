@@ -55,7 +55,8 @@ async function repository(){
   const channelProfile = maintainedInRepository && publisher === 'ordiweft-migrations' &&
    (['tapnow','tapnow-web'].includes(name) && recipe.source.path === 'native/'+name ||
     ['breeze-tts-api','breeze-tts-local'].includes(name) && recipe.source.path === 'native/breeze-tts')
-  requireValue((hostExample||bailianSource||goAdapterSource||channelProfile)&&/^[a-f0-9]{40}$/.test(recipe.source.commit),'Unpinned source recipe')
+  const comfyLibrary = maintainedInRepository && recipe.packageId === 'ordiweft-migrations/comfyui' && recipe.source.path === 'native/comfyui'
+  requireValue((hostExample||bailianSource||goAdapterSource||channelProfile||comfyLibrary)&&/^[a-f0-9]{40}$/.test(recipe.source.commit),'Unpinned source recipe')
   const source=await anchored(`plugins/${key}/source`)
   const descriptor=JSON.parse((await regular(path.join(source,'release.json'),256<<10)).toString('utf8'))
   requireValue(descriptor.packageId===recipe.packageId&&descriptor.version===version&&descriptor.license==='Apache-2.0','Recipe and package differ')
@@ -84,6 +85,7 @@ async function repository(){
     }
    }
   }
+  if (comfyLibrary) requireValue(descriptor.runtime === 'data' && descriptor.providerProfile === 'comfy-workflows-v1' && descriptor.generation?.id === name,'ComfyUI library contract differs')
   requireValue(['data','node','process','worker'].includes(descriptor.runtime),'Runtime not installed by portable recipes')
   if(descriptor.runtime==='node'||descriptor.runtime==='process')requireValue(typeof recipe.runtimeImage==='string'&&/^sha256:[a-f0-9]{64}$/.test(recipe.runtimeImage),'Executable runtime image must be immutable')
   else requireValue(recipe.runtimeImage===undefined,'Declarative recipe cannot select a runtime image')

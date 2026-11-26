@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-migrations/comfyui",
+  "releaseVersion": "1.0.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/ordiweft-plugins",
+    "commit": "00ba53df2b08d033157de29015b372c0415aa9d3",
+    "path": "native/comfyui"
+  }
+}
