@@ -1,0 +1,222 @@
+{
+  "formatVersion": 1,
+  "packageId": "ordiweft-migrations/breeze-tts-local",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "runtime": "data",
+  "providerProfile": "breeze-stdio-v1",
+  "hostProtocol": 1,
+  "contributions": [
+    {
+      "id": "breeze-tts-local",
+      "kind": "provider"
+    }
+  ],
+  "requirements": [],
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 65,
+      "sha256": "359337afe9bab09984768f582a67af69cbaece7f365aae3845561f7883696f49"
+    },
+    {
+      "path": "README.md",
+      "bytes": 369,
+      "sha256": "e628b6f10ff9fb35dc5d39d7f007f9dda2c752be335beb1aa654a0d701d2b7db"
+    },
+    {
+      "path": "bin/linux-amd64",
+      "bytes": 7123068,
+      "sha256": "4791d9d20d5535e636f5643a5c21d6153470c7d68a131093b2860b7c24691c5c"
+    },
+    {
+      "path": "bin/windows-amd64.exe",
+      "bytes": 7329280,
+      "sha256": "2baf1567df2fea8f258a4a743085617f88fd82bb36956c0b3cd26505fff66be7"
+    },
+    {
+      "path": "build-proof.txt",
+      "bytes": 542,
+      "sha256": "6a0d004f31c25b4932353d269bfe7af504acd6881886563139453b68efbb4988"
+    },
+    {
+      "path": "licenses/Go-LICENSE.txt",
+      "bytes": 1453,
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "licenses/Go-PATENTS.txt",
+      "bytes": 1303,
+      "sha256": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc"
+    },
+    {
+      "path": "licenses/Go-fiat-crypto-edwards25519-scalar.go.txt",
+      "bytes": 11561,
+      "sha256": "b9bc9ba5a2160dccee62ccbb4371c90c5d1c654d55b8ae08f33fa29c58876050"
+    },
+    {
+      "path": "licenses/Go-fiat-crypto-p256_ordinv.go.txt",
+      "bytes": 22179,
+      "sha256": "175611bd57870e7aa046836a21c223696c3f14f3ceefc3ec1b5db04604b5e5d6"
+    },
+    {
+      "path": "licenses/Go-math-log.go.txt",
+      "bytes": 3953,
+      "sha256": "d8675d3d9c665ec0db5cc15478c03efb244301bfa1268d02ae1861bf6f2812ab"
+    },
+    {
+      "path": "licenses/Go-memmove_amd64.s.txt",
+      "bytes": 13183,
+      "sha256": "1d239c1a965baf43cbdfb82a5144d33aadd95d20ff95becf8347a93ddf08985d"
+    },
+    {
+      "path": "licenses/SDK-LICENSE.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "licenses/SDK-NOTICE.txt",
+      "bytes": 197,
+      "sha256": "06f58a68d24cbe46029a090e3275b5147fb37026b1fed7ad5f07d52b5ef6c840"
+    }
+  ],
+  "generation": {
+    "apiVersion": 2,
+    "id": "breeze-tts-local",
+    "name": "Breeze TTS 2 · 本地研究",
+    "version": "1.0.0",
+    "runtime": "process",
+    "auth": "api-key",
+    "secrets": [
+      "API_KEY"
+    ],
+    "nodes": [
+      {
+        "id": "speech",
+        "label": "语音合成（Breeze 本地）",
+        "capability": "speech.generate",
+        "model": "breeze-tts-2-local"
+      }
+    ],
+    "models": [
+      {
+        "id": "breeze-tts-2-local",
+        "label": "Breeze TTS 2（本地，中英双语）",
+        "capability": "speech.generate",
+        "inputKinds": [
+          "audio"
+        ],
+        "maxInputs": 1,
+        "inputRoles": {
+          "speaker": {
+            "label": "音色参考",
+            "kind": "audio",
+            "required": true,
+            "visibleWhenAny": [
+              {
+                "mode": "clone"
+              },
+              {
+                "mode": "direction"
+              }
+            ],
+            "description": "仅使用已获授权的干净人声 PCM WAV，0.25–30 秒，并填写准确逐字稿。"
+          }
+        },
+        "prompt": {
+          "label": "合成文本",
+          "required": true,
+          "maxLength": 1000,
+          "placeholder": "中文可写 [笑]、[叹气]；英文可写 (laugh)、(sigh)。自托管输出仅限研究与非商业用途。"
+        },
+        "fields": {
+          "mode": {
+            "type": "string",
+            "label": "音色模式",
+            "default": "design",
+            "enum": [
+              "design",
+              "clone",
+              "direction"
+            ],
+            "optionLabels": {
+              "design": "文字设计音色",
+              "clone": "参考音频克隆",
+              "direction": "音色克隆与表演指导"
+            }
+          },
+          "instruction": {
+            "type": "string",
+            "label": "音色与表演描述",
+            "control": "textarea",
+            "placement": "body",
+            "default": "",
+            "maxLength": 1000,
+            "visibleWhenAny": [
+              {
+                "mode": "design"
+              },
+              {
+                "mode": "direction"
+              }
+            ],
+            "description": "使用与正文相同的语言描述音色、情绪、节奏和说话方式。"
+          },
+          "ref_text": {
+            "type": "string",
+            "label": "参考音频准确逐字稿",
+            "control": "textarea",
+            "placement": "body",
+            "default": "",
+            "maxLength": 2000,
+            "visibleWhenAny": [
+              {
+                "mode": "clone"
+              },
+              {
+                "mode": "direction"
+              }
+            ]
+          },
+          "cfg_scale": {
+            "type": "number",
+            "label": "指令引导强度",
+            "control": "slider",
+            "default": 4,
+            "minimum": 1,
+            "maximum": 10,
+            "step": 0.5,
+            "visibleWhenAny": [
+              {
+                "mode": "design"
+              },
+              {
+                "mode": "direction"
+              }
+            ],
+            "description": "设计与表演指导建议 4；纯参考克隆固定为 1，不使用 CFG。"
+          },
+          "seed": {
+            "type": "integer",
+            "label": "随机种子",
+            "control": "seed",
+            "default": 42,
+            "minimum": 0,
+            "maximum": 4294967295
+          }
+        }
+      }
+    ],
+    "scheduling": {
+      "independent": true,
+      "concurrency": 1,
+      "maxQueued": 10,
+      "cancelable": false
+    }
+  }
+}

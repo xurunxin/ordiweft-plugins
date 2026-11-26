@@ -1,0 +1,43 @@
+{
+  "apiVersion":2,"id":"breeze-tts-api","name":"BreezeBlue · 在线 API","version":"1.0.0","runtime":"process","auth":"api-key","secrets":["API_KEY"],
+  "voiceCatalog":{"search":true,"filters":{
+    "source":{"type":"string","label":"音色来源","default":"default","enum":["default","personal"],"optionLabels":{"default":"官方音色库","personal":"我的音色"}},
+    "language":{"type":"string","label":"音色语言","default":"zh","enum":["","zh","en"],"optionLabels":{"":"全部语言","zh":"中文","en":"英语"}},
+    "category":{"type":"string","label":"音色分类","default":"","enum":["","narration","social-media","ads-brand","podcast","learning","support-agents","roleplay","gaming","animation","cinematic","wellness","stylized"],"optionLabels":{"":"全部分类","narration":"旁白","social-media":"社交媒体","ads-brand":"广告与品牌","podcast":"播客","learning":"教育","support-agents":"客服与智能体","roleplay":"角色扮演","gaming":"游戏","animation":"动画","cinematic":"影视","wellness":"疗愈","stylized":"风格化"}},
+    "gender":{"type":"string","label":"音色性别","default":"","enum":["","male","female","neutral"],"optionLabels":{"":"全部性别","male":"男性","female":"女性","neutral":"中性"}},
+    "age":{"type":"string","label":"音色年龄","default":"","enum":["","child","young","middle_aged","old"],"optionLabels":{"":"全部年龄","child":"儿童","young":"青年","middle_aged":"中年","old":"老年"}},
+    "tone":{"type":"string","label":"音色语气","default":"","enum":["","warm","calm","bright","gentle","energetic","authoritative","sincere","weary","precise","refined","urgent","friendly","articulate","steady","playful","compassionate","reflective","measured","rhythmic","passionate"],"optionLabels":{"":"全部语气","warm":"温暖","calm":"平静","bright":"明亮","gentle":"温柔","energetic":"活力","authoritative":"权威","sincere":"真诚","weary":"疲惫","precise":"精确","refined":"优雅","urgent":"急切","friendly":"友好","articulate":"清晰","steady":"沉稳","playful":"俏皮","compassionate":"共情","reflective":"沉思","measured":"克制","rhythmic":"韵律","passionate":"热情"}},
+    "sort":{"type":"string","label":"音色排序","default":"trend","enum":["trend","created_at_unix","name"],"optionLabels":{"trend":"热门优先","created_at_unix":"最新创建","name":"名称排序"}}
+  }},
+  "nodes":[{"id":"speech","label":"语音合成（Breeze 在线）","capability":"speech.generate","model":"breeze-tts-2"},{"id":"voice","label":"音色设计与克隆（Breeze 在线）","capability":"voice.design","model":"breeze-voice-design"}],
+  "models":[
+    {"id":"breeze-tts-2","label":"Breeze TTS 2（在线，中英双语）","capability":"speech.generate","inputKinds":[],"maxInputs":0,"maxVoices":1,
+      "prompt":{"label":"合成文本","required":true,"maxLength":1000,"placeholder":"支持中文 [笑]、[叹气]，英文 (laugh)、(sigh)。可连接本渠道设计或克隆的音色。"},
+      "fields":{
+        "voice_id":{"type":"string","label":"在线音色","control":"voice","default":"","maxLength":128,"description":"浏览官方音色库并试听，或填写已有 voice_id；连接本渠道音色节点时可留空。"},
+        "instructions":{"type":"string","label":"表演指导","control":"textarea","placement":"body","default":"","maxLength":1000,"description":"与正文使用相同语言，描述情绪、节奏与表达；保留所选音色身份。"},
+        "language_code":{"type":"string","label":"语言","default":"zh","enum":["zh","en"],"optionLabels":{"zh":"中文","en":"英语"},"icon":"language"},
+        "guidance_scale":{"type":"number","label":"指令引导强度","control":"slider","default":4,"minimum":1,"maximum":10,"step":0.5},
+        "speed":{"type":"number","label":"语速","control":"slider","default":1,"minimum":0.5,"maximum":2,"step":0.05},
+        "volume":{"type":"number","label":"音量","control":"slider","default":1,"minimum":0.01,"maximum":2,"step":0.05},
+        "use_speaker_boost":{"type":"boolean","label":"增强音色相似度","default":false,"description":"无指导文本时会将引导强度按 1 处理；有指导文本且强度大于 1 时上游忽略此开关。"}
+      }},
+    {"id":"breeze-voice-design","label":"文字设计并保存在线音色","capability":"voice.design","inputKinds":[],"maxInputs":0,
+      "prompt":{"label":"音色描述","required":true,"maxLength":500,"placeholder":"用自然语言描述音色。生成一个试听并保存到 BreezeBlue 私有音色库，可连接在线语音节点复用。"},
+      "fields":{
+        "voice_name":{"type":"string","label":"保存音色名称","required":true,"maxLength":80},
+        "language_code":{"type":"string","label":"音色语言","default":"zh","enum":["zh","en"],"optionLabels":{"zh":"中文","en":"英语"},"icon":"language"},
+        "preview_text":{"type":"string","label":"试听文本","control":"textarea","placement":"body","default":"欢迎来到织序，让创意拥有声音。","maxLength":500},
+        "guidance_scale":{"type":"number","label":"指令引导强度","control":"slider","default":4,"minimum":1,"maximum":10,"step":0.5}
+      }},
+    {"id":"breeze-voice-clone","label":"参考音频克隆并保存在线音色","capability":"voice.design","inputKinds":["audio"],"maxInputs":1,
+      "inputRoles":{"speaker":{"label":"授权音色参考","kind":"audio","required":true,"description":"上传 3–30 秒 PCM WAV，最多 5 MB。只使用有权克隆的声音；在线服务自动转写，无需逐字稿。"}},
+      "prompt":{"label":"音色备注","required":true,"maxLength":500,"placeholder":"描述此音色的来源与用途；在线服务会生成试听文本并保存音色。"},
+      "fields":{
+        "voice_name":{"type":"string","label":"保存音色名称","required":true,"maxLength":80},
+        "language_code":{"type":"string","label":"参考音频语言","default":"zh","enum":["zh","en"],"optionLabels":{"zh":"中文","en":"英语"},"icon":"language"},
+        "remove_background_noise":{"type":"boolean","label":"去除背景噪声","default":false}
+      }}
+  ],
+  "scheduling":{"independent":true,"concurrency":64,"maxQueued":10,"cancelable":false}
+}

@@ -1,0 +1,28 @@
+{
+  "apiVersion": 1,
+  "id": "tapnow",
+  "name": "TapNow MCP",
+  "version": "1.0.0",
+  "runtime": "builtin",
+  "auth": "oauth",
+  "secrets": [],
+  "nodes": [
+    {
+      "id": "image",
+      "label": "图片生成（MCP）",
+      "capability": "image.generate"
+    },
+    {
+      "id": "video",
+      "label": "视频生成（MCP）",
+      "capability": "video.generate"
+    }
+  ],
+  "models": [],
+  "scheduling": {
+    "independent": true,
+    "concurrency": 64,
+    "maxQueued": 20,
+    "cancelable": false
+  }
+}

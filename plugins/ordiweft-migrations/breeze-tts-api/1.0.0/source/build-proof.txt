@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "sourceCommit": "5d71a2372f9902587b2d50a933dd3bee30fec631",
+  "sdkCommit": "03d837cfa8c77bc4e35896ae9e862094f568e7f8",
+  "goVersion": "go version go1.27.3 windows/amd64",
+  "adapters": [
+    {
+      "path": "bin/linux-amd64",
+      "bytes": 7123068,
+      "sha256": "4791d9d20d5535e636f5643a5c21d6153470c7d68a131093b2860b7c24691c5c"
+    },
+    {
+      "path": "bin/windows-amd64.exe",
+      "bytes": 7329280,
+      "sha256": "2baf1567df2fea8f258a4a743085617f88fd82bb36956c0b3cd26505fff66be7"
+    }
+  ]
+}

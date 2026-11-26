@@ -1,0 +1,28 @@
+{
+  "apiVersion": 1,
+  "id": "tapnow-web",
+  "name": "TapNow Web",
+  "version": "1.0.0",
+  "runtime": "builtin",
+  "auth": "web-account",
+  "secrets": [],
+  "nodes": [
+    {
+      "id": "tapnow-image",
+      "label": "图片生成（积分）",
+      "capability": "image.generate"
+    },
+    {
+      "id": "tapnow-video",
+      "label": "视频生成（积分）",
+      "capability": "video.generate"
+    }
+  ],
+  "models": [],
+  "scheduling": {
+    "independent": true,
+    "concurrency": 64,
+    "maxQueued": 20,
+    "cancelable": false
+  }
+}
