@@ -3,11 +3,20 @@ name: Prepare official npm release
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: Reviewed Bailian version
+      package_id:
+        description: Reviewed plugin package ID
         type: choice
         required: true
-        options: ["1.0.0", "1.1.0"]
+        default: ordiweft-migrations/dashscope
+        options:
+          - ordiweft-migrations/dashscope
+          - ordiweft-examples/doubao-audio
+          - ordiweft-migrations/doubao-speech
+          - ordiweft-examples/indextts
+      version:
+        description: Reviewed release version
+        type: string
+        required: true
 
 permissions:
   contents: read
@@ -40,19 +49,21 @@ jobs:
           package-manager-cache: false
       - name: Check repository and reproduce the approved ZIP
         env:
+          PACKAGE_ID: ${{ inputs.package_id }}
           VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
+          [[ "$PACKAGE_ID" =~ ^[a-z0-9-]+/[a-z0-9-]+$ && "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
           node scripts/registry.mjs check
           (cd host && go build -mod=readonly -trimpath -o "$RUNNER_TEMP/ordiweft-plugin" ./cmd/ordiweft-plugin)
           "$RUNNER_TEMP/ordiweft-plugin" pack \
-            -root "plugins/ordiweft-migrations/dashscope/$VERSION/source" \
+            -root "plugins/$PACKAGE_ID/$VERSION/source" \
             -out "$RUNNER_TEMP/plugin.zip"
-          node scripts/npm-release.mjs "$VERSION" "$RUNNER_TEMP/plugin.zip" "$RUNNER_TEMP/npm-bailian"
+          node scripts/npm-release.mjs "$PACKAGE_ID" "$VERSION" "$RUNNER_TEMP/plugin.zip" "$RUNNER_TEMP/npm-plugin"
       - name: Submit the package for npm approval
         env:
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org
         run: |
           set -euo pipefail
-          cd "$RUNNER_TEMP/npm-bailian"
+          cd "$RUNNER_TEMP/npm-plugin"
           npm stage publish --ignore-scripts --access public

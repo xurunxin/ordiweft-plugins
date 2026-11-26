@@ -48,14 +48,22 @@ async function repository(){
   requireValue(recipe.version===1&&recipe.mode==='portable-pack'&&recipe.packageId===`${publisher}/${name}`&&recipe.releaseVersion===version,'Invalid portable recipe')
   exact(recipe.source,['repository','commit','path'])
   const hostExample=recipe.source.repository===config.hostSource.repository&&typeof recipe.source.path==='string'&&recipe.source.path.startsWith('examples/')&&recipe.source.path.split('/').every(part=>part&&part!=='.'&&part!=='..'&&!part.includes('\\'))
-  const bailianSource=recipe.packageId==='ordiweft-migrations/dashscope'&&recipe.source.repository==='https://github.com/xurunxin/ordiweft-plugins'&&['native/dashscope','executors/dashscope'].includes(recipe.source.path)
-  requireValue((hostExample||bailianSource)&&/^[a-f0-9]{40}$/.test(recipe.source.commit),'Unpinned source recipe')
+  const maintainedInRepository=recipe.source.repository==='https://github.com/xurunxin/ordiweft-plugins'
+  const bailianSource=maintainedInRepository&&recipe.packageId==='ordiweft-migrations/dashscope'&&['native/dashscope','executors/dashscope'].includes(recipe.source.path)
+  const speechSource=maintainedInRepository&&recipe.packageId==='ordiweft-migrations/doubao-speech'&&recipe.source.path==='examples/plugin-go/doubao-speech'
+  requireValue((hostExample||bailianSource||speechSource)&&/^[a-f0-9]{40}$/.test(recipe.source.commit),'Unpinned source recipe')
   const source=await anchored(`plugins/${key}/source`)
   const descriptor=JSON.parse((await regular(path.join(source,'release.json'),256<<10)).toString('utf8'))
   requireValue(descriptor.packageId===recipe.packageId&&descriptor.version===version&&descriptor.license==='Apache-2.0','Recipe and package differ')
   if(bailianSource){
    const executable=recipe.source.path==='executors/dashscope'
    requireValue(descriptor.runtime===(executable?'process':'data')&&descriptor.providerProfile===(executable?'dashscope-exec-v1':'dashscope-v1'),'Bailian profile contract differs')
+  }
+  if(speechSource){
+   const build=await json(`plugins/${key}/source/build-proof.json`)
+   requireValue(descriptor.runtime==='process'&&descriptor.generation?.id===name&&
+    build.example===name&&build.sourceCommit===recipe.source.commit&&build.sourceDirty===false&&
+    /^[a-f0-9]{40}$/.test(build.sdkCommit)&&build.target==='linux/amd64'&&build.cgo===false,'Speech adapter build provenance differs')
   }
   requireValue(['data','node','process','worker'].includes(descriptor.runtime),'Runtime not installed by portable recipes')
   if(descriptor.runtime==='node'||descriptor.runtime==='process')requireValue(typeof recipe.runtimeImage==='string'&&/^sha256:[a-f0-9]{64}$/.test(recipe.runtimeImage),'Executable runtime image must be immutable')

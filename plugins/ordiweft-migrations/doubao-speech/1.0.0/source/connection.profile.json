@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "origin": "https://openspeech.bytedance.com",
+  "headers": [
+    {
+      "name": "X-Api-Key",
+      "credential": "API_KEY"
+    },
+    {
+      "name": "X-Api-Resource-Id",
+      "literal": "seed-tts-2.0"
+    },
+    {
+      "name": "X-Api-Request-Id",
+      "jobId": true
+    }
+  ],
+  "operations": {
+    "generate": {
+      "method": "POST",
+      "path": "/api/v3/tts/unidirectional",
+      "effect": "submit",
+      "slot": "generate",
+      "contentType": "application/json",
+      "timeoutMs": 720000,
+      "maxRequestBytes": 65536,
+      "maxResponseBytes": 100663296,
+      "jsonPolicy": {
+        "operation": "generate",
+        "digest": "92fefca0a3a21436948c168ad97262ce7c257faaedd045289aa29406db00d072"
+      },
+      "streaming": true
+    }
+  },
+  "taskIO": {
+    "maxCalls": 1,
+    "maxRequestBytes": 65536,
+    "maxResponseBytes": 100663296
+  },
+  "maxRuntimeMs": 900000
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-migrations/doubao-speech",
+  "releaseVersion": "1.0.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/ordiweft-plugins",
+    "commit": "d926f40468b96a30c8aa22cb8858b2939726473e",
+    "path": "examples/plugin-go/doubao-speech"
+  },
+  "runtimeImage": "sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c"
+}
