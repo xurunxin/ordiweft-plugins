@@ -8,6 +8,8 @@
 
 官方业务插件的维护源码见[官方插件构建](docs/official-plugin-builds.md)。保留的社区配方可继续独立检查和打包。
 
+[Higgsfield](native/higgsfield/README.md) 提供图像和视频模型，通过支持 `higgsfield-stdio-v1` 的宿主从官方 npm 目录安装。
+
 首批官方源码覆盖 Codex、GPT Image、MiniMax 和即梦／火山方舟。原生渠道逐个验证功能对等后迁移。SDK v1/v2 受信进程、ComfyUI 及专用服务仍可与独立插件共存。新插件使用独立 provider ID 和包命名空间。接管已有 ID 使用宿主的兼容授权，同 ID 安装、更新和回退遵循原有宿主门禁。
 
 凭据、权限、原 HTTP 回执、媒体校验、版本绑定及业务写入沿用宿主 Host Services。官方插件从固定依赖的 Go 或 TypeScript 源码构建，现有社区配方继续打包经过审阅的预构建字节。普通安装与运行消费已发布的 ZIP。

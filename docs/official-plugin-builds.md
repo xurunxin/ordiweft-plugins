@@ -12,6 +12,7 @@
 | Fish Audio | [fish-audio](../examples/plugin-go/fish-audio) | `ordiweft-migrations/fish-audio` | Fish Audio API Key、原音色目录和请求编码 |
 | 百炼万相 2.7 | [dashscope-wan](../examples/plugin-go/dashscope-wan) | `ordiweft-examples/dashscope-wan` | 百炼区域 API 连接和受审 OSS 上传策略 |
 | 百炼完整渠道 | [源码](../native/dashscope) · [发行配方](../plugins/ordiweft-migrations/dashscope/1.1.0/recipe.json) | `ordiweft-migrations/dashscope` | 支持 `dashscope-exec-v1` 的宿主、原工作空间与账号配置 |
+| Higgsfield | [源码](../native/higgsfield) · [发行配方](../plugins/ordiweft-migrations/higgsfield/1.1.0/recipe.json) | `ordiweft-migrations/higgsfield` | 支持 `higgsfield-stdio-v1` 并记录该发行摘要的宿主、Higgsfield API 凭据 |
 
 ## Go 适配器
 
@@ -49,6 +50,8 @@ Fish Audio `1.1.0` 的[固定配方](../plugins/ordiweft-migrations/fish-audio/1
 - [SeedAudio 1.0.3](../plugins/ordiweft-examples/doubao-audio/1.0.3/recipe.json) 覆盖纯文本音频生成。
 - [百炼万相 1.0.0](../plugins/ordiweft-examples/dashscope-wan/1.0.0/recipe.json) 的原 OSS 上传和图像任务票据可复用。完整百炼迁移还涉及 Qwen 图像、视频票据、语音合成、音色创建、工作空间与配额。
 - Fish Audio 的新候选位于上表的源码目录，保留 MsgPack 合成请求、原音色绑定及宿主音色目录。
+
+Higgsfield 以 `@daoxialiuren/ordiweft-higgsfield` 分发 Linux amd64 和 Windows amd64 预构建适配器。插件中心校验发行摘要并选取当前平台程序。部署侧只需在激活后配置渠道凭据。构建、权限边界和模型验收见 [Higgsfield 维护说明](../native/higgsfield/README.md)。
 
 ## Node 适配器
 
