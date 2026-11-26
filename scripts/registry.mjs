@@ -54,7 +54,8 @@ async function repository(){
    ['doubao-speech','fish-audio'].includes(name)&&recipe.source.path===`examples/plugin-go/${name}`
   const channelProfile = maintainedInRepository && publisher === 'ordiweft-migrations' &&
    (['tapnow','tapnow-web'].includes(name) && recipe.source.path === 'native/'+name ||
-    ['breeze-tts-api','breeze-tts-local'].includes(name) && recipe.source.path === 'native/breeze-tts')
+    ['breeze-tts-api','breeze-tts-local'].includes(name) && recipe.source.path === 'native/breeze-tts' ||
+    name === 'higgsfield' && recipe.source.path === 'native/higgsfield')
   requireValue((hostExample||bailianSource||goAdapterSource||channelProfile)&&/^[a-f0-9]{40}$/.test(recipe.source.commit),'Unpinned source recipe')
   const source=await anchored(`plugins/${key}/source`)
   const descriptor=JSON.parse((await regular(path.join(source,'release.json'),256<<10)).toString('utf8'))
@@ -70,17 +71,17 @@ async function repository(){
     /^[a-f0-9]{40}$/.test(build.sdkCommit)&&build.target==='linux/amd64'&&build.cgo===false,'Go adapter build provenance differs')
   }
   if (channelProfile) {
-   const breeze = recipe.source.path === 'native/breeze-tts'
+   const profile = {'native/breeze-tts':'breeze-stdio-v1','native/higgsfield':'higgsfield-stdio-v1'}[recipe.source.path] ?? 'tapnow-host-v1'
    requireValue(descriptor.runtime === 'data' && descriptor.generation?.id === name &&
-    descriptor.providerProfile === (breeze ? 'breeze-stdio-v1' : 'tapnow-host-v1'), 'Channel profile contract differs')
-   if (breeze) {
+    descriptor.providerProfile === profile, 'Channel profile contract differs')
+   if (profile !== 'tapnow-host-v1') {
     const build = await json(`plugins/${key}/source/build-proof.txt`)
     requireValue(build.version === 1 && build.sourceCommit === recipe.source.commit &&
-     /^[a-f0-9]{40}$/.test(build.sdkCommit) && build.adapters?.length === 2, 'Breeze build provenance differs')
+     /^[a-f0-9]{40}$/.test(build.sdkCommit) && build.adapters?.length === 2, 'Stdio build provenance differs')
     for (const adapter of ['bin/linux-amd64', 'bin/windows-amd64.exe']) {
      const file = build.adapters.find(file => file.path === adapter)
      const declared = descriptor.files.find(file => file.path === adapter)
-     requireValue(file && declared?.sha256 === file.sha256 && declared.bytes === file.bytes, 'Breeze adapter inventory differs')
+     requireValue(file && declared?.sha256 === file.sha256 && declared.bytes === file.bytes, 'Stdio adapter inventory differs')
     }
    }
   }

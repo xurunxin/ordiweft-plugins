@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-migrations/higgsfield",
+  "releaseVersion": "1.1.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/ordiweft-plugins",
+    "commit": "3e6c31bdf998a79685c907e028058cd43dc2bde2",
+    "path": "native/higgsfield"
+  }
+}
