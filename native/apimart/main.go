@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.1"
+	version  = "1.3.2"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -44,13 +44,14 @@ type reference struct {
 }
 
 type modelSpec struct {
-	Model      aigc.Model     `json:"model"`
-	Upstream   string         `json:"upstream,omitempty"`
-	Endpoint   string         `json:"endpoint"`
-	PromptKey  string         `json:"promptKey,omitempty"`
-	Fixed      map[string]any `json:"fixed,omitempty"`
-	References []reference    `json:"references,omitempty"`
-	MusicTask  bool           `json:"musicTask,omitempty"`
+	Presentation *modePresentation `json:"presentation,omitempty"`
+	Model        aigc.Model        `json:"model"`
+	Upstream     string            `json:"upstream,omitempty"`
+	Endpoint     string            `json:"endpoint"`
+	PromptKey    string            `json:"promptKey,omitempty"`
+	Fixed        map[string]any    `json:"fixed,omitempty"`
+	References   []reference       `json:"references,omitempty"`
+	MusicTask    bool              `json:"musicTask,omitempty"`
 }
 
 type plugin struct {
@@ -199,7 +200,7 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 	}
 	if len(files) > 0 {
 		switch spec.Model.ID {
-		case "seedance-2.5", "seedance-2-5-flash", "seedance-2.5-draft":
+		case "seedance-2.5", "seedance-2-5-flash", "seedance-2.5-draft", "apimart-zoe":
 			body["omni_reference_task_type"] = "reference"
 		case "wan3.0-video", "wan3.0-video-prime":
 			body["generation_type"] = "reference"

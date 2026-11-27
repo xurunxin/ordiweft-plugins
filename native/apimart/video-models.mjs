@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { add, flag, frames, images, line, list, number, object, options, ref, videoRatios } from './definitions.mjs'
+import { add, flag, frames, images, line, list, number, object, options, ref, textAndReference, videoMode, videoRatios } from './definitions.mjs'
 
 const landscape = '16:9 9:16'
 const smallRatios = '16:9 9:16 1:1'
@@ -20,12 +20,15 @@ const taggedFrames = (last = true) => ['first_frame',...(last?['last_frame']:[])
   ref('image_with_roles','image',1,{role,itemRole:role,array:true,min:index===0?1:0}))
 const basic = (duration, resolution, aspect_ratio = ratio()) => ({duration,resolution,aspect_ratio})
 const mention = (upstream, name, fixed, usage) => ({upstream,name,fixed,usage})
+const imageVideo = (options = {}) => videoMode('first_last_frame','图生视频',options)
+const editVideo = videoMode('edit','视频编辑',{manualOnly:true})
+const extendVideo = videoMode('extend','视频延长',{manualOnly:true})
 
 const zoe = {duration:seconds(4,30), resolution:res('480p 720p 1080p 2k 4k'), aspect_ratio:ratio('adaptive '+videoRatios,'adaptive'),
   generate_audio:flag(true), seed, return_last_frame:flag(false,{label:'返回尾帧'}), enhance_prompt:flag(undefined)}
-add('video','apimart-zoe',zoe,multimodal(30,10,10),{audioRequiresVisual:true,usage:'可使用图像、视频或图像／视频与音频的组合。视频、音频均为参考素材。'})
-add('video','apimart-zoe-frames',{...zoe,aspect_ratio:undefined},frames(true),mention('apimart-zoe','APIMart Zoe · 首尾帧',{},'首帧必填，尾帧可选。'))
-add('video','apimart-zoe-edit',{resolution:zoe.resolution,generate_audio:zoe.generate_audio},videoOnly('video_urls'),mention('apimart-zoe','APIMart Zoe · 视频编辑',{omni_reference_task_type:'edit'}))
+add('video','apimart-zoe',zoe,multimodal(30,10,10),{...textAndReference(),audioRequiresVisual:true,usage:'可使用图像、视频或图像／视频与音频的组合。视频、音频均为参考素材。'})
+add('video','apimart-zoe-frames',{...zoe,aspect_ratio:undefined},frames(true),{...mention('apimart-zoe','APIMart Zoe · 首尾帧',{},'首帧必填，尾帧可选。'),...imageVideo()})
+add('video','apimart-zoe-edit',{resolution:zoe.resolution,generate_audio:zoe.generate_audio},videoOnly('video_urls'),{...mention('apimart-zoe','APIMart Zoe · 视频编辑',{omni_reference_task_type:'edit'}),...editVideo})
 
 const v1 = {...basic(seconds(2,12),res('480p 720p 1080p','1080p')),seed}
 add('video','seedance-1-0-pro-fast seedance-1-0-pro-quality',v1,img(2))
@@ -35,12 +38,15 @@ const seedance2 = {
 }
 const seedance2Prompt = {maxPrompt:4000,referenceSyntax:'cn-numbered'}
 const seedance2Reference = {audioRequiresVisual:true,usage:'参考音频需搭配图片或视频。'}
-add('video','seedance-2.0 seedance-2.0-fast seedance-2.0-face seedance-2.0-fast-face',seedance2,multimodal(9,3,3),{...seedance2Prompt,...seedance2Reference})
-add('video','seedance-2.0-mini',{...seedance2,resolution:res('480p 720p')},multimodal(9,3,3),{...seedance2Prompt,...seedance2Reference,maxPrompt:undefined})
+add('video','seedance-2.0 seedance-2.0-fast',seedance2,multimodal(9,3,3),{...seedance2Prompt,...seedance2Reference,...textAndReference()})
+add('video','seedance-2.0-mini',{...seedance2,resolution:res('480p 720p')},multimodal(9,3,3),{
+  ...seedance2Prompt,...seedance2Reference,...textAndReference(),maxPrompt:undefined,
+})
+add('video','seedance-2.0-face seedance-2.0-fast-face',seedance2,multimodal(9,3,3),{...seedance2Prompt,...seedance2Reference})
 for (const id of ['seedance-2.0','seedance-2.0-fast','seedance-2.0-mini']) {
   const mini = id.endsWith('mini')
   add('video',id+'-frames',{...seedance2,resolution:mini?res('480p 720p'):seedance2.resolution,size:undefined},taggedFrames(),{
-    ...mention(id,id+' · 首尾帧',{}),...seedance2Prompt,maxPrompt:mini?undefined:seedance2Prompt.maxPrompt,
+    ...mention(id,id+' · 首尾帧',{},'首帧必填，尾帧可选。'),...imageVideo(),...seedance2Prompt,maxPrompt:mini?undefined:seedance2Prompt.maxPrompt,
   })
 }
 const seedance25 = {...seedance2,duration:seconds(4,30),resolution:res('480p 720p 1080p 4k'),
@@ -49,10 +55,10 @@ const seedance25Prompt = {referenceSyntax:'cn-at-numbered'}
 for (const id of ['seedance-2.5','seedance-2-5-flash']) {
   const flash = id.endsWith('flash')
   const fields = {...seedance25,resolution:flash?res('480p 720p'):seedance25.resolution}
-  add('video',id,fields,multimodal(flash?10:30,flash?5:10,flash?5:10),seedance25Prompt)
-  add('video',id+'-frames',{...fields,size:undefined},taggedFrames(),{...mention(id,id+' · 首尾帧',{size:'adaptive'}),...seedance25Prompt})
-  add('video',id+'-edit',{resolution:fields.resolution,generate_audio:fields.generate_audio,watermark},videoOnly('video_urls'),{...mention(id,id+' · 视频编辑',{omni_reference_task_type:'edit',size:'adaptive'}),...seedance25Prompt})
-  add('video',id+'-extend',{duration:fields.duration,resolution:fields.resolution,generate_audio:fields.generate_audio,watermark},videoOnly('video_urls'),{...mention(id,id+' · 视频续写',{omni_reference_task_type:'extend',size:'adaptive'}),...seedance25Prompt})
+  add('video',id,fields,multimodal(flash?10:30,flash?5:10,flash?5:10),{...seedance25Prompt,...textAndReference()})
+  add('video',id+'-frames',{...fields,size:undefined},taggedFrames(),{...mention(id,id+' · 首尾帧',{size:'adaptive'},'首帧必填，尾帧可选。'),...imageVideo(),...seedance25Prompt})
+  add('video',id+'-edit',{resolution:fields.resolution,generate_audio:fields.generate_audio,watermark},videoOnly('video_urls'),{...mention(id,id+' · 视频编辑',{omni_reference_task_type:'edit',size:'adaptive'},'时长和画幅跟随源视频。'),...editVideo,...seedance25Prompt})
+  add('video',id+'-extend',{duration:fields.duration,resolution:fields.resolution,generate_audio:fields.generate_audio,watermark},videoOnly('video_urls'),{...mention(id,id+' · 视频续写',{omni_reference_task_type:'extend',size:'adaptive'}),...extendVideo,...seedance25Prompt})
 }
 const seedanceDraftFields = {...seedance25,resolution:undefined}
 add('video','seedance-2.5-draft',seedanceDraftFields,multimodal(30,10,10),{
@@ -88,11 +94,12 @@ const h3 = {...basic(seconds(4,15),res('768P 2K','2K'),ratio('adaptive '+videoRa
 const h3Max = {...h3,duration:seconds(5,15),resolution:res('480P 768P 1080P','768P'),
   watermark:flag(false,{visibleWhenAny:[{resolution:'480P'},{resolution:'768P'}]})}
 const h3Prompt = {maxPrompt:7000,referenceSyntax:'cn-numbered'}
-const h3Reference = {...h3Prompt,audioRequiresVisual:true,usage:'最多 9 张参考图、3 段参考视频和 3 段参考音频。音频需搭配图片或视频。'}
+const h3Frames = {...h3Prompt,...imageVideo({minInputs:1}),usage:'可接入首帧、尾帧或两者。画幅跟随输入图片。'}
+const h3Reference = {...h3Prompt,...textAndReference(),audioRequiresVisual:true,usage:'最多 9 张参考图、3 段参考视频和 3 段参考音频。音频需搭配图片或视频。'}
 add('video','MiniMax-H3',h3,multimodal(9,3,3),h3Reference)
 add('video','MiniMax-H3-Max',h3Max,multimodal(9,3,3),h3Reference)
-add('video','MiniMax-H3-frames',h3,frames(),{...mention('MiniMax-H3','MiniMax H3 · 首尾帧',{},'连接首帧、尾帧或两者。比例随图片。'),...h3Prompt})
-add('video','MiniMax-H3-Max-frames',h3Max,frames(),{...mention('MiniMax-H3-Max','MiniMax H3 Max · 首尾帧',{},'连接首帧、尾帧或两者。比例随图片。'),...h3Prompt})
+add('video','MiniMax-H3-frames',h3,frames(),{upstream:'MiniMax-H3',name:'MiniMax H3 · 首尾帧',...h3Frames})
+add('video','MiniMax-H3-Max-frames',h3Max,frames(),{upstream:'MiniMax-H3-Max',name:'MiniMax H3 Max · 首尾帧',...h3Frames})
 add('video','MiniMax-H3-Regeneration',{},[],{
   name:'MiniMax H3 · 2K 再生成',hidden:true,promptKey:false,prompt:{label:'原视频',required:false},
   usage:'沿用所选 MiniMax H3 768P 成片与原参考，生成 2K 视频。',
@@ -101,8 +108,10 @@ add('video','MiniMax-H3-Regeneration',{},[],{
 
 const flux = {...basic(seconds(5,20),res('hd fhd','hd'),ratio('auto 2:1 '+videoRatios,'auto')),
   audio:flag(true),safety_tolerance:number(0,6,2,{label:'安全容差'})}
-add('video','flux-3-video',flux,img(10,true))
-add('video','flux-3-video-edit',{resolution:flux.resolution},videoOnly('video_url'),mention('flux-3-video','FLUX 3 Video · 视频编辑',{}))
+add('video','flux-3-video',flux,img(10,true),{
+  ...imageVideo({textLabel:'文生视频'}),usage:'按顺序连接 1 至 10 张关键帧。',
+})
+add('video','flux-3-video-edit',{resolution:flux.resolution},videoOnly('video_url'),{...mention('flux-3-video','FLUX 3 Video · 视频续写',{}),...videoMode('extend','视频续写')})
 add('video','skyreels-v4-fast skyreels-v4-std',{...basic(seconds(3,15),res('720p 1080p','1080p')),prompt_optimizer},[
   ...frames(false,'end_frame_image'),ref('audio_url','audio',1),
 ])
@@ -110,21 +119,23 @@ add('video','skyreels-v4-std-reference',{...basic(seconds(3,15),res('720p 1080p'
 
 const horse = {duration:seconds(3,15),resolution:res('480P 720P 1080P','1080P'),size:ratio(),seed,watermark}
 for (const id of ['happyhorse-1.0','happyhorse-1.1']) {
-  add('video',id,horse,img(9,true))
-  add('video',id+'-frames',horse,frames(true,''),mention(id,id+' · 首帧',{}))
+  add('video',id,horse,img(9,true),id==='happyhorse-1.0'?videoMode('reference','参考图生视频',{textLabel:'文生视频'}):{})
+  add('video',id+'-frames',horse,frames(true,''),{
+    ...mention(id,id+' · 首帧',{}),...(id==='happyhorse-1.0'?videoMode('first_frame','图生视频'):{}),
+  })
 }
 add('video','happyhorse-1.0-edit',{resolution:horse.resolution,audio_setting:options('auto keep mute','auto',{label:'音轨处理'})},[
   ...videoOnly('video_url'),...img(5,true),
-],mention('happyhorse-1.0','HappyHorse 1.0 · 视频编辑',{}))
+],{...mention('happyhorse-1.0','HappyHorse 1.0 · 视频编辑',{}),...videoMode('edit','视频编辑')})
 
 const wan = {duration:seconds(2,15),resolution:res('480P 720P 1080P','1080P'),size:ratio(),negative_prompt,prompt_extend:flag(true),seed,watermark}
 const wan3Prompt = {maxPrompt:20000,referenceSyntax:'cn-short-numbered'}
 for (const id of ['wan3.0-video','wan3.0-video-prime']) {
-  add('video',id,{...wan,duration:seconds(2,30),size:ratio('adaptive '+videoRatios,'adaptive'),audio:flag(true)},multimodal(9,5,5),wan3Prompt)
-  add('video',id+'-frames',{...wan,duration:seconds(2,30),size:undefined,audio:flag(true)},taggedFrames(),{...mention(id,id+' · 首尾帧',{size:'adaptive'}),...wan3Prompt})
-  add('video',id+'-edit',{resolution:wan.resolution},videoOnly('video_urls'),mention(id,id+' · 视频编辑',{generation_type:'edit'}))
+  add('video',id,{...wan,duration:seconds(2,30),size:ratio('adaptive '+videoRatios,'adaptive'),audio:flag(true)},multimodal(9,5,5),{...wan3Prompt,...textAndReference()})
+  add('video',id+'-frames',{...wan,duration:seconds(2,30),size:undefined,audio:flag(true)},taggedFrames(),{...mention(id,id+' · 首尾帧',{size:'adaptive'},'首帧必填，尾帧可选。'),...imageVideo(),...wan3Prompt})
+  add('video',id+'-edit',{resolution:wan.resolution},videoOnly('video_urls'),{...mention(id,id+' · 视频编辑',{generation_type:'edit'}),hidden:true})
 }
-add('video','wan2.7',wan,img(2))
+add('video','wan2.7',wan,img(2),imageVideo({textLabel:'文生视频'}))
 add('video','wan2.7-extend',{...wan,size:undefined},videoOnly('video_urls'),mention('wan2.7','Wan 2.7 · 视频续写',{}))
 add('video','wan2.7-r2v',wan,[
   ref('image_with_roles','image',5,{itemRole:'reference_image',array:true}),video(5),
@@ -159,14 +170,17 @@ for (const id of ['kling-v4','kling-v4-flash']) {
   const fields = basic(seconds(3,flash?20:30),flash?undefined:res('720p 1080p'),ratio(smallRatios+' 21:9'))
   add('video',id,fields,[],{fixed:flash?{resolution:'720p'}:undefined})
   const fixed = flash ? {resolution:'720p'} : {}
-  add('video',id+'-frames',{...fields,aspect_ratio:undefined},frames(true,flash?'':'last_frame_image'),mention(id,id+(flash?' · 首帧':' · 首尾帧'),fixed))
+  add('video',id+'-frames',{...fields,aspect_ratio:undefined},frames(true,flash?'':'last_frame_image'),{...mention(id,id+(flash?' · 首帧':' · 首尾帧'),fixed),...videoMode(flash?'first_frame':'first_last_frame','图生视频'),
+    usage:flash?'仅接入一张首帧。':'接入首帧，可加尾帧。'})
   add('video',id+'-reference',{...fields,aspect_ratio:ratio('auto '+smallRatios+' 21:9','auto')},multimodal(10,5,flash?0:3),{
-    ...mention(id,id+' · 多模态参考',{...fixed,omni_reference_task_type:'reference'}),referenceSyntax:'en-at-numbered',
+    ...mention(id,id+' · 多模态参考',{...fixed,omni_reference_task_type:'reference'}),
+    ...videoMode('reference',flash?'参考生视频':'多模态参考生视频',{minInputs:1}),referenceSyntax:'en-at-numbered',
   })
   for (const [mode,label] of [['edit','编辑'],['extend','续写']]) {
     add('video',id+'-'+mode,{...fields,duration:mode==='edit'?number(3,flash?20:30):fields.duration},
       [...videoOnly('video_url'),...(mode==='edit'?img(10):[])],{
-        ...mention(id,id+' · 视频'+label,{...fixed,omni_reference_task_type:mode}),referenceSyntax:'en-at-numbered',
+        ...mention(id,id+' · 视频'+label,{...fixed,omni_reference_task_type:mode}),
+        ...(mode==='edit'?editVideo:videoMode('extend','视频续写',{manualOnly:true})),referenceSyntax:'en-at-numbered',
       })
   }
 }
@@ -176,11 +190,14 @@ add('video','viduq3-pro viduq3-turbo',vidu,img(2))
 add('video','viduq3',{...vidu,duration:seconds(3,16),audio:undefined},img(7,false,1))
 add('video','viduq3-mix',{...vidu,resolution:res('720p 1080p'),audio:undefined},img(7,false,1))
 const q4 = {...vidu,duration:seconds(3,16),resolution:res('540p 720p 1080p 2K 4K')}
-add('video','viduq4-preview',q4,[],{usage:'用首帧或参考素材时在模型列表选择对应模式。'})
-add('video','viduq4-preview-frames',{...q4,aspect_ratio:undefined},frames(true,''),mention('viduq4-preview','Vidu Q4 · 首帧',{}))
+add('video','viduq4-preview',q4,[],{hidden:true,name:'Vidu Q4 Preview',usage:'请选择图生视频或参考生视频。'})
+add('video','viduq4-preview-frames',{...q4,aspect_ratio:undefined},frames(true,''),{
+  ...mention('viduq4-preview','Vidu Q4 · 首帧',{},'仅接入一张首帧。'),...videoMode('first_frame','图生视频'),optionalPrompt:true,
+})
 add('video','viduq4-preview-reference',q4,[
   ref('image_with_roles','image',15,{itemRole:'reference_image',array:true,min:1,inline:true}),audio(3),
-],mention('viduq4-preview','Vidu Q4 · 素材参考',{}))
+],{...mention('viduq4-preview','Vidu Q4 · 素材参考',{},'至少一张参考图，可搭配参考音频。'),
+  ...videoMode('reference','参考生视频')})
 
 for (const id of ['grok-imagine-1.0-video-apimart','grok-imagine-1.5-video-apimart']) {
   const fields = {duration:seconds(1,15,6),resolution:res('480p 720p 1080p','480p'),size:ratio(smallRatios)}
@@ -204,7 +221,7 @@ const omni = {duration:seconds(3,15,10),resolution:res('360p 720p 1080p 4k'),asp
 add('video','Omni-Flash-Ext',{...omni,duration:durationChoices([4,6,8,10],6)},[...img(3),video(1)],{usage:'零张或一张参考图，也可用三张图进行参考融合。'})
 for (const id of ['gemini-omni-1.1-flash','gemini-omni-1.2-flash','gemini-omni-1.2-flash-ext']) {
   const fields = {...omni,duration:id.includes('1.1')?undefined:omni.duration}
-  add('video',id,fields,img(10))
+  add('video',id,fields,img(10),id.endsWith('-ext')?videoMode('reference','多图参考生视频',{textLabel:'文生视频'}):{})
   add('video',id+'-frames',{...fields,duration:fields.duration?seconds(3,10,10):undefined},frames(true),mention(id,id+' · 首尾帧',{}))
   for (const [mode,label] of [['edit','编辑'],['extend','续写']]) {
     add('video',id+'-'+mode,{resolution:fields.resolution,duration:mode==='extend'&&fields.duration?seconds(3,10,10):undefined},

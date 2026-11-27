@@ -92,3 +92,29 @@ func TestAPIMartMultimodalVideoModes(t *testing.T) {
 		})
 	}
 }
+
+func TestDocumentedVideoModeClassifications(t *testing.T) {
+	p, err := loadPlugin()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, model := range []string{"MiniMax-H3", "MiniMax-H3-Max"} {
+		main := p.models[model].Model.GenerationMode
+		frame := p.models[model+"-frames"].Model.GenerationMode
+		if main == nil || main.TextLabel != "文生视频" || main.Label != "多模态参考生视频" || main.Intent != "reference" ||
+			frame == nil || frame.Label != "图生视频" || frame.MinInputs != 1 || frame.Images.Max != 2 {
+			t.Fatalf("%s does not expose the three documented APIMart modes", model)
+		}
+	}
+	for _, model := range []string{"seedance-2.5", "seedance-2-5-flash", "kling-v4", "kling-v4-flash", "apimart-zoe"} {
+		edit := p.models[model+"-edit"].Model.GenerationMode
+		if edit == nil || edit.Intent != "edit" || !edit.ManualOnly {
+			t.Fatalf("%s routes an ordinary video attachment to edit", model)
+		}
+	}
+	for _, id := range []string{"viduq4-preview", "wan3.0-video-edit", "wan3.0-video-prime-edit"} {
+		if model := p.models[id].Model; model.ID != id || !model.Hidden || model.GenerationMode != nil {
+			t.Fatalf("expected %s to remain addressable only as a legacy model", id)
+		}
+	}
+}

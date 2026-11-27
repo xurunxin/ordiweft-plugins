@@ -51,6 +51,25 @@ APIMart 接入 Ordiweft 的图像、视频、音乐、配音和语音转录入�
 
 Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、音频1」编号。Kling V4 和 Flash 使用 `@Image1`、`@Video1`，标准版也可使用 `@Audio1`。APIMart Zoe 的音频参考需搭配图片或视频。Zoe 的长提示词仍受当前 Ordiweft 请求长度限制。[Wan 3.0](https://docs.apimart.ai/cn/api-reference/videos/wan3.0-video/generation) · [Kling V4](https://docs.apimart.ai/cn/api-reference/videos/kling-v4/generation) · [Kling V4 Flash](https://docs.apimart.ai/cn/api-reference/videos/kling-v4-flash/generation) · [APIMart Zoe](https://docs.apimart.ai/cn/api-reference/videos/apimart-zoe/generation)
 
+## 生成方式分类
+
+参数面板使用 APIMart 接口的模式名称与触发字段。同一个模型 ID 可以在面板显示文生和有素材的入口。自动模式按连线选择，手动固定文生或参考时会提示缺少或多余的素材，并保留现有连线。升级前使用同一个入口的画布节点会按已有连线显示文生或参考。
+
+| APIMart 模型 | 参数面板的生成方式 |
+| --- | --- |
+| MiniMax H3 / H3 Max | 文生视频、图生视频（首帧、尾帧、首尾帧）、多模态参考生视频 |
+| MAGI-2 | 文生视频、图生视频（首帧必填）、多模态参考生视频 |
+| Seedance 2.0 标准 / Fast / Mini | 文生视频、图生视频、多模态参考生视频 |
+| Seedance 2.5 / Flash | 文生视频、图生视频、多模态参考生视频、视频编辑、视频延长。标准版另外提供 480p 草稿入口 |
+| Kling V4 / Flash | 文生视频、图生视频、参考生视频、视频编辑、视频续写。Flash 图生只接首帧，参考可接图和视频 |
+| APIMart Zoe | 文生视频、图生视频、多模态参考生视频、视频编辑 |
+| Wan 3.0 / Prime | 文生视频、图生视频、多模态参考生视频 |
+| Vidu Q4 Preview | 图生视频、参考生视频。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/vidu-q4-preview/generation) |
+| FLUX 3 Video | 文生视频、图生视频（1–10 张按顺序的关键帧）、视频续写。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/flux-3-video/generation) |
+| HappyHorse 1.0 | 文生视频、图生视频、参考图生视频、视频编辑。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/happyhorse-1.0/generation) |
+
+对于 Seedance 2.5、Kling V4 和 Zoe，普通视频连线默认作为参考素材。视频编辑、视频延长和续写由用户显式选择，适配器发送各自的 APIMart 参数。Vidu Q4 的旧文生 ID 与 Wan 3.0 的旧编辑 ID 仅保留用于旧节点识别。上表列出当前插件接入的方式，Wan 3.0 的文件／链接参考和 Zoe 样片暂未接入。
+
 ## 从原任务续作
 
 - 选择成功的 MiniMax H3 768P 版本，点击参数按钮旁的「升为 2K」创建续作节点。支持普通生成及首尾帧，沿用上游原任务的内容和参考。[H3 Regeneration 文档](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/regeneration)

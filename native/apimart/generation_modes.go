@@ -7,25 +7,36 @@ import (
 	"gitea.nkit.top/xurx/Ordiweft/pkg/aigc"
 )
 
+// modePresentation captures choices documented by the APIMart endpoint. Input
+// ranges still come from the adapter's reference fields.
+type modePresentation struct {
+	Intent     string `json:"intent"`
+	Label      string `json:"label"`
+	TextLabel  string `json:"textLabel,omitempty"`
+	MinInputs  int    `json:"minInputs,omitempty"`
+	ManualOnly bool   `json:"manualOnly,omitempty"`
+}
+
 func applyGenerationModes(catalog []modelSpec) {
 	type familyKey struct{ capability, upstream string }
 	groups := map[familyKey][]int{}
+	familyLabels := map[familyKey]string{}
 	for i, spec := range catalog {
+		key := familyKey{spec.Model.Capability, spec.Upstream}
+		if spec.Model.ID == spec.Upstream {
+			familyLabels[key], _, _ = strings.Cut(spec.Model.Label, " · ")
+		}
 		if !spec.Model.Hidden && spec.Model.TaskContinuation == nil {
-			key := familyKey{spec.Model.Capability, spec.Upstream}
 			groups[key] = append(groups[key], i)
 		}
 	}
 	for key, group := range groups {
-		if len(group) < 2 {
+		if len(group) == 1 && catalog[group[0]].Presentation == nil {
 			continue
 		}
-		familyLabel := key.upstream
-		for _, i := range group {
-			if model := catalog[i].Model; model.ID == key.upstream {
-				familyLabel, _, _ = strings.Cut(model.Label, " · ")
-				break
-			}
+		familyLabel := familyLabels[key]
+		if familyLabel == "" {
+			familyLabel = key.upstream
 		}
 		for _, i := range group {
 			spec := &catalog[i]
@@ -92,8 +103,10 @@ func generationMode(spec modelSpec) aigc.ModelGenerationMode {
 	switch spec.Model.ID {
 	case "suno-sounds", "suno-upload-cover", "suno-upload-extend":
 		mode.ManualOnly = true
-	case "magi-2-reference", "MiniMax-H3-frames", "MiniMax-H3-Max-frames":
-		mode.MinInputs = 1
+	}
+	if declared := spec.Presentation; declared != nil {
+		mode.Intent, mode.Label, mode.TextLabel = declared.Intent, declared.Label, declared.TextLabel
+		mode.MinInputs, mode.ManualOnly = declared.MinInputs, declared.ManualOnly
 	}
 	return mode
 }
