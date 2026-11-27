@@ -86,7 +86,7 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 
 图像系列在同一执行模型中区分文生图与参考图生成。GPT Image 等模型的蒙版继续作为图像编辑的专用输入角色。可灵长图按 `skill` 分电商详情与网页设计，网页模式可指定风格图和主体图。Suno 的灵感、自定义、参考音频创作、上传翻唱、上传续写和音效沿用各自的字段或接口。[GPT Image 2.6](https://docs.apimart.ai/cn/api-reference/images/gpt-image-2.6/generation) · [可灵长图](https://docs.apimart.ai/cn/api-reference/images/kling-v4-long-image/generation) · [Suno](https://docs.apimart.ai/cn/api-reference/audios/suno/overview)
 
-公开文档未列出模式契约的旧兼容型号保留原接入。主体多图分组、指定中间帧时刻、Wan 文件或链接输入，以及 Midjourney 和 Suno 的部分原任务编辑操作仍需单独接入。
+公开文档未列出模式契约的旧兼容型号保留原接入。SkyReels 同主体多图分组、Midjourney 和 Suno 的部分原任务编辑操作仍需单独接入。
 
 ## 从原任务续作
 
@@ -108,7 +108,17 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 
 画布连线提供图像、音频、视频素材。可灵主体图及 Midjourney 的角色、风格、深度图参数支持公网图像网址。任务 ID 由原版本绑定，回调和异步结果格式由适配器管理。Whisper 使用带时间段的 verbose JSON。VEO GIF 在 720p 选项下显示。Seedream 图层的高级 OCR 元数据尚无专用编辑器。开启官方兜底时，实际费用以渠道回执为准。
 
-当前公开文档未给部分已接入的历史 ID 提供请求契约，沿用原有声明。包括 DALL·E 3、Imagen 4、Nano banana 2 Lite、带人脸渠道的 Seedance 2.0、VEO 3.1 官方渠道、HappyHorse 1.1、Wan 2.7 R2V/VideoEdit、Wan 2.6 I2V/Flash、可灵动作控制、部分 Grok Imagine 历史模型及 GPT Audio Mini。[APIMart 中文 API 参考](https://docs.apimart.ai/cn/api-reference)
+当前公开文档未给 DALL·E 3、Imagen 4、带人脸渠道的 Seedance 2.0、Grok Imagine 1.0 的旧图像与视频渠道、GPT Audio Mini 提供对应请求契约，沿用现有声明。[APIMart 中文 API 参考](https://docs.apimart.ai/cn/api-reference)
+
+## 1.3.5 独立模型契约
+
+- Nano Banana 2 Lite 与 Lite Ext 固定在 1K，支持提交前审核。[Lite 模型文档](https://docs.apimart.ai/cn/api-reference/images/gemini-3.1-flash/generation-lite.md)
+- VEO 3.1 官方版按文生、首尾帧提供参数，支持人物策略和样本数量。Ext 的 Fast／Quality 可按绑定的原任务续写至 15 秒。[官方版](https://docs.apimart.ai/cn/api-reference/videos/veo3/generation-official.md) · [续写](https://docs.apimart.ai/cn/api-reference/videos/veo3/remix.md)
+- HappyHorse 1.1 分为文生、首帧和参考图模式，支持 720P 和 1080P。Wan 2.7 R2V 支持首帧与角色图共用及各角色参考音色，VideoEdit 使用音轨处理元数据。Wan 2.6 I2V 与 Flash 均可选 720p／1080p，Flash 可切换有声或无声。[HappyHorse](https://docs.apimart.ai/cn/api-reference/videos/happyhorse-1.1/generation.md) · [Wan R2V](https://docs.apimart.ai/cn/api-reference/videos/wan2.7-r2v/generation.md) · [Wan VideoEdit](https://docs.apimart.ai/cn/api-reference/videos/wan2.7-videoedit/generation.md) · [Wan 2.6 I2V](https://docs.apimart.ai/cn/api-reference/videos/wan2.6/i2v-flash-generation.md)
+- 可灵两档动作控制支持水印与按人物朝向校验源视频时长。SkyReels V4 的中间帧可指定秒点。[可灵动作控制](https://docs.apimart.ai/cn/api-reference/videos/kling-v2-6/kling-v2-6-motion-control-generation.md) · [SkyReels](https://docs.apimart.ai/cn/api-reference/videos/skyreels-v4/generation.md)
+- Grok Imagine Image 2.0 官方版使用版本化任务回执，文生图可选质量。两档官方视频可用多张参考图，Base 版另有视频编辑入口。旧 1.5 官方编辑 ID 保留识别，重新执行时提示切换模型。[Grok 图像](https://docs.apimart.ai/cn/api-reference/images/grok-imagine-2.0-ext/official.md) · [Grok 视频](https://docs.apimart.ai/cn/api-reference/videos/grok-imagine/official.md)
+
+H3 Context-IR 返回结构化文本，需要宿主提供文本生成产物。Seedream 的富文本 OCR 仍待画布编辑支持。GPT-4o Mini TTS 的原始 PCM 文档未声明采样率、声道和位深。VEO 多样本预估与续写费用仍以实际任务回执或专用报价为准。
 
 ## 构建与核验
 

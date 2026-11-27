@@ -53,6 +53,10 @@ func normalizeModelOptions(spec modelSpec, body map[string]any, files []attachme
 		if body["background"] == "transparent" && body["output_format"] != "png" {
 			return errors.New("Seedream 透明背景需要 PNG 格式")
 		}
+	case "grok-imagine-image-2.0":
+		if images > 0 {
+			delete(body, "quality")
+		}
 	case "grok-imagine-image", "grok-imagine-image-quality":
 		body["aspect_ratio"] = body["size"]
 		delete(body, "size")
@@ -63,8 +67,31 @@ func normalizeModelOptions(spec modelSpec, body map[string]any, files []attachme
 			body["tools"] = []map[string]string{{"type": "web_search"}}
 		}
 		delete(body, "web_search")
+	case "wan2.6-i2v":
+		delete(body, "audio")
+	case "wan2.7-r2v":
+		return normalizeWanReferenceOptions(body, files, images, videos)
+	case "wan2.7-videoedit":
+		return normalizeWanEditOptions(body)
+	case "grok-imagine-video":
+		if spec.Model.ID == "grok-imagine-video-edit" {
+			delete(body, "resolution")
+		}
+	case "veo3.1-fast-official", "veo3.1-quality-official":
+		if images == 0 {
+			delete(body, "resize_mode")
+		}
+	case "skyreels-v4-fast", "skyreels-v4-std":
+		return validateSkyReelsFrameTimes(body, files)
 	case "wan3.0-video", "wan3.0-video-prime":
 		return normalizeWanVideoOptions(spec.Model.ID, body, len(files))
+	case "happyhorse-1.1":
+		if len(files) == 0 && body["prompt"] == nil {
+			return errors.New("HappyHorse 1.1 文生视频需要提示词")
+		}
+		if spec.Model.ID == "happyhorse-1.1-frames" {
+			delete(body, "size")
+		}
 	case "apimart-zoe":
 		if spec.Model.TaskContinuation == nil && len(files) == 0 && body["prompt"] == nil {
 			return errors.New("Zoe 文生视频需要提示词")
@@ -253,6 +280,58 @@ func normalizeKlingOptions(upstream string, body map[string]any, images int) err
 			if !publicHTTPURL(address.(string)) {
 				return errors.New("可灵主体图需要使用公网图片地址")
 			}
+		}
+	}
+	return nil
+}
+
+func normalizeWanReferenceOptions(body map[string]any, files []attachment, images, videos int) error {
+	if images+videos < 1 || images+videos > 5 {
+		return errors.New("Wan 2.7 参考生视频需要 1 至 5 份图像或视频")
+	}
+	if seconds, _ := body["duration"].(float64); videos > 0 && seconds > 10 {
+		return errors.New("Wan 2.7 带参考视频时，生成时长最多 10 秒")
+	}
+	roles := make(map[string]bool, len(files))
+	for _, file := range files {
+		roles[file.input.Role] = true
+	}
+	for _, file := range files {
+		if target := file.ref.BindTo; target != "" && !roles[target] {
+			return fmt.Errorf("角色参考音色缺少对应参考图：%s", file.input.Role)
+		}
+	}
+	if roles["first_frame"] {
+		delete(body, "size")
+	}
+	return nil
+}
+
+func normalizeWanEditOptions(body map[string]any) error {
+	audio, _ := body["audio_setting"].(string)
+	switch audio {
+	case "keep":
+		audio = "origin"
+	case "mute":
+		return errors.New("Wan 2.7 视频编辑支持重新配声或保留原声，请调整旧节点的静音选项")
+	}
+	delete(body, "audio_setting")
+	body["metadata"] = map[string]string{"audio_setting": audio}
+	return nil
+}
+
+func validateSkyReelsFrameTimes(body map[string]any, files []attachment) error {
+	times, _ := body["mid_frame_times"].(map[string]any)
+	if len(times) == 0 {
+		return nil
+	}
+	duration, _ := body["duration"].(float64)
+	for _, file := range files {
+		if file.ref.Field != "mid_frame_images" {
+			continue
+		}
+		if second, ok := times[file.input.Role].(float64); ok && second >= duration {
+			return fmt.Errorf("SkyReels 中间帧时间点需早于视频结束：%s", file.input.Role)
 		}
 	}
 	return nil

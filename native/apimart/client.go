@@ -42,8 +42,8 @@ type remoteTask struct {
 	Result json.RawMessage `json:"result"`
 }
 
-func (p *plugin) request(ctx context.Context, method, path, key, contentType string, body []byte) ([]byte, error) {
-	resp, err := p.doRequest(ctx, method, path, key, contentType, body)
+func (p *plugin) request(ctx context.Context, method, path, key, contentType string, body []byte, responseVersion ...string) ([]byte, error) {
+	resp, err := p.doRequest(ctx, method, path, key, contentType, body, responseVersion...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (p *plugin) request(ctx context.Context, method, path, key, contentType str
 	return reply, nil
 }
 
-func (p *plugin) doRequest(ctx context.Context, method, path, key, contentType string, body []byte) (*http.Response, error) {
+func (p *plugin) doRequest(ctx context.Context, method, path, key, contentType string, body []byte, responseVersion ...string) (*http.Response, error) {
 	var source io.Reader
 	if body != nil {
 		source = bytes.NewReader(body)
@@ -72,6 +72,9 @@ func (p *plugin) doRequest(ctx context.Context, method, path, key, contentType s
 	}
 	if contentType != "" {
 		req.Header.Set("Content-Type", contentType)
+	}
+	if len(responseVersion) != 0 && responseVersion[0] != "" {
+		req.Header.Set("X-APIMart-Response-Version", responseVersion[0])
 	}
 	resp, err := p.client.Do(req)
 	if err != nil {
@@ -128,7 +131,15 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	ordinals := map[string]int{}
 	originalSound := body["keep_original_sound"]
 	var actorVoice string
+	boundVoices := map[string]string{}
+	wanImages := map[string]map[string]string{}
+	frameTimes, _ := body["mid_frame_times"].(map[string]any)
+	delete(body, "mid_frame_times")
 	for i, file := range files {
+		if file.ref.BindTo != "" {
+			boundVoices[file.ref.BindTo] = urls[i]
+			continue
+		}
 		if file.ref.Field == "ref_images.audio_url" {
 			actorVoice = urls[i]
 			continue
@@ -145,6 +156,14 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 				body["prompt"] = strings.TrimSpace(prompt + " " + tag)
 			}
 		}
+		if spec.Model.ID == "wan2.7-r2v" && file.ref.Field == "image_with_roles" {
+			wanImages[file.input.Role] = value.(map[string]string)
+		}
+		if file.ref.Field == "mid_frame_images" {
+			if time, ok := frameTimes[file.input.Role]; ok {
+				value.(map[string]any)["time_stamp"] = time
+			}
+		}
 		if file.ref.Field == "video_list" && originalSound != nil {
 			value.(map[string]string)["keep_original_sound"] = originalSound.(string)
 			delete(body, "keep_original_sound")
@@ -158,6 +177,9 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 				body[file.ref.Field] = value
 			}
 		}
+	}
+	for role, address := range boundVoices {
+		wanImages[role]["reference_voice"] = address
 	}
 	if actorVoice != "" {
 		images := grouped["ref_images"]
@@ -185,7 +207,11 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	if err != nil {
 		return empty, err
 	}
-	reply, err := p.request(ctx, http.MethodPost, spec.Endpoint, key, "application/json", payload)
+	var responseVersion string
+	if spec.Upstream == "grok-imagine-image-2.0" {
+		responseVersion = "2026-07-27"
+	}
+	reply, err := p.request(ctx, http.MethodPost, spec.Endpoint, key, "application/json", payload, responseVersion)
 	if err != nil {
 		return empty, err
 	}
@@ -294,8 +320,20 @@ func taskMetadata(spec modelSpec, path string, tasks []string, uploads *uploadSu
 func submission(reply []byte) ([]string, error) {
 	var response envelope
 	var tasks []remoteTask
-	if json.Unmarshal(reply, &response) != nil || response.Code != 200 ||
-		json.Unmarshal(response.Data, &tasks) != nil || len(tasks) == 0 || len(tasks) > 16 {
+	if json.Unmarshal(reply, &response) != nil {
+		return nil, errors.New("APIMart returned an invalid submission response")
+	}
+	if response.Code == 202 {
+		var task struct {
+			ID     string `json:"id"`
+			Object string `json:"object"`
+		}
+		if json.Unmarshal(response.Data, &task) != nil || task.Object != "generation.task" || !taskIDPattern.MatchString(task.ID) {
+			return nil, errors.New("APIMart returned an invalid versioned submission receipt")
+		}
+		return []string{task.ID}, nil
+	}
+	if response.Code != 200 || json.Unmarshal(response.Data, &tasks) != nil || len(tasks) == 0 || len(tasks) > 16 {
 		return nil, errors.New("APIMart returned no valid submission receipt")
 	}
 	ids := make([]string, 0, len(tasks))

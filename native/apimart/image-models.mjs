@@ -30,20 +30,25 @@ const nanoLabels = {
   'gemini-3-pro-image-preview-official': 'Nano banana Pro · 官方版',
   'gemini-3.1-flash-image-preview': 'Nano banana 2 · Ext',
   'gemini-3.1-flash-image-preview-official': 'Nano banana 2 · 官方版',
-  'gemini-3.1-flash-lite-image': 'Nano banana 2 Lite · 官方版',
+  'gemini-3.1-flash-lite-image': 'Nano banana 2 Lite',
   'gemini-3.1-flash-lite-image-ext': 'Nano banana 2 Lite · Ext',
 }
 for (const [id, name] of Object.entries(nanoLabels)) {
   const v31 = id.startsWith('gemini-3.1')
-  const lite = id.includes('lite')
-  const official = id.endsWith('official') || id === 'gemini-3.1-flash-lite-image'
+  if (id.includes('lite')) {
+    addImage(id,{size:ratio('auto '+ratios,'auto')},[ref('image_urls','image',14,{array:true,inline:true,maxBytes:10000000})],{
+      name,fixed:{n:1,resolution:'1K'},usage:'固定 1K，支持最多 14 张参考图。',
+    })
+    continue
+  }
+  const official = id.endsWith('official')
   addImage( id, {
     size: ratio('auto ' + (v31 ? wideRatios : ratios), 'auto'),
-    ...(v31 && !lite ? {resolution: res('0.5K 1K 2K 4K')} : id.startsWith('gemini-3-pro') ? {resolution: res()} : {}),
-    ...(!official && !lite ? {official_fallback:officialFallback} : {}),
-    ...(official && !lite ? {n: n(4)} : {}),
-    ...(v31 && !lite ? {google_search: flag(false), google_image_search: flag(false)} : {}),
-  }, images(id.startsWith('gemini-2.5') ? 3 : 14), {name, fixed: lite || !official ? {n: 1} : undefined})
+    ...(v31 ? {resolution: res('0.5K 1K 2K 4K')} : id.startsWith('gemini-3-pro') ? {resolution: res()} : {}),
+    ...(!official ? {official_fallback:officialFallback} : {}),
+    ...(official ? {n: n(4)} : {}),
+    ...(v31 ? {google_search: flag(false), google_image_search: flag(false)} : {}),
+  }, images(id.startsWith('gemini-2.5') ? 3 : 14), {name, fixed: !official ? {n: 1} : undefined})
 }
 
 const commonGPT = {
@@ -165,7 +170,13 @@ const officialGrok = {size:ratio(officialGrokRatios,'auto'),resolution:res('1k 2
 addImage('grok-imagine-image',officialGrok,images(5),{maxPrompt:8000})
 addImage('grok-imagine-image-quality',officialGrok,images(3),{maxPrompt:8000})
 addImage('grok-imagine-2.0-ext',{size:ratio('auto ' + wideRatios,'auto'),resolution:res('1k 2k','1k'),n:n(12)},images(5),{usage:'文生图最多 12 张；使用参考图时仅支持生成 1 张。'})
-addImage('grok-imagine-image-2.0',{aspect_ratio:ratio('auto ' + wideRatios,'auto'),resolution:res('1k 2k','1k'),quality:options('low medium','medium'),n:n(10)},images(3))
+const officialGrok2 = {aspect_ratio:ratio(officialGrokRatios,'auto'),resolution:res('1k 2k','1k'),n:n(10)}
+addImage('grok-imagine-image-2.0',{...officialGrok2,quality:options('low medium','medium')},[ref('image_urls','image',3,{array:true,maxBytes:10*1024*1024})],{
+  ...generationMode('text','文生图'),maxPrompt:8000,
+})
+addImage('grok-imagine-image-2.0-reference',officialGrok2,[ref('image_urls','image',3,{array:true,min:1,maxBytes:10*1024*1024})],{
+  upstream:'grok-imagine-image-2.0',name:'Grok Imagine Image 2.0 · 参考图编辑',...generationMode('reference','参考图编辑'),maxPrompt:8000,
+})
 const rectangle = object(Object.fromEntries(['x1','y1','x2','y2'].map(key => [key,number(0,undefined,undefined,{label:key,required:true})])),{label:'框选区域'})
 for (const id of ['wan2.7-image','wan2.7-image-pro']) {
   addImage(id,{

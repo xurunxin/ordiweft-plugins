@@ -49,7 +49,7 @@ const model = (kind, id, fields, references, settings) => {
       const key = r.role || (r.field.replaceAll('_', '-') + '-reference-' + (index + 1))
       r.roles ??= []
       r.roles[index] = key
-      return [key, {kind: r.kind, label: roleLabels[key] || (key.startsWith('mid_frame_') ? '中间帧 '+key.split('_').at(-1) : undefined) || `参考${{image: '图', video: '视频', audio: '音频'}[r.kind]} ${index + 1}`, order: r.order ?? group * 20 + index + 1, required: index < (r.min || 0), visibleWhen:r.visibleWhen}]
+      return [key, {kind: r.kind, label: r.label || roleLabels[key] || (key.startsWith('mid_frame_') ? '中间帧 '+key.split('_').at(-1) : undefined) || `参考${{image: '图', video: '视频', audio: '音频'}[r.kind]} ${index + 1}`, order: r.order ?? group * 20 + index + 1, required: index < (r.min || 0), visibleWhen:r.visibleWhen}]
     })
   )) : undefined
   if (moderationModels.has(upstream || id)) {

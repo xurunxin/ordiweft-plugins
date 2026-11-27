@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.4"
+	version  = "1.3.5"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -41,6 +41,7 @@ type reference struct {
 	Array    bool     `json:"array,omitempty"`
 	Inline   bool     `json:"inline,omitempty"`
 	ItemRole string   `json:"itemRole,omitempty"`
+	BindTo   string   `json:"bindTo,omitempty"`
 }
 
 type modelSpec struct {
@@ -118,6 +119,9 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 		return spec, nil, nil, err
 	}
 	spec = p.models[g.Model]
+	if g.Model == "grok-imagine-video-1.5-edit" {
+		return spec, nil, nil, errors.New("Grok Imagine Video 1.5 官方版不支持视频编辑，请选择 Grok Imagine Video 官方版")
+	}
 	body, err := aigc.NormalizeParameters(spec.Model, g.Parameters)
 	if err != nil {
 		return spec, nil, nil, err
@@ -151,6 +155,8 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			body["source_task_id"] = request.SourceTask.Ticket
 		case "seedance-2.5-final-1080p", "apimart-zoe-final":
 			body["draft_task_id"] = request.SourceTask.Ticket
+		case "veo3.1-fast-remix", "veo3.1-quality-remix":
+			spec.Endpoint = strings.Replace(spec.Endpoint, "{task_id}", request.SourceTask.Ticket, 1)
 		case "flux-3-video-final":
 			body["draft_from_task_id"] = request.SourceTask.Ticket
 		case "pixverse-v6-extend", "gemini-omni-1.1-flash-task-extend", "gemini-omni-1.2-flash-task-extend", "gemini-omni-1.2-flash-ext-task-extend", "gemini-omni-flash-preview-task-extend":
@@ -223,9 +229,6 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 	}
 	if spec.Model.ID == "kling-v4-reference" && len(files) > 15 {
 		return spec, nil, nil, errors.New("Kling V4 accepts at most 15 combined reference files")
-	}
-	if spec.Upstream == "wan2.7-r2v" && (len(files) == 0 || len(files) > 5) {
-		return spec, nil, nil, errors.New("Wan 2.7 reference mode needs one to five references in total")
 	}
 	if spec.Upstream == "gemini-omni-1.1-flash-ext" && counts[0] == 2 {
 		return spec, nil, nil, errors.New("Omni Flash Ext accepts one or three image references")

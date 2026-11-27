@@ -3,6 +3,7 @@ import { add, flag, frames, images, line, list, number, object, officialFallback
 
 const landscape = '16:9 9:16'
 const smallRatios = '16:9 9:16 1:1'
+const wanRatios = smallRatios+' 4:3 3:4'
 const res = (choices, value = '720p') => options(choices, value)
 const ratio = (choices = videoRatios, value = '16:9') => options(choices, value)
 const seconds = (min, max, value = 5) => number(min, max, value)
@@ -121,10 +122,23 @@ for (const id of ['veo3.1-fast','veo3.1-quality']) {
 add('video','veo3.1-lite',{...basic(undefined,res('720p 1080p'),ratio(landscape)),enable_gif:flag(undefined,{label:'GIF 动图',visibleWhen:{resolution:'720p'}})},[],{
   ...textVideo,fixed:{duration:8},usage:'仅支持文生视频。',
 })
-add('video','veo3.1-fast-official veo3.1-quality-official',{
+const veoOfficial = {
   ...basic(durationChoices([4,6,8],8),res('720p 1080p 4k'),ratio(landscape)),negative_prompt,seed,
-  generate_audio:flag(false),enhance_prompt:flag(true),resize_mode:options('pad crop','pad',{label:'素材适配'}),
-},frames())
+  generate_audio:flag(false),enhance_prompt:flag(true),resize_mode:options('pad crop',undefined,{label:'素材适配'}),
+  person_generation:options('allow_adult disallow','allow_adult',{label:'人物生成',optionLabels:{allow_adult:'允许成人',disallow:'禁用人物'}}),
+  sample_count:number(1,4,1,{label:'输出样本数量',control:'count'}),
+}
+for (const id of ['veo3.1-fast-official','veo3.1-quality-official']) {
+  const count = {outputCount:[{parameter:'sample_count',maximum:4}]}
+  add('video',id,{...veoOfficial,resize_mode:{...veoOfficial.resize_mode,deprecated:true}},frames(),{...textVideo,...count})
+  add('video',id+'-frames',veoOfficial,frames(),{...mention(id,id+' · 首尾帧',{}),...imageVideo({minInputs:1}),...count})
+}
+for (const id of ['veo3.1-fast','veo3.1-quality']) {
+  add('video',id+'-remix',{aspect_ratio:ratio(landscape,undefined),resolution:res('720p 1080p 4k'),raw:flag(undefined,{label:'直接使用提示词'})},[],{
+    ...mention(id,id+' · 续写至 15 秒',{}),...continueTask([id]),endpoint:'/v1/videos/{task_id}/remix',
+    taskContinuation:{sourceModels:[id],actionLabel:'续写至 15 秒'},usage:'沿用所选的 8 秒视频，填写续写内容。',
+  })
+}
 
 add('video','MiniMax-Hailuo-02',{duration:durationChoices([6,10],6),resolution:res('512p 768p 1080p','768p'),
   prompt_optimizer,fast_pretreatment:flag(false,{label:'快速预处理'}),watermark},frames(),textAndFrames())
@@ -168,7 +182,9 @@ const sky = {...basic(seconds(3,15),res('480p 720p 1080p','1080p')),prompt_optim
 for (const id of ['skyreels-v4-fast','skyreels-v4-std']) {
   const settings = (name, presentation, usage) => ({...mention(id,id+' · '+name,{},usage),...presentation,referenceSyntax:'en-at-numbered'})
   const midFrames = Array.from({length:6},(_,i)=>ref('mid_frame_images','image',1,{role:'mid_frame_'+(i+1),array:true,order:41+i}))
-  add('video',id,sky,[...frames(false,'end_frame_image'),...midFrames],settings('图生视频',textAndFrames(),'支持首帧、尾帧和最多 6 个中间帧。'))
+  const midFrameTimes = object(Object.fromEntries(midFrames.map((frame,i)=>[frame.role,number(1,14,undefined,{label:'中间帧 '+(i+1)+' 秒点'})])),
+    {label:'中间帧时间（秒）',description:'时间点须早于结束时间，留空由模型决定。'})
+  add('video',id,{...sky,mid_frame_times:midFrameTimes},[...frames(false,'end_frame_image'),...midFrames],settings('图生视频',textAndFrames(),'支持首帧、尾帧和最多 6 个中间帧。'))
   add('video',id+'-reference',sky,[
     ref('ref_images','image',3,{array:true,itemRole:'image'}),
     ref('ref_videos','video',1,{array:true,itemRole:'reference'}),
@@ -185,9 +201,13 @@ for (const id of ['skyreels-v4-fast','skyreels-v4-std']) {
 
 const horse = {duration:seconds(3,15),resolution:res('480P 720P 1080P','1080P'),size:ratio(),seed,watermark}
 for (const id of ['happyhorse-1.0','happyhorse-1.1']) {
-  add('video',id,horse,img(9,true),id==='happyhorse-1.0'?generationMode('reference','参考图生视频',{textLabel:'文生视频'}):{})
-  add('video',id+'-frames',horse,frames(true,''),{
-    ...mention(id,id+' · 首帧',{}),...(id==='happyhorse-1.0'?generationMode('first_frame','图生视频'):{}),
+  const fields = id==='happyhorse-1.1'?{...horse,resolution:res('720P 1080P','1080P'),size:ratio(wanRatios)}:horse
+  const refs = img(9,true).map(r=>({...r,maxBytes:id==='happyhorse-1.1'?10000000:undefined}))
+  add('video',id,fields,refs,{...textAndImageReference(),...(id==='happyhorse-1.1'?{maxPrompt:2500,optionalPrompt:true}:{})})
+  const frameFields = id==='happyhorse-1.1'?{...fields,size:{...fields.size,deprecated:true}}:fields
+  const firstFrame = frames(true,'').map(r=>({...r,maxBytes:id==='happyhorse-1.1'?10000000:undefined}))
+  add('video',id+'-frames',frameFields,firstFrame,{
+    ...mention(id,id+' · 首帧',{}),...generationMode('first_frame','图生视频'),...(id==='happyhorse-1.1'?{maxPrompt:2500,optionalPrompt:true}:{}),
   })
 }
 add('video','happyhorse-1.0-edit',{resolution:horse.resolution,audio_setting:options('auto keep mute','auto',{label:'音轨处理'})},[
@@ -211,12 +231,21 @@ const drivingAudio = ref('audio_url','audio',1)
 const wan27 = {...wan,resolution:res('720P 1080P','1080P')}
 add('video','wan2.7',wan27,[...img(2),drivingAudio],textAndFrames(true,{textAudioMax:1,mediaImagesMin:1}))
 add('video','wan2.7-extend',{...wan27,size:undefined},videoOnly('video_urls'),{...mention('wan2.7','Wan 2.7 · 视频续写',{}),...generationMode('extend','视频续写')})
-add('video','wan2.7-r2v',wan,[
-  ref('image_with_roles','image',5,{itemRole:'reference_image',array:true}),video(5),
-],{...generationMode('reference','参考生视频',{minInputs:1}),usage:'至少添加一份图片或视频参考，合计最多 5 份。'})
-add('video','wan2.7-videoedit',{...wan,duration:durationChoices([0,2,3,4,5,6,7,8,9,10],0),audio_setting:options('auto keep mute','auto',{label:'音轨处理'})},[
+const wan27Media = {...wan27,size:ratio(wanRatios)}
+const wan27Subjects = Array.from({length:5},(_,i)=>ref('image_with_roles','image',1,{
+  role:'reference_image_'+(i+1),order:i+1,label:'角色参考图 '+(i+1),itemRole:'reference_image',array:true,
+}))
+const wan27Voices = wan27Subjects.map((subject,i)=>ref('reference_voice','audio',1,{
+  role:'reference_voice_'+(i+1),order:41+i,label:'角色参考音色 '+(i+1),bindTo:subject.role,
+}))
+add('video','wan2.7-r2v',wan27Media,[
+  ...wan27Subjects,ref('image_with_roles','image',1,{role:'first_frame',order:11,itemRole:'first_frame',array:true}),video(5,{order:21}),...wan27Voices,
+],{...generationMode('reference','参考生视频',{minInputs:1}),maxPrompt:5000,referenceSyntax:'cn-short-numbered',
+  usage:'图像和视频合计最多 5 份。可指定首帧，并为各角色参考图连接对应音色。'})
+add('video','wan2.7-videoedit',{...wan27Media,size:options(wanRatios),duration:durationChoices([0,2,3,4,5,6,7,8,9,10],0),
+  audio_setting:options('auto origin keep mute','auto',{label:'音轨处理',optionLabels:{auto:'重新配声',origin:'保留原声',keep:'保留原声（旧值）',mute:'静音（旧值）'}})},[
   ...img(4),...videoOnly('video_urls'),
-],generationMode('edit','视频编辑'))
+],{...generationMode('edit','视频编辑'),optionalPrompt:true,maxPrompt:5000})
 const wan25 = {duration:durationChoices([5,10],5),resolution:res('480p 720p 1080p'),negative_prompt,prompt_extend:flag(true),seed,watermark,audio:flag(true)}
 const audioOrImage = textAndFrames(false,{textAudioMax:1,mediaImagesMin:1})
 add('video','wan2.5-preview',{...wan25,size:ratio()},[...img(1,true),drivingAudio],audioOrImage)
@@ -226,8 +255,10 @@ add('video','wan2.6',{...wan26,aspect_ratio:ratio()},[...img(1),drivingAudio],au
 add('video','wan2.6-template',{template:options('squish rotation poke inflate dissolve carousel singleheart flying rose hug frenchkiss coupleheart','squish',{label:'特效模板'}),resolution:wan26.resolution,duration:wan26.duration,watermark},img(1,false,1),{
   ...mention('wan2.6','Wan 2.6 · 图片特效',{}),...generationMode('first_frame','图片特效',{manualOnly:true}),promptKey:false,
 })
-add('video','wan2.6-i2v',wan26,[...img(1,false,1),drivingAudio],generationMode('first_frame','图生视频'))
-add('video','wan2.6-i2v-flash',{...wan26,duration:seconds(2,15),resolution:res('480p 720p 1080p','1080p')},[...img(1,true,1),drivingAudio],generationMode('first_frame','图生视频'))
+const wan26Frames = {...wan26,duration:seconds(2,15),resolution:res('720p 1080p','1080p')}
+const wan26FrameMode = {...generationMode('first_frame','图生视频'),optionalPrompt:true}
+add('video','wan2.6-i2v',{...wan26Frames,audio:{...wan26Frames.audio,deprecated:true}},[...img(1,false,1),drivingAudio],wan26FrameMode)
+add('video','wan2.6-i2v-flash',wan26Frames,[...img(1,true,1),drivingAudio],wan26FrameMode)
 
 const kling = {...basic(seconds(3,15),undefined,ratio(smallRatios)),mode:options('std pro 4k','std'),negative_prompt,audio:flag(false),watermark}
 const shots = {
@@ -255,7 +286,8 @@ for (const id of ['kling-v3-omni','kling-video-o1']) {
 }
 add('video','kling-3.0-turbo',{...basic(seconds(3,15),res('720p 1080p'),ratio(smallRatios)),watermark},frames(false,''),textAndFrames(false))
 add('video','kling-v2-6-motion-control kling-v3-motion-control',{
-  mode:options('std pro','std'),character_orientation:options('image video','image',{label:'人物朝向'}),
+  mode:options('std pro','std'),character_orientation:options('image video','image',{label:'人物朝向',description:'按参考图朝向时源视频 3–10 秒，按参考视频朝向时 3–30 秒。'}),
+  watermark_info:object({enabled:flag(false,{label:'添加水印'})},{label:'水印'}),
   keep_original_sound:options('yes no','yes',{label:'保留原声'}),
 },[ref('image_url','image',1,{min:1,role:'first_frame'}),...videoOnly('video_url')],{optionalPrompt:true})
 for (const id of ['kling-v4','kling-v4-flash']) {
@@ -310,9 +342,12 @@ for (const id of ['grok-imagine-1.0-video-apimart','grok-imagine-1.5-video-apima
   }
 }
 for (const id of ['grok-imagine-video','grok-imagine-video-1.5']) {
-  const fields = basic(seconds(1,15,8),res(id.endsWith('1.5')?'480p 720p 1080p':'480p 720p','480p'),ratio(videoRatios+' 2:3 3:2'))
-  add('video',id,fields,img(id.endsWith('1.5')?7:1))
-  add('video',id+'-edit',{resolution:fields.resolution},videoOnly('video.url'),mention(id,id+' · 视频编辑',{}))
+  const is15 = id.endsWith('1.5')
+  const fields = basic(seconds(1,15,8),res(is15?'480p 720p 1080p':'480p 720p','480p'),ratio(wanRatios+' 2:3 3:2'))
+  add('video',id,fields,img(7),{...textAndImageReference(),maxPrompt:8000})
+  add('video',id+'-edit',{resolution:{...fields.resolution,deprecated:true}},videoOnly('video.url'),{
+    ...mention(id,id+' · 视频编辑',{}),...editVideo,maxPrompt:8000,hidden:is15,
+  })
 }
 
 const pix = {duration:seconds(1,15),resolution:res('360p 540p 720p 1080p','540p'),audio:flag(false),seed:number(0,4294967295)}
