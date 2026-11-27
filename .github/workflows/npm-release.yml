@@ -20,6 +20,7 @@ on:
           - ordiweft-migrations/tapnow-web
           - ordiweft-migrations/comfyui
           - ordiweft-migrations/higgsfield
+          - ordiweft-migrations/apimart
       version:
         description: Reviewed release version
         type: string
@@ -43,7 +44,7 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: xurunxin/Ordiweft
-          ref: 05c2a029fb34607ffaf5d2c6ab26026b149a68c3
+          ref: 24aa7558d77a5fba1ba009b2bdd045f13fee85e2
           path: host
           persist-credentials: false
       - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16

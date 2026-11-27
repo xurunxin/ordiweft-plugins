@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
+import { moderationModels } from './moderation-models.mjs'
+
 export const ratios = '1:1 2:3 3:2 3:4 4:3 4:5 5:4 9:16 16:9 21:9'
 export const wideRatios = ratios + ' 1:4 4:1 1:8 8:1'
 export const videoRatios = '16:9 9:16 1:1 4:3 3:4 21:9'
@@ -17,6 +19,7 @@ export const common = {
   audio_weight: '音频权重', instrumental: '纯音乐', audio_format: '音频格式', title: '曲名',
   custom: '生成方式', max_mode: 'Max 模式', custom_model_id: '自定义模型 ID',
   persona_id: 'Persona ID', negative_tags: '排除风格', auto_lyrics: '改写歌词', variety: '风格变化',
+  nsfw_check: '提交前内容审核', official_fallback: '官方渠道兜底', web_search: '联网搜索',
   speed: '速度', voice: '音色', response_format: '文件格式', language: '语言',
 }
 
@@ -35,20 +38,29 @@ export const frames = (required = false, end = 'last_frame_image', first = 'firs
   ...(end ? [ref(end, 'image', 1, {role: 'last_frame'})] : []),
 ]
 
+const hiddenModels = new Set([
+  'gpt-4o-mini-tts', 'gpt-audio-mini', 'dall-e-3', 'imagen-4.0-apimart',
+  'seedance-2.0-face', 'seedance-2.0-fast-face',
+  'grok-imagine-1.0-apimart', 'grok-imagine-1.0-edit-apimart', 'grok-imagine-1.0-video-apimart',
+])
+
 const model = (kind, id, fields, references, settings) => {
-  const {name, maxPrompt, optionalPrompt, usage, endpoint, upstream, fixed, musicTask, promptKey, hidden, transcription, action, ...rest} = settings
+  const {name, maxPrompt, optionalPrompt, presentation, referenceSyntax, usage, endpoint, upstream, fixed, musicTask, promptKey, hidden, transcription, action, ...rest} = settings
   const capabilities = {image: 'image.generate', video: 'video.generate', music: 'music.generate', speech: 'speech.generate', transcription: 'speech.transcribe'}
   const route = {image: '/v1/images/generations', video: '/v1/videos/generations', music: '/v1/music/generations', speech: '/v1/audio/speech', transcription: '/v1/audio/transcriptions'}
   const isNamed = references.some(r => r.role)
-  const roleLabels = {first_frame: '首帧', last_frame: '尾帧', mask: '重绘蒙版', source_video: '源视频', source_audio: '源音频', style_image: '风格图', subject_image: '主体图'}
+  const roleLabels = {first_frame: '首帧', last_frame: '尾帧', mask: '重绘蒙版', markup: '标注层', source_video: '源视频', source_audio: '源音频', style_image: '风格图', subject_image: '主体图'}
   const inputRoles = isNamed ? Object.fromEntries(references.flatMap((r, group) =>
     Array.from({length: r.max}, (_, index) => {
       const key = r.role || (r.field.replaceAll('_', '-') + '-reference-' + (index + 1))
       r.roles ??= []
       r.roles[index] = key
-      return [key, {kind: r.kind, label: roleLabels[key] || `参考${{image: '图', video: '视频', audio: '音频'}[r.kind]} ${index + 1}`, order: group * 20 + index + 1, required: index < (r.min || 0)}]
+      return [key, {kind: r.kind, label: r.label || roleLabels[key] || (key.startsWith('mid_frame_') ? '中间帧 '+key.split('_').at(-1) : undefined) || `参考${{image: '图', video: '视频', audio: '音频'}[r.kind]} ${index + 1}`, order: r.order ?? group * 20 + index + 1, required: index < (r.min || 0), visibleWhen:r.visibleWhen}]
     })
   )) : undefined
+  if (moderationModels.has(upstream || id)) {
+    fields = {nsfw_check: flag(undefined, {description:'开启后，APIMart 会在提交前审核提示词和输入图片。'}), ...fields}
+  }
   const display = Object.fromEntries(Object.entries(fields).filter(([, f]) => f).map(([key, f]) => {
     const choices = f.enum || []
     const control = ['aspect_ratio', 'size'].includes(key) && choices.some(v => typeof v === 'string' && v.includes(':')) ? 'ratio'
@@ -65,14 +77,20 @@ const model = (kind, id, fields, references, settings) => {
       id, label: name || id, capability: capabilities[kind], fields: display,
       inputKinds: [...new Set(references.map(r => r.kind))],
       maxInputs: references.reduce((sum, r) => sum + r.max, 0), inputRoles,
-      prompt: kind !== 'transcription' && promptKey !== false ? {required: !optionalPrompt, label: promptLabels[kind], maxLength: maxPrompt} : undefined,
-      usageNote: usage, hidden, transcription, ...rest,
+      prompt: kind !== 'transcription' && promptKey !== false ? {required: !optionalPrompt, label: promptLabels[kind], maxLength: maxPrompt, referenceSyntax} : undefined,
+      usageNote: usage, hidden: hidden || hiddenModels.has(upstream || id) || undefined, transcription, ...rest,
     },
-    upstream, references, endpoint: endpoint || route[kind], fixed,
+    upstream, references, presentation, endpoint: endpoint || route[kind], fixed,
     promptKey: promptKey === false ? undefined : (promptKey || (kind !== 'transcription' ? (kind === 'speech' ? 'input' : 'prompt') : undefined)),
     musicTask: musicTask ?? (kind === 'music'), action,
   }
 }
+
+export function generationMode(intent, label, options = {}) {
+  return {presentation: {intent, label, ...options}}
+}
+export const textAndReference = () => generationMode('reference', '多模态参考生视频', {textLabel: '文生视频'})
+export const imageAndText = (label = '图生图') => generationMode('reference', label, {textLabel:'文生图'})
 
 export const entries = []
 export const add = (kind, ids, fields = {}, refs = [], settings = {}) => {
@@ -81,45 +99,49 @@ export const add = (kind, ids, fields = {}, refs = [], settings = {}) => {
 
 export const object = (properties, extra = {}) => ({type: 'object', properties, ...extra})
 export const list = (items, extra = {}) => ({type: 'array', items, ...extra})
+export const officialFallback = flag(false, {description:'Ext 渠道失败时可改用官方渠道，实际使用官方渠道时按官方价格结算。'})
+export const publicURL = (label, required) => line(2048, {label, required, description:'使用无需登录的公网 HTTP 或 HTTPS 地址。'})
 
 const nano21 = {
   size: options('auto ' + wideRatios, 'auto'), resolution: options('1K 2K 4K', '1K'),
 }
 add('image', 'gemini-nano-banana-2.1', {...nano21, n: number(1, 4, 1)}, [ref('image_urls','image',14,{inline:true,maxBytes:20000000})], {
-  name: 'Nano banana 2.1 · 官方版', usage: '接受参考图做编辑。官方版按实际 Token 结算。可一次生成 1–4 张。',
+  ...imageAndText('参考图编辑'), name: 'Nano banana 2.1 · 官方版', usage: '接受参考图做编辑。官方版按实际 Token 结算。可一次生成 1–4 张。',
 })
-add('image', 'gemini-nano-banana-2.1-ext', nano21, [ref('image_urls','image',14,{inline:true,maxBytes:40000000})], {
-  name: 'Nano banana 2.1 · Ext', usage: '接受参考图做编辑。每次生成 1 张，按分辨率计价。', fixed: {n: 1},
+add('image', 'gemini-nano-banana-2.1-ext', {...nano21, official_fallback:officialFallback}, [ref('image_urls','image',14,{inline:true,maxBytes:40000000})], {
+  ...imageAndText('参考图编辑'), name: 'Nano banana 2.1 · Ext', usage: '接受参考图做编辑。每次生成 1 张，按分辨率计价。', fixed: {n: 1},
 })
 
 const magi = {
   duration: number(4, 30, 5), aspect_ratio: options(videoRatios, '16:9'),
   generate_audio: flag(true), seed: number(-1, 2147483647, -1),
 }
-const magiSettings = {upstream: 'magi-2', maxPrompt: 15000, fixed: {resolution: '1080p'}}
-add('video', 'magi-2', magi, [], {...magiSettings, name: 'MAGI-2 · 文生视频', usage: '固定 1080p。描述镜头、动作与声音。'})
+const magiSettings = {upstream: 'magi-2', maxPrompt: 15000, referenceSyntax: 'cn-numbered', fixed: {resolution: '1080p'}}
+add('video', 'magi-2', magi, [], {...magiSettings, ...generationMode('text', '文生视频'), name: 'MAGI-2 · 文生视频', usage: '固定 1080p。描述镜头、动作与声音。'})
 add('video', 'magi-2-frames', {...magi, aspect_ratio: options('auto 16:9 9:16 1:1 4:3 3:4','auto')}, frames(true), {
-  ...magiSettings, name: 'MAGI-2 · 首尾帧', usage: '首帧必填，尾帧可选。自动比例跟随首帧。固定 1080p。',
+  ...magiSettings, ...generationMode('first_last_frame', '图生视频'), name: 'MAGI-2 · 首尾帧', usage: '首帧必填，尾帧可选。自动比例跟随首帧。固定 1080p。',
 })
 add('video', 'magi-2-reference', magi, [...images(10, false), ref('video_urls', 'video', 5), ref('audio_urls', 'audio', 5)], {
-  ...magiSettings, name: 'MAGI-2 · 多模态参考', usage: '至少添加一项参考。参考视频和音频各最多五段，每类总时长建议不超过 30 秒。',
+  ...magiSettings, ...generationMode('reference', '多模态参考生视频', {minInputs: 1}), name: 'MAGI-2 · 多模态参考', usage: '可单独或混合使用图片、视频和音频，至少接入一项。参考图最多 10 张，参考视频和音频各最多 5 段，每类总时长建议不超过 30 秒。',
   fixed: {...magiSettings.fixed, omni_reference_task_type: 'reference'},
 })
 
 export const sunoVersions = options('v6 v6-wild v6-mini', 'v6', {
   optionLabels: {'v6': 'V6', 'v6-wild': 'V6 Wild', 'v6-mini': 'V6 Mini'},
 })
+export const sunoModelVersions = options('v6 v6-wild v6-mini custom', 'v6', {
+  optionLabels: {...sunoVersions.optionLabels,custom:'自定义模型'},
+})
+export const sunoCustomModelID = line(36,{required:true,visibleWhen:{version:'custom'}})
 const customOnly = {visibleWhen: {custom: 'custom'}}
 add('music', 'suno', {
   custom: options('inspiration custom', 'inspiration', {
     optionLabels: {inspiration: '灵感', custom: '自定义'},
-  }), version: options('v6 v6-wild v6-mini custom', 'v6', {
-    optionLabels: {...sunoVersions.optionLabels,custom:'自定义模型'},
-  }), instrumental: flag(false),
+  }), version: sunoModelVersions, instrumental: flag(false),
   title: line(80, {visibleWhen: {custom: 'custom'}}), style: line(1000, {visibleWhen: {custom: 'custom'}, control: 'textarea'}),
   negative_tags: line(1000, customOnly), auto_lyrics: flag(undefined, customOnly),
   persona_id: line(128,{visibleWhen:{custom:'custom'},visibleWhenAny:[{version:'v6'},{version:'v6-wild'},{version:'v6-mini'}]}),
-  custom_model_id: line(36,{required:true,visibleWhen:{version:'custom'}}),
+  custom_model_id: sunoCustomModelID,
   vocal_gender: options('Male Female', undefined, {optionLabels: {Male: '男声', Female: '女声'}}),
   style_weight: decimal(0, 1, undefined, {step: 0.01, control: 'slider'}),
   weirdness_constraint: decimal(0, 1, undefined, {step: 0.01, control: 'slider'}),
@@ -127,7 +149,7 @@ add('music', 'suno', {
   variety: options('off normal high extra max'), max_mode: flag(false, customOnly),
   audio_format: options('mp3 m4a wav', 'mp3'), duration: number(10, 360, undefined, customOnly),
 }, [], {
-  name: 'Suno V6 · 生成音乐', optionalPrompt: true, maxPrompt: 5000, action: 'music',
+  ...generationMode('text','生成音乐'), name: 'Suno V6 · 生成音乐', optionalPrompt: true, maxPrompt: 5000, action: 'music',
   usage: '灵感模式输入歌曲设想。自定义模式输入歌词、风格和曲名，纯音乐可省略歌词。默认返回 MP3。',
 })
 
@@ -137,6 +159,6 @@ add('speech', 'gpt-4o-mini-tts', {
   speed: decimal(0.25, 4, 1, {step: 0.05}),
 }, [], {name: 'GPT-4o Mini TTS', maxPrompt: 4096})
 
-add('transcription', 'whisper-1', {language: line(35)}, [ref('file', 'audio', 1, {min: 1})], {
+add('transcription', 'whisper-1', {language:line(2), prompt:line(4000,{label:'转录提示词',control:'textarea'}), temperature:decimal(0,1,0,{label:'采样温度',step:0.05})}, [ref('file', 'audio', 1, {min: 1})], {
   name: 'Whisper-1', hidden: true, transcription: {maxBytes: 25000000, maxDurationMs: 10800000, languages: [], wordTimestamps: false, speakerDiarization: false},
 })

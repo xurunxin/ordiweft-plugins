@@ -29,21 +29,25 @@ type envelope struct {
 }
 
 type remoteTask struct {
-	ID          string       `json:"id"`
-	TaskID      string       `json:"task_id"`
-	Status      string       `json:"status"`
-	Progress    float64      `json:"progress"`
-	Created     int64        `json:"created"`
-	Cost        *json.Number `json:"cost"`
-	CreditsCost *json.Number `json:"credits_cost"`
+	Buttons     []midjourneyButton `json:"buttons,omitempty"`
+	ID          string             `json:"id"`
+	TaskID      string             `json:"task_id"`
+	Status      string             `json:"status"`
+	Progress    float64            `json:"progress"`
+	Created     int64              `json:"created"`
+	Cost        *json.Number       `json:"cost"`
+	CreditsCost *json.Number       `json:"credits_cost"`
 	Usage       struct {
 		CompletionTokens *int64 `json:"completion_tokens"`
+		PromptTokens     *int64 `json:"prompt_tokens"`
+		InputTokens      *int64 `json:"input_tokens"`
+		OutputTokens     *int64 `json:"output_tokens"`
 	} `json:"usage"`
 	Result json.RawMessage `json:"result"`
 }
 
-func (p *plugin) request(ctx context.Context, method, path, key, contentType string, body []byte) ([]byte, error) {
-	resp, err := p.doRequest(ctx, method, path, key, contentType, body)
+func (p *plugin) request(ctx context.Context, method, path, key, contentType string, body []byte, responseVersion ...string) ([]byte, error) {
+	resp, err := p.doRequest(ctx, method, path, key, contentType, body, responseVersion...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +62,7 @@ func (p *plugin) request(ctx context.Context, method, path, key, contentType str
 	return reply, nil
 }
 
-func (p *plugin) doRequest(ctx context.Context, method, path, key, contentType string, body []byte) (*http.Response, error) {
+func (p *plugin) doRequest(ctx context.Context, method, path, key, contentType string, body []byte, responseVersion ...string) (*http.Response, error) {
 	var source io.Reader
 	if body != nil {
 		source = bytes.NewReader(body)
@@ -73,11 +77,34 @@ func (p *plugin) doRequest(ctx context.Context, method, path, key, contentType s
 	if contentType != "" {
 		req.Header.Set("Content-Type", contentType)
 	}
+	if len(responseVersion) != 0 && responseVersion[0] != "" {
+		req.Header.Set("X-APIMart-Response-Version", responseVersion[0])
+	}
 	resp, err := p.client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("APIMart %s request failed: %w", method, err)
 	}
 	return resp, nil
+}
+
+func referenceValue(ref reference, url string, ordinal int) (any, string) {
+	switch ref.Field {
+	case "ref_images":
+		tag := fmt.Sprintf("@Image%d", ordinal)
+		return map[string]any{"tag": tag, "type": ref.ItemRole, "image_urls": []string{url}}, tag
+	case "ref_videos":
+		tag := fmt.Sprintf("@Video%d", ordinal)
+		return map[string]string{"tag": tag, "type": ref.ItemRole, "video_url": url}, tag
+	case "mid_frame_images":
+		tag := fmt.Sprintf("@Image%d", ordinal)
+		return map[string]any{"tag": tag, "image_url": url, "time_stamp": -1}, tag
+	case "video_list":
+		return map[string]string{"video_url": url, "refer_type": ref.ItemRole, "keep_original_sound": "no"}, ""
+	}
+	if ref.ItemRole != "" {
+		return map[string]string{"url": url, "role": ref.ItemRole}, ""
+	}
+	return url, ""
 }
 
 func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint func(aigc.Result)) (aigc.Result, error) {
@@ -90,8 +117,13 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	if err != nil {
 		return empty, err
 	}
-	if spec.Model.TaskContinuation != nil && (request.SourceTask == nil || len(files) > 0) {
-		return empty, errors.New("APIMart continuation requires the bound original task")
+	if spec.Model.TaskContinuation != nil && request.SourceTask == nil {
+		return empty, errors.New("APIMart continuation requires an owned source task")
+	}
+	if spec.Model.ID == "midjourney-inpaint" {
+		if err := validateMidjourneyMask(files); err != nil {
+			return empty, err
+		}
 	}
 	if spec.Model.Capability == "speech.transcribe" {
 		return p.transcribe(ctx, spec, key, body, files[0].input)
@@ -105,11 +137,45 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 		return empty, err
 	}
 	grouped := map[string][]any{}
+	ordinals := map[string]int{}
+	originalSound := body["keep_original_sound"]
+	var actorVoice string
+	boundVoices := map[string]string{}
+	wanImages := map[string]map[string]string{}
+	frameTimes, _ := body["mid_frame_times"].(map[string]any)
+	delete(body, "mid_frame_times")
 	for i, file := range files {
-		mediaURL := urls[i]
-		var value any = mediaURL
-		if file.ref.ItemRole != "" {
-			value = map[string]string{"url": mediaURL, "role": file.ref.ItemRole}
+		if file.ref.BindTo != "" {
+			boundVoices[file.ref.BindTo] = urls[i]
+			continue
+		}
+		if file.ref.Field == "ref_images.audio_url" {
+			actorVoice = urls[i]
+			continue
+		}
+		ordinals[file.ref.Kind]++
+		value, tag := referenceValue(file.ref, urls[i], ordinals[file.ref.Kind])
+		if tag != "" {
+			prompt, _ := body["prompt"].(string)
+			if file.ref.Field == "ref_images" && file.ref.Role == "subject_image" {
+				prompt = strings.ReplaceAll(prompt, "@Audio1", tag)
+				body["prompt"] = prompt
+			}
+			if !strings.Contains(prompt, tag) {
+				body["prompt"] = strings.TrimSpace(prompt + " " + tag)
+			}
+		}
+		if spec.Model.ID == "wan2.7-r2v" && file.ref.Field == "image_with_roles" {
+			wanImages[file.input.Role] = value.(map[string]string)
+		}
+		if file.ref.Field == "mid_frame_images" {
+			if time, ok := frameTimes[file.input.Role]; ok {
+				value.(map[string]any)["time_stamp"] = time
+			}
+		}
+		if file.ref.Field == "video_list" && originalSound != nil {
+			value.(map[string]string)["keep_original_sound"] = originalSound.(string)
+			delete(body, "keep_original_sound")
 		}
 		if file.ref.Array {
 			grouped[file.ref.Field] = append(grouped[file.ref.Field], value)
@@ -121,14 +187,64 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 			}
 		}
 	}
+	for role, address := range boundVoices {
+		wanImages[role]["reference_voice"] = address
+	}
+	if actorVoice != "" {
+		images := grouped["ref_images"]
+		if len(images) != 1 {
+			return empty, errors.New("a SkyReels voice requires one reference subject")
+		}
+		images[0].(map[string]any)["audio_url"] = actorVoice
+	}
 	for field, values := range grouped {
 		body[field] = values
+	}
+	limit := 16
+	if len(spec.Model.OutputCount) > 0 {
+		var g aigc.Generation
+		if err := json.Unmarshal(request.Payload, &g); err != nil {
+			return empty, err
+		}
+		limit, err = aigc.GenerationOutputLimit(spec.Model, g.Parameters, 1)
+		if err != nil {
+			return empty, err
+		}
+	}
+	var origins []aigc.TaskOrigin
+	if spec.Model.ID == "midjourney-follow-up" {
+		if err := p.resolveMidjourneyUpscale(ctx, key, body); err != nil {
+			return empty, err
+		}
+	}
+	var modalID string
+	if spec.Model.ID == "midjourney-inpaint" {
+		modalID, err = p.openMidjourneyModal(ctx, key, request.SourceTask.Ticket, body["speed"], func(id string) {
+			if checkpoint != nil {
+				checkpoint(aigc.Result{Metadata: taskMetadata(spec, "/v1/tasks/", []string{id}, uploads)})
+			}
+		})
+		if err != nil {
+			return empty, err
+		}
+		body["task_id"] = modalID
+	}
+	var segmentTaskID string
+	if spec.Model.ID == "grok-imagine-2.0-ext-region-edit" {
+		segmentTaskID, err = p.prepareGrokRegionEdit(ctx, key, spec, body, request.SourceTask.Ticket)
+		if err != nil {
+			return empty, err
+		}
 	}
 	payload, err := json.Marshal(body)
 	if err != nil {
 		return empty, err
 	}
-	reply, err := p.request(ctx, http.MethodPost, spec.Endpoint, key, "application/json", payload)
+	var responseVersion string
+	if spec.Upstream == "grok-imagine-image-2.0" {
+		responseVersion = "2026-07-27"
+	}
+	reply, err := p.request(ctx, http.MethodPost, spec.Endpoint, key, "application/json", payload, responseVersion)
 	if err != nil {
 		return empty, err
 	}
@@ -145,6 +261,9 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	if err != nil {
 		return empty, err
 	}
+	if modalID != "" && (len(tasks) != 1 || tasks[0] != modalID) {
+		return empty, errors.New("APIMart modal changed its original task ID")
+	}
 	path := "/v1/tasks/"
 	if spec.MusicTask {
 		path = "/v1/music/tasks/"
@@ -154,29 +273,23 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	}
 	taskList := make([]remoteTask, 0, len(tasks))
 	var all []aigc.Media
-	var origins []aigc.TaskOrigin
-	sourceEligible := p.manifest.CanProduceTaskSource(spec.Model.ID, body)
+	sourceEligible := p.canProduceTaskSource(spec, request)
 	for _, id := range tasks {
 		task, err := p.wait(ctx, key, path, id)
 		if err != nil {
 			return empty, err
 		}
-		media, err := decodeMedia(spec.Model.Capability, task.Result)
+		media, err := decodeTaskMedia(spec, body, task.Result)
 		if err != nil {
 			return empty, err
 		}
 		taskList = append(taskList, task)
-		// APIMart's follow-up endpoints select a task, with no field for
-		// choosing between several outputs belonging to the same task.
-		if sourceEligible && len(media) == 1 && media[0].Kind == "video" && len(all) < 16 &&
-			task.Created > 0 && task.Created <= time.Now().Add(5*time.Minute).Unix() {
-			origins = append(origins, aigc.TaskOrigin{
-				SourceTask: aigc.SourceTask{Ticket: task.ID, OutputIndex: len(all)}, CreatedAt: task.Created * 1000,
-			})
+		if sourceEligible && task.Created > 0 && task.Created <= time.Now().Add(5*time.Minute).Unix() {
+			origins = append(origins, taskOrigins(spec, task, media, len(all))...)
 		}
 		all = append(all, media...)
 	}
-	if len(all) == 0 || len(all) > 16 {
+	if len(all) == 0 || len(all) > limit {
 		return empty, errors.New("APIMart returned an unsupported number of outputs")
 	}
 	meta := map[string]any{
@@ -187,21 +300,44 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 		meta["referenceUploads"] = uploads
 	}
 	receipts := make([]map[string]any, 0, len(taskList))
-	var completionTokens int64
-	usageComplete := true
+	var completionTokens, inputTokens int64
+	usageComplete, inputComplete := true, true
 	for _, task := range taskList {
 		receipts = append(receipts, map[string]any{
 			"taskId": task.ID, "usd": task.Cost, "credits": task.CreditsCost,
 		})
-		if tokens := task.Usage.CompletionTokens; tokens != nil && *tokens >= 0 && *tokens <= 1e9 {
+		output := task.Usage.CompletionTokens
+		if output == nil {
+			output = task.Usage.OutputTokens
+		}
+		if tokens := output; tokens != nil && *tokens >= 0 && *tokens <= 1e9 {
 			completionTokens += *tokens
 		} else {
 			usageComplete = false
 		}
+		input := task.Usage.PromptTokens
+		if input == nil {
+			input = task.Usage.InputTokens
+		}
+		if input != nil && *input >= 0 && *input <= 1e9 {
+			inputTokens += *input
+		} else {
+			inputComplete = false
+		}
+	}
+	if segmentTaskID != "" {
+		meta["segmentTaskId"] = segmentTaskID
 	}
 	meta["receipts"] = receipts
+	usage := map[string]int64{}
 	if usageComplete {
-		meta["usage"] = map[string]int64{"completion_tokens": completionTokens}
+		usage["completion_tokens"] = completionTokens
+	}
+	if inputComplete {
+		usage["prompt_tokens"] = inputTokens
+	}
+	if len(usage) > 0 {
+		meta["usage"] = usage
 	}
 	resultMetadata, _ := json.Marshal(meta)
 	return aigc.Result{Media: all, Metadata: resultMetadata, TaskOrigins: origins}, nil
@@ -238,8 +374,20 @@ func taskMetadata(spec modelSpec, path string, tasks []string, uploads *uploadSu
 func submission(reply []byte) ([]string, error) {
 	var response envelope
 	var tasks []remoteTask
-	if json.Unmarshal(reply, &response) != nil || response.Code != 200 ||
-		json.Unmarshal(response.Data, &tasks) != nil || len(tasks) == 0 || len(tasks) > 16 {
+	if json.Unmarshal(reply, &response) != nil {
+		return nil, errors.New("APIMart returned an invalid submission response")
+	}
+	if response.Code == 202 {
+		var task struct {
+			ID     string `json:"id"`
+			Object string `json:"object"`
+		}
+		if json.Unmarshal(response.Data, &task) != nil || task.Object != "generation.task" || !taskIDPattern.MatchString(task.ID) {
+			return nil, errors.New("APIMart returned an invalid versioned submission receipt")
+		}
+		return []string{task.ID}, nil
+	}
+	if response.Code != 200 || json.Unmarshal(response.Data, &tasks) != nil || len(tasks) == 0 || len(tasks) > 16 {
 		return nil, errors.New("APIMart returned no valid submission receipt")
 	}
 	ids := make([]string, 0, len(tasks))
@@ -257,17 +405,28 @@ func submission(reply []byte) ([]string, error) {
 }
 
 func (p *plugin) wait(ctx context.Context, key, path, id string) (remoteTask, error) {
+	return p.waitForTask(ctx, key, path, id, false)
+}
+
+func (p *plugin) waitForTask(ctx context.Context, key, path, id string, modal bool) (remoteTask, error) {
 	var task remoteTask
 	for {
 		if err := p.query(ctx, key, path, id, &task); err != nil {
 			return task, err
 		}
-		switch task.Status {
-		case "completed":
+		switch strings.ToLower(task.Status) {
+		case "modal":
+			if modal {
+				return task, nil
+			}
+		case "completed", "success":
+			if modal {
+				return task, errors.New("Midjourney task completed before modal confirmation")
+			}
 			return task, nil
-		case "failed", "cancelled", "canceled":
+		case "failed", "failure", "cancelled", "canceled":
 			return task, fmt.Errorf("APIMart task %s ended with status %s", id, task.Status)
-		case "submitted", "queued", "pending", "processing", "running", "unknown", "in_progress":
+		case "submitted", "queued", "pending", "processing", "running", "unknown", "in_progress", "not_start":
 		default:
 			return task, errors.New("APIMart returned an unrecognized task status")
 		}
@@ -290,6 +449,9 @@ func (p *plugin) query(ctx context.Context, key, path, id string, task *remoteTa
 	if json.Unmarshal(reply, &response) != nil || response.Code != 200 ||
 		json.Unmarshal(response.Data, task) != nil || task.ID != id {
 		return errors.New("APIMart query did not return the original task")
+	}
+	if len(task.Result) == 0 || string(task.Result) == "null" {
+		task.Result = response.Data
 	}
 	return nil
 }
@@ -458,4 +620,13 @@ func multipartFile(data []byte, extension string, fields map[string]string) ([]b
 		err = writer.Close()
 	}
 	return body.Bytes(), writer.FormDataContentType(), err
+}
+
+func (p *plugin) canProduceTaskSource(spec modelSpec, request aigc.Request) bool {
+	var generation aigc.Generation
+	if json.Unmarshal(request.Payload, &generation) != nil {
+		return false
+	}
+	parameters, err := aigc.NormalizeParameters(spec.Model, generation.Parameters)
+	return err == nil && p.manifest.CanProduceTaskSource(spec.Model.ID, parameters)
 }

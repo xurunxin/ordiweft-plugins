@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.2.0"
+	version  = "1.3.8"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -41,16 +41,18 @@ type reference struct {
 	Array    bool     `json:"array,omitempty"`
 	Inline   bool     `json:"inline,omitempty"`
 	ItemRole string   `json:"itemRole,omitempty"`
+	BindTo   string   `json:"bindTo,omitempty"`
 }
 
 type modelSpec struct {
-	Model      aigc.Model     `json:"model"`
-	Upstream   string         `json:"upstream,omitempty"`
-	Endpoint   string         `json:"endpoint"`
-	PromptKey  string         `json:"promptKey,omitempty"`
-	Fixed      map[string]any `json:"fixed,omitempty"`
-	References []reference    `json:"references,omitempty"`
-	MusicTask  bool           `json:"musicTask,omitempty"`
+	Presentation *modePresentation `json:"presentation,omitempty"`
+	Model        aigc.Model        `json:"model"`
+	Upstream     string            `json:"upstream,omitempty"`
+	Endpoint     string            `json:"endpoint"`
+	PromptKey    string            `json:"promptKey,omitempty"`
+	Fixed        map[string]any    `json:"fixed,omitempty"`
+	References   []reference       `json:"references,omitempty"`
+	MusicTask    bool              `json:"musicTask,omitempty"`
 }
 
 type plugin struct {
@@ -80,14 +82,16 @@ func loadPlugin() (*plugin, error) {
 				{ID: "image", Label: "APIMart 图片", Capability: "image.generate", Model: "gemini-nano-banana-2.1"},
 				{ID: "video", Label: "APIMart 视频", Capability: "video.generate", Model: "magi-2"},
 				{ID: "music", Label: "APIMart 音乐", Capability: "music.generate", Model: "suno"},
-				{ID: "speech", Label: "APIMart 配音", Capability: "speech.generate", Model: "gpt-4o-mini-tts"},
 			},
 		},
 	}
-	for _, spec := range catalog {
-		if spec.Upstream == "" {
-			spec.Upstream = spec.Model.ID
+	for i := range catalog {
+		if catalog[i].Upstream == "" {
+			catalog[i].Upstream = catalog[i].Model.ID
 		}
+	}
+	applyGenerationModes(catalog)
+	for _, spec := range catalog {
 		p.manifest.Models = append(p.manifest.Models, spec.Model)
 		p.models[spec.Model.ID] = spec
 	}
@@ -114,35 +118,86 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 		return spec, nil, nil, err
 	}
 	spec = p.models[g.Model]
+	if g.Model == "grok-imagine-video-1.5-edit" {
+		return spec, nil, nil, errors.New("Grok Imagine Video 1.5 官方版不支持视频编辑，请选择 Grok Imagine Video 官方版")
+	}
 	body, err := aigc.NormalizeParameters(spec.Model, g.Parameters)
 	if err != nil {
 		return spec, nil, nil, err
 	}
+	if spec.Upstream == "seedream-5-5" && body["layer_decomposition"] == true {
+		// Translate the old draft value when the new nested field is unset.
+		legacy, _ := g.Parameters["text_recognition"].(bool)
+		if options, ok := body["layer_decomposition_options"].(map[string]any); ok && legacy {
+			original, _ := g.Parameters["layer_decomposition_options"].(map[string]any)
+			if _, explicit := original["text_recognition"]; !explicit {
+				options["text_recognition"] = true
+			}
+		}
+	}
 	for key, value := range spec.Fixed {
 		body[key] = value
 	}
-	body["model"] = spec.Upstream
-	if spec.Model.TaskContinuation != nil && strings.TrimSpace(g.Prompt) != "" {
+	if spec.Model.ID != "midjourney-follow-up" && spec.Model.ID != "midjourney-video" && spec.Model.ID != "midjourney-inpaint" {
+		body["model"] = spec.Upstream
+	}
+	if spec.Upstream == "veo3.1-fast" || spec.Upstream == "veo3.1-quality" {
+		switch body["generation_type"] {
+		case "text-to-video":
+			delete(body, "generation_type")
+		case "image-to-video":
+			body["generation_type"] = "frame"
+		case "reference-to-video":
+			body["generation_type"] = "reference"
+		}
+	}
+	if spec.Model.TaskContinuation != nil && !spec.Model.Prompt.Required && !spec.Model.TaskContinuation.AllowOptionalPrompt && strings.TrimSpace(g.Prompt) != "" {
 		return spec, nil, nil, errors.New("APIMart continuation uses the original prompt")
 	}
 	if request.SourceTask != nil {
 		if spec.Model.TaskContinuation == nil {
 			return spec, nil, nil, errors.New("APIMart model does not accept a source task")
 		}
-		if !request.SourceTask.Valid() || !taskIDPattern.MatchString(request.SourceTask.Ticket) {
+		if !request.SourceTask.Valid() {
+			return spec, nil, nil, errors.New("invalid APIMart source task")
+		}
+		pattern := taskIDPattern
+		if spec.Model.ID == "flowmusic-follow-up" {
+			pattern = uuidPattern
+		}
+		if !pattern.MatchString(request.SourceTask.Ticket) {
 			return spec, nil, nil, errors.New("invalid APIMart source task")
 		}
 		switch spec.Model.ID {
+		case "grok-imagine-2.0-ext-region-edit", "midjourney-inpaint":
+			// The source is resolved through the free segmentation stage at execution.
+		case "midjourney-follow-up":
+			if err := prepareMidjourneyFollowUp(&spec, body, *request.SourceTask); err != nil {
+				return spec, nil, nil, err
+			}
+		case "suno-follow-up", "flowmusic-follow-up":
+			// Music operation fields are normalized during both preflight and execution.
 		case "MiniMax-H3-Regeneration":
 			body["source_task_id"] = request.SourceTask.Ticket
-		case "seedance-2.5-final-1080p":
+		case "seedance-2.5-final-1080p", "apimart-zoe-final":
 			body["draft_task_id"] = request.SourceTask.Ticket
+		case "veo3.1-fast-remix", "veo3.1-quality-remix":
+			spec.Endpoint = strings.Replace(spec.Endpoint, "{task_id}", request.SourceTask.Ticket, 1)
+		case "flux-3-video-final":
+			body["draft_from_task_id"] = request.SourceTask.Ticket
+		case "pixverse-v6-extend", "gemini-omni-1.1-flash-task-extend", "gemini-omni-1.2-flash-task-extend", "gemini-omni-1.2-flash-ext-task-extend", "gemini-omni-flash-preview-task-extend":
+			body["extend_from_task_id"] = request.SourceTask.Ticket
 		default:
 			return spec, nil, nil, errors.New("unknown APIMart task continuation")
 		}
 	}
-	prompt := strings.TrimSpace(g.Prompt)
-	if spec.Upstream == "flowmusic" {
+	if spec.Model.ID == "suno-follow-up" || spec.Model.ID == "flowmusic-follow-up" {
+		if err := prepareMusicFollowUp(&spec, body, request.SourceTask); err != nil {
+			return spec, nil, nil, err
+		}
+	}
+	prompt := spec.Model.Prompt.ProjectReferences(strings.TrimSpace(g.Prompt))
+	if spec.Upstream == "flowmusic" && spec.Model.TaskContinuation == nil {
 		if lyrics, _ := body["lyrics"].(string); prompt == "" && strings.TrimSpace(lyrics) == "" {
 			return spec, nil, nil, errors.New("Flow Music requires a description or lyrics")
 		}
@@ -150,8 +205,9 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			body["bpm"] = fmt.Sprintf("%.0f", bpm)
 		}
 	}
-	if body["model"] == "suno" && spec.Endpoint == "/v1/music/generations" {
-		if err := prepareSuno(body, prompt); err != nil {
+	if spec.Upstream == "suno" {
+		prompt, err = prepareSuno(spec.Model.ID, body, prompt)
+		if err != nil {
 			return spec, nil, nil, err
 		}
 	}
@@ -194,16 +250,18 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			return spec, nil, nil, fmt.Errorf("reference required for %s", ref.Field)
 		}
 	}
-	if spec.Model.ID == "magi-2-reference" && len(files) == 0 {
-		return spec, nil, nil, errors.New("MAGI-2 reference mode needs at least one image, video or audio clip")
+	if len(files) > 0 {
+		switch spec.Model.ID {
+		case "seedance-2.5", "seedance-2-5-flash", "seedance-2.5-draft", "apimart-zoe", "apimart-zoe-draft":
+			body["omni_reference_task_type"] = "reference"
+		case "wan3.0-video", "wan3.0-video-prime", "Omni-Flash-Ext":
+			body["generation_type"] = "reference"
+		}
 	}
 	if spec.Model.ID == "kling-v4-reference" && len(files) > 15 {
 		return spec, nil, nil, errors.New("Kling V4 accepts at most 15 combined reference files")
 	}
-	if spec.Upstream == "wan2.7-r2v" && (len(files) == 0 || len(files) > 5) {
-		return spec, nil, nil, errors.New("Wan 2.7 reference mode needs one to five references in total")
-	}
-	if spec.Upstream == "Omni-Flash-Ext" && counts[0] == 2 {
+	if spec.Upstream == "gemini-omni-1.1-flash-ext" && counts[0] == 2 {
 		return spec, nil, nil, errors.New("Omni Flash Ext accepts one or three image references")
 	}
 	if spec.Upstream == "grok-imagine-2.0-ext" && len(files) > 0 {
@@ -211,36 +269,24 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			return spec, nil, nil, errors.New("Grok Imagine 2.0 Ext accepts one output when using references")
 		}
 	}
-	if body["output_format"] == "gif" {
-		for _, file := range files {
-			if file.ref.Role == "mask" {
-				return spec, nil, nil, errors.New("GIF output does not support a mask")
-			}
+	if spec.Model.ID == "grok-imagine-1.5-video-apimart-frames" && len(files) > 1 && body["resolution"] == "1080p" {
+		return spec, nil, nil, errors.New("Grok Imagine 1.5 APIMart first and last frames support 480p or 720p")
+	}
+	if spec.Model.ID == "pixverse-v6" && len(files) == 1 {
+		if files[0].ref.Role != "first_frame" {
+			return spec, nil, nil, errors.New("PixVerse V6 transition requires both first and last frames")
 		}
+		files[0].ref.Field, files[0].ref.Array = "image_urls", true
+	}
+	if spec.Model.ID == "grok-imagine-2.0-ext-region-edit" {
+		if err := normalizeGrokRegions(body); err != nil {
+			return spec, nil, nil, err
+		}
+	}
+	if err := normalizeModelOptions(spec, body, files); err != nil {
+		return spec, nil, nil, err
 	}
 	return spec, body, files, nil
-}
-
-func prepareSuno(body map[string]any, prompt string) error {
-	custom := body["custom"] == "custom"
-	body["custom"] = custom
-	instrumental, _ := body["instrumental"].(bool)
-	if !custom && (prompt == "" || len([]rune(prompt)) > 3000) || custom && !instrumental && prompt == "" {
-		return errors.New("Suno requires an inspiration prompt up to 3000 characters or lyrics in custom vocal mode")
-	}
-	if body["version"] == "custom" {
-		id, _ := body["custom_model_id"].(string)
-		if !uuidPattern.MatchString(id) {
-			return errors.New("Suno custom model requires its complete UUID")
-		}
-		if persona, _ := body["persona_id"].(string); persona != "" {
-			return errors.New("Suno custom model and persona are mutually exclusive")
-		}
-		delete(body, "version")
-	} else {
-		delete(body, "custom_model_id")
-	}
-	return nil
 }
 
 func matchesRole(ref reference, role string) bool {

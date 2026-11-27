@@ -29,7 +29,67 @@ export function modelPricing(entry, row, checkedAt) {
   const perInputImage = row.input_image_first_free === false
     ? component('input_image', row.input_image_paid_price, ['input_image_paid_price']) : undefined
   const imageCharges = part => perInputImage && entry.model.inputKinds.includes('image') ? [part, perInputImage] : [part]
-  if (entry.model.id === 'MiniMax-H3-Regeneration') {
+  if (entry.model.id === 'grok-imagine-2.0-ext-region-edit') return spec
+  if (entry.endpoint === '/v1/videos/{task_id}/remix' || entry.model.id === 'grok-imagine-video-1.5-edit') {
+    return spec
+  }
+  if (entry.model.id === 'suno-follow-up') {
+    for (const [operation, action] of [['extend','extend'],['cover','cover'],['replace','replace_section']]) {
+      for (const version of fields.version.enum) {
+        const key = 'suno@' + action + '-' + version
+        for (const max of [false,true]) add({operation,version,max_mode:String(max)},
+          component('job',row.action_paid_prices?.[key],['action_paid_prices',key],1,max?(row.max_mode_multiplier||2):1))
+      }
+    }
+    for (const [operation, action] of [['stem','stems'],['stems','stems_all']]) {
+      const key = 'suno@' + action
+      add({operation},component('job',row.action_paid_prices?.[key],['action_paid_prices',key]))
+    }
+  } else if (entry.model.id === 'flowmusic-follow-up') {
+    for (const operation of fields.operation.enum) {
+      const key = 'flowmusic@' + operation
+      add({operation},component('job',row.action_paid_prices?.[key],['action_paid_prices',key]))
+    }
+  } else if (entry.model.id === 'midjourney-follow-up') {
+    for (const operation of fields.operation.enum) for (const speed of fields.speed.enum) {
+      const rate = key => component('job',row.action_paid_prices?.[operation]?.[key],['action_paid_prices',operation,key])
+      if(operation!=='upscale') add({operation,speed},rate(speed))
+      else for(const upscale_style of fields.upscale_style.enum) {
+        add({operation,speed,upscale_style},rate(upscale_style==='normal'?speed:'hd-'+speed))
+      }
+    }
+  } else if (entry.model.id === 'midjourney-inpaint') {
+    for(const speed of fields.speed.enum) add({speed},
+      component('job',row.action_paid_prices?.modal?.[speed],['action_paid_prices','modal',speed]))
+  } else if (entry.model.id === 'midjourney-video') {
+    for (const video_type of fields.video_type.enum) for (const batch_size of fields.batch_size.enum) {
+      const tier = video_type.endsWith('_720') ? '720p' : 'default'
+      add({video_type,batch_size:String(batch_size)},component('job',row.action_paid_prices?.video?.[tier],['action_paid_prices','video',tier],1,batch_size))
+    }
+  } else if (id === 'grok-imagine-image-2.0') {
+    for (const resolution of fields.resolution.enum) {
+      const key = resolution.toUpperCase()
+      for (const quality of fields.quality?.enum ?? []) {
+        const rate = row.size_quality_paid_prices?.[key]?.[quality]
+        add({resolution,quality,reference_image_count:'0'}, use('size_quality_paid_prices',rate,key,quality))
+      }
+      for (let i = 1; i <= 3; i++) {
+        add({resolution,reference_image_count:String(i)}, ...imageCharges(use('resolution_paid_prices',row.resolution_paid_prices?.[key],key)))
+      }
+    }
+  } else if (entry.model.id === 'grok-imagine-video-edit') {
+    add({},use('resolution_paid_prices',row.resolution_paid_prices?.['720P'],'720P'),
+      component('input_video_second',row.input_video_paid_price,['input_video_paid_price']))
+  } else if (id === 'wan2.6-i2v-flash' || (id.startsWith('veo3.1-') && id.endsWith('-official'))) {
+    const audioKey = id.startsWith('veo') ? 'generate_audio' : 'audio'
+    for (const resolution of fields.resolution.enum) {
+      const key = resolution.toUpperCase()
+      const audio = key+'-audio'
+      const audioPath = row.billing_tier_paid_prices?.[audio] != null ? audio : key==='4K' ? audio : 'audio'
+      add({resolution,[audioKey]:'false'},use('resolution_paid_prices',row.resolution_paid_prices?.[key],key))
+      add({resolution,[audioKey]:'true'},use('billing_tier_paid_prices',row.billing_tier_paid_prices?.[audioPath],audioPath))
+    }
+  } else if (entry.model.id === 'MiniMax-H3-Regeneration') {
     const rate = row.resolution_paid_prices?.['2K']
     const output = component('video_second', rate, ['resolution_paid_prices', '2K'])
     const input = component('input_video_second', rate, ['resolution_paid_prices', '2K'])
@@ -42,10 +102,40 @@ export function modelPricing(entry, row, checkedAt) {
       }
     }
   } else if (entry.model.id === 'seedance-2.5-final-1080p') {
-    for (let videos = 0; videos <= 10; videos++) {
-      const key = videos === 0 ? 'token-1080P' : 'token-1080P-input'
-      add({reference_video_count: String(videos)},
-        component('output_token', row.billing_tier_paid_prices?.[key], ['billing_tier_paid_prices', key], 1000000))
+    for (const resolution of fields.resolution.enum) {
+      for (let videos = 0; videos <= 10; videos++) {
+        const key = 'token-' + resolution.toUpperCase() + (videos === 0 ? '' : '-input')
+        add({resolution, reference_video_count: String(videos)},
+          component('output_token', row.billing_tier_paid_prices?.[key], ['billing_tier_paid_prices', key], 1000000))
+      }
+    }
+  } else if (id === 'flux-3-video') {
+    const draft = entry.fixed?.draft === true
+    const continuation = Boolean(entry.model.taskContinuation)
+    const videoInput = entry.references.some(r => r.kind === 'video')
+    const resolutions = draft ? ['hd'] : fields.resolution.enum
+    for (const resolution of resolutions) {
+      for (const videos of continuation ? [0,1] : [Number(videoInput)]) {
+        const key = (videos ? 'V2V-' : '') + (draft ? 'DRAFT' : resolution.toUpperCase())
+        const when = draft ? {} : {resolution}
+        if (continuation) when.reference_video_count = String(videos)
+        add(when, use('resolution_paid_prices', row.resolution_paid_prices?.[key], key))
+      }
+    }
+  } else if (id === 'apimart-zoe') {
+    const draft = entry.fixed?.draft === true
+    const final = Boolean(entry.model.taskContinuation)
+    const maxVideos = final ? 10 : entry.references.find(r => r.kind === 'video')?.max ?? 0
+    const resolutions = draft || final ? [entry.fixed.resolution] : fields.resolution.enum
+    for (const resolution of resolutions) {
+      for (let videos = 0; videos <= maxVideos; videos++) {
+        const key = resolution.toUpperCase() + (videos ? '-input' : '')
+        const rate = row.resolution_paid_prices?.[key]
+        const path = ['resolution_paid_prices', key]
+        const when = (draft || final) ? {} : {resolution}
+        when.reference_video_count = String(videos)
+        add(when, component('video_second', rate, path), ...(videos ? [component('input_video_second', rate, path)] : []))
+      }
     }
   } else if (entry.fixed?.draft === true) {
     const maxVideos = entry.references.find(r => r.kind === 'video')?.max ?? 0
@@ -81,7 +171,7 @@ export function modelPricing(entry, row, checkedAt) {
   } else if (row.billing_type === 'mj_action') {
     const operation = entry.action || 'imagine'
     for (const speed of fields.speed?.enum ?? []) {
-      add({speed}, component('job', row.action_paid_prices?.[operation]?.[speed], ['action_paid_prices', operation, speed]))
+      add({speed,...(fields.repeat ? {repeat:'1'} : {})}, component('job', row.action_paid_prices?.[operation]?.[speed], ['action_paid_prices', operation, speed]))
     }
     if (!fields.speed) add({}, component('job', row.action_paid_prices?.[operation]?.default, ['action_paid_prices', operation, 'default']))
   } else if (row.billing_type === 'version_resolution') {
@@ -169,5 +259,9 @@ export function modelPricing(entry, row, checkedAt) {
       }
     }
   }
-  return {...spec, rules: [...rules.values()]}
+  const pricingConditions = {
+    ...(fields.official_fallback ? {official_fallback:'false'} : {}),
+    ...(fields.sample_count ? {sample_count:'1'} : {}),
+  }
+  return {...spec, rules: [...rules.values()].map(rule => ({...rule,when:{...rule.when,...pricingConditions}}))}
 }

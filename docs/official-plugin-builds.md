@@ -64,6 +64,8 @@ Higgsfield 以 `@daoxialiuren/ordiweft-higgsfield` 分发 Linux amd64 和 Window
 
 APIMart 使用 `@daoxialiuren/ordiweft-apimart` 分发 Linux amd64 与 Windows amd64 适配器。其发行清单固定两个程序和完整模型声明。宿主把上传回执保存在独立于发行目录的渠道状态目录。
 
+1.3.0 的构建需使用包含 `aigc.ModelGenerationMode` 的 Go SDK 导出。宿主通过该声明合并模型菜单并判定自动模式，定价、提交与原任务恢复继续按具体模型 ID 处理。1.3.1 需使用含 `Model.AudioRequiresVisual` 与 `PromptSpec.ReferenceSyntax` 的宿主和 SDK，以便在画布与适配器执行相同的多模态约束。1.3.2 需要支持 `ModelGenerationMode.TextLabel` 的宿主和 Go SDK，才能用同一执行模型呈现文生和有素材的生成方式。1.3.3 使用支持背景音频模式、可省略的模式参数和可编辑续写提示词的宿主与 Go SDK。1.3.4 使用含 `Model.OutputCount` 的 SDK，支持按参数接收尾帧和 Seedream 图层。宿主同时处理 MOV 资产与 Seedance 4K、Zoe 样片续作估算。参数范围与公开文档缺口见 [APIMart 源码说明](../native/apimart/README.md#134-参数核对)。1.3.5 使用支持字段 `deprecated` 的宿主与 Go SDK，保持旧草稿可读并省略已退役的请求字段。宿主提供可灵源视频时长校验及基于源视频时长的估算。1.3.6 需使用支持 promptText、imageLayer、音频 ZIP 和图片／音乐原任务绑定的宿主与 SDK。验证时核对 H3 增强结果写回、Seedream OCR 按 URL 顺序绑定、Suno 回执内音轨序号以及 Midjourney 四宫格。1.3.7 需使用支持无环续作链、mask 与 allowOptionalPrompt 的宿主和 SDK。合成验证应覆盖四宫格到放大单图再到遮罩重绘、原图版本绑定、PNG 真实尺寸、MODAL 回执及一次提交。线上安装需先审查并登记正式制品摘要。
+
 ## Node 适配器
 
 使用 Node 24.20.0，并按各项目锁文件准备原 SDK、私有维护工具归档及 TypeScript 缓存。归档由维护者单独取得。按包 README 在隔离构建目录执行 `npm ci --offline --ignore-scripts --no-audit --no-fund`、`npm test` 和 `npm run build`，再用可信 CLI 打包。MiniMax 和即梦渠道进程由部署者独立安装和管理。

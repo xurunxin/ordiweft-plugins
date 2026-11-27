@@ -7,6 +7,7 @@ import (
 	"errors"
 	"math"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -23,8 +24,13 @@ func (p *plugin) transcribe(ctx context.Context, spec modelSpec, key string, bod
 		return empty, err
 	}
 	fields := map[string]string{"model": spec.Upstream, "response_format": "verbose_json"}
-	if language, _ := body["language"].(string); language != "" {
-		fields["language"] = language
+	for _, key := range []string{"language", "prompt"} {
+		if value, _ := body[key].(string); value != "" {
+			fields[key] = value
+		}
+	}
+	if temperature, ok := body["temperature"].(float64); ok {
+		fields["temperature"] = strconv.FormatFloat(temperature, 'f', -1, 64)
 	}
 	payload, contentType, err := multipartFile(input.Data, extension, fields)
 	if err != nil {
