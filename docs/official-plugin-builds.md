@@ -64,7 +64,7 @@ Higgsfield 以 `@daoxialiuren/ordiweft-higgsfield` 分发 Linux amd64 和 Window
 
 APIMart 使用 `@daoxialiuren/ordiweft-apimart` 分发 Linux amd64 与 Windows amd64 适配器。其发行清单固定两个程序和完整模型声明。宿主把上传回执保存在独立于发行目录的渠道状态目录。
 
-1.3.0 的构建需使用包含 `aigc.ModelGenerationMode` 的 Go SDK 导出。宿主通过该声明合并模型菜单并判定自动模式，定价、提交与原任务恢复继续按具体模型 ID 处理。线上安装仍需为该版本审查并登记正式制品摘要。
+1.3.0 的构建需使用包含 `aigc.ModelGenerationMode` 的 Go SDK 导出。宿主通过该声明合并模型菜单并判定自动模式，定价、提交与原任务恢复继续按具体模型 ID 处理。1.3.1 需使用含 `Model.AudioRequiresVisual` 与 `PromptSpec.ReferenceSyntax` 的宿主和 SDK，以便在画布与适配器执行相同的多模态约束。线上安装需先审查并登记正式制品摘要。
 
 ## Node 适配器
 

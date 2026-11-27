@@ -76,6 +76,9 @@ func generationMode(spec modelSpec) aigc.ModelGenerationMode {
 			mode.Label = "文字 / 首帧"
 		case "reference":
 			mode.Label = "文字 / 素材参考"
+			if spec.Model.Capability == "video.generate" && mode.Audios.Max > 0 && mode.Videos.Max > 0 {
+				mode.Label = "文生 / 多模态参考"
+			}
 		default:
 			mode.Label = "文生视频"
 		}
@@ -89,7 +92,7 @@ func generationMode(spec modelSpec) aigc.ModelGenerationMode {
 	switch spec.Model.ID {
 	case "suno-sounds", "suno-upload-cover", "suno-upload-extend":
 		mode.ManualOnly = true
-	case "magi-2-reference":
+	case "magi-2-reference", "MiniMax-H3-frames", "MiniMax-H3-Max-frames":
 		mode.MinInputs = 1
 	}
 	return mode

@@ -37,6 +37,20 @@ APIMart 接入 Ordiweft 的图像、视频、音乐、配音和语音转录入�
 
 宿主管理接口 `GET /api/admin/accounting/apimart-prices/{model}` 按插件模型读取当前黄金价。也可运行 `provider prices <model-id>`。费率取自 [APIMart 黄金价](https://apimart.ai/zh/pricing)与[公开价格 API](https://docs.apimart.ai/cn/api-reference/texts/qwen3.8-max/pricing)。价格刷新不消耗模型额度。任务实扣金额及积分取上游原回执。
 
+## 视频多模态输入
+
+| 模型 | 参考图 / 视频 / 音频上限 | 参考音频 | 提示词 |
+| --- | --- | --- | --- |
+| [MiniMax H3](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/generation) / [H3 Max](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/max) | 9 / 3 / 3 | 搭配图像或视频 | 7,000 字符 |
+| [Seedance 2.0](https://docs.apimart.ai/cn/api-reference/videos/seedance-2-0/generation) | 9 / 3 / 3 | 搭配图像或视频 | 4,000 字符，Mini 按宿主请求长度上限 |
+| [Seedance 2.5](https://docs.apimart.ai/cn/api-reference/videos/seedance-2-5/generation) | 30 / 10 / 10 | 可单独使用 | 支持 `@图片1`、`@视频1`、`@音频1` |
+| [Seedance 2.5 Flash](https://docs.apimart.ai/cn/api-reference/videos/seedance-2-5-flash/generation) | 10 / 5 / 5 | 可单独使用 | 使用与 Seedance 2.5 相同的素材编号 |
+| [MAGI-2](https://docs.apimart.ai/cn/api-reference/videos/magi-2/generation) | 10 / 5 / 5 | 可单独使用 | 15,000 字符 |
+
+引用上限适用于多模态参考。H3 和 H3 Max 的首尾帧模式可单独指定首帧或尾帧；Seedance 和 MAGI-2 的首尾帧入口使用首帧及可选尾帧。Seedance 2.5 普通、Flash 和草稿的多模态入口会明确提交 `reference`，提示词仍须描述对应的生成意图。H3 Max 的 1080P 档会省略水印字段。
+
+Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、音频1」编号。Kling V4 和 Flash 使用 `@Image1`、`@Video1`，标准版也可使用 `@Audio1`。APIMart Zoe 的音频参考需搭配图片或视频。Zoe 的长提示词仍受当前 Ordiweft 请求长度限制。[Wan 3.0](https://docs.apimart.ai/cn/api-reference/videos/wan3.0-video/generation) · [Kling V4](https://docs.apimart.ai/cn/api-reference/videos/kling-v4/generation) · [Kling V4 Flash](https://docs.apimart.ai/cn/api-reference/videos/kling-v4-flash/generation) · [APIMart Zoe](https://docs.apimart.ai/cn/api-reference/videos/apimart-zoe/generation)
+
 ## 从原任务续作
 
 - 选择成功的 MiniMax H3 768P 版本，点击参数按钮旁的「升为 2K」创建续作节点。支持普通生成及首尾帧，沿用上游原任务的内容和参考。[H3 Regeneration 文档](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/regeneration)

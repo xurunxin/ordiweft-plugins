@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.0"
+	version  = "1.3.1"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -144,7 +144,7 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			return spec, nil, nil, errors.New("unknown APIMart task continuation")
 		}
 	}
-	prompt := strings.TrimSpace(g.Prompt)
+	prompt := spec.Model.Prompt.ProjectReferences(strings.TrimSpace(g.Prompt))
 	if spec.Upstream == "flowmusic" {
 		if lyrics, _ := body["lyrics"].(string); prompt == "" && strings.TrimSpace(lyrics) == "" {
 			return spec, nil, nil, errors.New("Flow Music requires a description or lyrics")
@@ -197,8 +197,13 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			return spec, nil, nil, fmt.Errorf("reference required for %s", ref.Field)
 		}
 	}
-	if spec.Model.ID == "magi-2-reference" && len(files) == 0 {
-		return spec, nil, nil, errors.New("MAGI-2 reference mode needs at least one image, video or audio clip")
+	if len(files) > 0 {
+		switch spec.Model.ID {
+		case "seedance-2.5", "seedance-2-5-flash", "seedance-2.5-draft":
+			body["omni_reference_task_type"] = "reference"
+		case "wan3.0-video", "wan3.0-video-prime":
+			body["generation_type"] = "reference"
+		}
 	}
 	if spec.Model.ID == "kling-v4-reference" && len(files) > 15 {
 		return spec, nil, nil, errors.New("Kling V4 accepts at most 15 combined reference files")

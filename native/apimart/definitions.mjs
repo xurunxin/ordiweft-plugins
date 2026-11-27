@@ -36,7 +36,7 @@ export const frames = (required = false, end = 'last_frame_image', first = 'firs
 ]
 
 const model = (kind, id, fields, references, settings) => {
-  const {name, maxPrompt, optionalPrompt, usage, endpoint, upstream, fixed, musicTask, promptKey, hidden, transcription, action, ...rest} = settings
+  const {name, maxPrompt, optionalPrompt, referenceSyntax, usage, endpoint, upstream, fixed, musicTask, promptKey, hidden, transcription, action, ...rest} = settings
   const capabilities = {image: 'image.generate', video: 'video.generate', music: 'music.generate', speech: 'speech.generate', transcription: 'speech.transcribe'}
   const route = {image: '/v1/images/generations', video: '/v1/videos/generations', music: '/v1/music/generations', speech: '/v1/audio/speech', transcription: '/v1/audio/transcriptions'}
   const isNamed = references.some(r => r.role)
@@ -65,7 +65,7 @@ const model = (kind, id, fields, references, settings) => {
       id, label: name || id, capability: capabilities[kind], fields: display,
       inputKinds: [...new Set(references.map(r => r.kind))],
       maxInputs: references.reduce((sum, r) => sum + r.max, 0), inputRoles,
-      prompt: kind !== 'transcription' && promptKey !== false ? {required: !optionalPrompt, label: promptLabels[kind], maxLength: maxPrompt} : undefined,
+      prompt: kind !== 'transcription' && promptKey !== false ? {required: !optionalPrompt, label: promptLabels[kind], maxLength: maxPrompt, referenceSyntax} : undefined,
       usageNote: usage, hidden, transcription, ...rest,
     },
     upstream, references, endpoint: endpoint || route[kind], fixed,
@@ -96,13 +96,13 @@ const magi = {
   duration: number(4, 30, 5), aspect_ratio: options(videoRatios, '16:9'),
   generate_audio: flag(true), seed: number(-1, 2147483647, -1),
 }
-const magiSettings = {upstream: 'magi-2', maxPrompt: 15000, fixed: {resolution: '1080p'}}
+const magiSettings = {upstream: 'magi-2', maxPrompt: 15000, referenceSyntax: 'cn-numbered', fixed: {resolution: '1080p'}}
 add('video', 'magi-2', magi, [], {...magiSettings, name: 'MAGI-2 · 文生视频', usage: '固定 1080p。描述镜头、动作与声音。'})
 add('video', 'magi-2-frames', {...magi, aspect_ratio: options('auto 16:9 9:16 1:1 4:3 3:4','auto')}, frames(true), {
   ...magiSettings, name: 'MAGI-2 · 首尾帧', usage: '首帧必填，尾帧可选。自动比例跟随首帧。固定 1080p。',
 })
 add('video', 'magi-2-reference', magi, [...images(10, false), ref('video_urls', 'video', 5), ref('audio_urls', 'audio', 5)], {
-  ...magiSettings, name: 'MAGI-2 · 多模态参考', usage: '至少添加一项参考。参考视频和音频各最多五段，每类总时长建议不超过 30 秒。',
+  ...magiSettings, name: 'MAGI-2 · 多模态参考', usage: '可单独或混合使用图片、视频和音频，至少接入一项。参考图最多 10 张，参考视频和音频各最多 5 段，每类总时长建议不超过 30 秒。',
   fixed: {...magiSettings.fixed, omni_reference_task_type: 'reference'},
 })
 

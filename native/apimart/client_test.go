@@ -109,6 +109,7 @@ func TestMagiReferenceSubmission(t *testing.T) {
 	}
 	var accepted atomic.Bool
 	var submitted atomic.Int32
+	prompt := strings.Repeat("雨", 14991) + "图片1视频1音频1"
 	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("Authorization") != "Bearer fixture-only" {
 			t.Error("fixture authorization missing")
@@ -123,7 +124,7 @@ func TestMagiReferenceSubmission(t *testing.T) {
 			urls, _ := body["image_urls"].([]any)
 			videos, _ := body["video_urls"].([]any)
 			audios, _ := body["audio_urls"].([]any)
-			if body["model"] != "magi-2" || body["duration"] != float64(4) ||
+			if body["model"] != "magi-2" || body["prompt"] != prompt || body["duration"] != float64(4) ||
 				body["resolution"] != "1080p" || body["omni_reference_task_type"] != "reference" ||
 				len(urls) != 1 || urls[0] != "https://example.com/boat.png" ||
 				len(videos) != 1 || videos[0] != "https://example.com/motion.mp4" ||
@@ -143,7 +144,7 @@ func TestMagiReferenceSubmission(t *testing.T) {
 	}))
 	defer upstream.Close()
 	p.base = upstream.URL
-	r := generation(t, "magi-2-reference", "video.generate", "A paper boat", map[string]any{"duration": 4},
+	r := generation(t, "magi-2-reference", "video.generate", strings.Repeat("雨", 14991)+"{{Image 1}}{{Video 1}}{{Audio 1}}", map[string]any{"duration": 4},
 		[]aigc.Input{
 			{Kind: "image", URL: "https://example.com/boat.png"},
 			{Kind: "video", URL: "https://example.com/motion.mp4"},
