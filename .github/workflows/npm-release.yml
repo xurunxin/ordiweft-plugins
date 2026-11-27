@@ -25,6 +25,10 @@ on:
         description: Reviewed release version
         type: string
         required: true
+      verify_oidc:
+        description: Verify npm OIDC authentication without staging
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -59,7 +63,11 @@ jobs:
           node scripts/registry.mjs check
           go run scripts/npm-pack.go "plugins/$PACKAGE_ID/$VERSION/source" "$RUNNER_TEMP/plugin.zip"
           node scripts/npm-release.mjs "$PACKAGE_ID" "$VERSION" "$RUNNER_TEMP/plugin.zip" "$RUNNER_TEMP/npm-plugin"
+      - name: Verify npm OIDC authentication
+        if: inputs.verify_oidc
+        run: node scripts/npm-verify-oidc.mjs "$RUNNER_TEMP/npm-plugin/package.json"
       - name: Submit the package for npm approval
+        if: inputs.verify_oidc == false
         env:
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org
         run: |

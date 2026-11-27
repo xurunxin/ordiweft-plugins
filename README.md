@@ -65,6 +65,8 @@ GitHub 环境限定 `main`。在 Actions 页面手动选择包 ID 和审核通�
 
 遇到 `ENEEDAUTH` 时，查看暂存步骤中 npm 的 `oidc` 日志，并在对应 npm 包设置中核对 Trusted Publisher 的仓库、文件名、环境和暂存权限。新建的信任配置需要在两天内完成首次成功发布以绑定仓库，已过期的配置需由维护者重新建立。[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
 
+仅验证认证时，在 Actions 的 `main` 工作流中选择一个已审核的版本并勾选 `verify_oidc`。工作流校验候选 ZIP 并执行 npm OIDC 令牌交换，跳过暂存步骤。已发布的候选版本也可用于这项检查。
+
 ```powershell
 node scripts/npm-release.mjs ordiweft-examples/doubao-audio 1.0.3 <原始ZIP> <仓外新包目录>
 npm pack <仓外新包目录> --ignore-scripts --pack-destination <仓外归档目录>
