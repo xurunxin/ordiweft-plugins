@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repositoryId": "ordiweft-official-npm",
-  "revision": 8,
+  "revision": 9,
   "entries": [
     {
       "packageId": "ordiweft-migrations/dashscope",
@@ -128,6 +128,15 @@
       "target": "packages/ordiweft-migrations/apimart/1.3.8/c43293d3ee3d4367a0adaabcf14442a1be480fe0b77d6d04e35261048f068bbc.zip",
       "sha256": "b6f8917830f947fb528070c4f88be0ef9c23d799c7888cab930389199cd8ceaf",
       "bytes": 6819426
+    },
+    {
+      "packageId": "ordiweft-migrations/apimart",
+      "version": "1.3.10",
+      "npmPackage": "@daoxialiuren/ordiweft-apimart",
+      "releaseDigest": "0760ebddc69478933e92026bb404c14ccf926a5ec1d44cf390f686974e1e1657",
+      "target": "packages/ordiweft-migrations/apimart/1.3.10/0760ebddc69478933e92026bb404c14ccf926a5ec1d44cf390f686974e1e1657.zip",
+      "sha256": "daf12e0a12fbbe6dc159e17d09819441430a19b64dde0cb2031ca04f795de493",
+      "bytes": 6831638
     }
   ]
 }
