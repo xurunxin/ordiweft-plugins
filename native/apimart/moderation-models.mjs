@@ -84,6 +84,7 @@ export const moderationModels = new Set([
   "kling-video-o1",
   "magi-2",
   "MiniMax-H3",
+  "MiniMax-H3-Context-IR",
   "MiniMax-H3-Max",
   "MiniMax-H3-Regeneration",
   "MiniMax-Hailuo-02",

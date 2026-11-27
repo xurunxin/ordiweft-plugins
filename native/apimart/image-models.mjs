@@ -105,8 +105,10 @@ const layerFields = {size:pixels, resolution:res('1K 1.5K 2K','1K'), watermark:f
 addImage('seedream-5-0-pro seedream-5-0-flash',layerFields,images(10),{fixed:{n:1},usage:'可进行多图融合。图层拆分需要参考图。'})
 addImage('seedream-5-5',{
   ...layerFields, resolution:res('1K 1.5K 2K','2K'), background:options('auto opaque transparent','auto',{visibleWhen:{layer_decomposition:false}}),
-  output_format:format('png jpeg','png'), text_recognition:flag(false,{label:'文字识别',visibleWhen:{layer_decomposition:true}}),
-  layer_decomposition_options:object({max_images:number(2,100,30,{label:'最大输出数（含底图）',required:true})},{label:'图层选项',default:{max_images:30},visibleWhen:{layer_decomposition:true}}),
+  output_format:format('png jpeg','png'),
+  optimize_prompt_options:object({mode:options('standard','standard',{label:'标准'})},{label:'提示词优化'}),
+  text_recognition:flag(false,{deprecated:true}),
+  layer_decomposition_options:object({max_images:number(2,100,30,{label:'最大输出数（含底图）',required:true}),text_recognition:flag(false,{label:'富文本 OCR',description:'可尝试留空拆分提示词，以便返回识别文字。'})},{label:'图层选项',default:{max_images:30},visibleWhen:{layer_decomposition:true}}),
 }, images(10),{fixed:{n:1},optionalPrompt:true,
   outputCount:[{when:{layer_decomposition:true},parameter:'layer_decomposition_options.max_images',maximum:100}],
   usage:'图层拆分接入一张图片，省略提示词时自动拆分。'})
@@ -169,6 +171,13 @@ const officialGrokRatios = 'auto 1:1 16:9 9:16 4:3 3:4 3:2 2:3 2:1 1:2 19.5:9 9:
 const officialGrok = {size:ratio(officialGrokRatios,'auto'),resolution:res('1k 2k','1k'),n:n(10)}
 addImage('grok-imagine-image',officialGrok,images(5),{maxPrompt:8000})
 addImage('grok-imagine-image-quality',officialGrok,images(3),{maxPrompt:8000})
+const regionCoordinate = label => decimal(0,1,undefined,{label,required:true})
+addImage('grok-imagine-2.0-ext-region-edit',{
+  regions:list(object({x1:regionCoordinate('左'),y1:regionCoordinate('上'),x2:regionCoordinate('右'),y2:regionCoordinate('下')}),
+    {required:true,label:'矩形选区',section:'common',description:'坐标为相对整图的 0–1 小数，左上为 (0,0)，右下为 (1,1)。最多 16 个选区。'}),
+},[],{upstream:'grok-imagine-2.0-ext',name:'Grok Imagine 2.0 · 局部编辑',hidden:true,
+  taskContinuation:{sourceModels:['grok-imagine-2.0-ext'],sourceWhen:{n:1},actionLabel:'局部编辑'},
+  usage:'沿用已完成的单图任务。设置矩形选区和修改提示词后确认生成。'})
 addImage('grok-imagine-2.0-ext',{size:ratio('auto ' + wideRatios,'auto'),resolution:res('1k 2k','1k'),n:n(12)},images(5),{usage:'文生图最多 12 张；使用参考图时仅支持生成 1 张。'})
 const officialGrok2 = {aspect_ratio:ratio(officialGrokRatios,'auto'),resolution:res('1k 2k','1k'),n:n(10)}
 addImage('grok-imagine-image-2.0',{...officialGrok2,quality:options('low medium','medium')},[ref('image_urls','image',3,{array:true,maxBytes:10*1024*1024})],{
@@ -187,6 +196,14 @@ for (const id of ['wan2.7-image','wan2.7-image-pro']) {
     color_palette:list(object({hex:line(7,{label:'十六进制色值',required:true}),ratio:line(7,{label:'占比（如 10.5%）',required:true})}),{label:'配色表',description:'填写 3 至 10 个颜色，占比合计 100%。',visibleWhen:{enable_sequential:false}}),
   },images(10))
 }
+addImage('midjourney-follow-up',{
+  operation:options('upscale variation reroll','upscale',{label:'续作方式',section:'common',optionLabels:{upscale:'从四宫格选图',variation:'生成变体',reroll:'重生成四宫格'}}),
+  speed:options('relax fast turbo','fast',{label:'生成速度'}),
+  index:number(1,4,1,{label:'四宫格位置',visibleWhenAny:[{operation:'upscale'},{operation:'variation'}]}),
+},[],{upstream:'midjourney',name:'Midjourney 原图续作',hidden:true,promptKey:false,prompt:{required:false,label:'原图'},
+  taskContinuation:{sourceModels:['midjourney'],actionLabel:'Midjourney 原图续作'},endpoint:'/v1/midjourney/generations/upscale',
+  usage:'从所选原任务的四宫格中选图、生成变体或重生成。'})
+
 addImage('midjourney',{
   size:ratio(),speed:options('relax fast turbo','relax'),version:options('8.2 8.1 7 6.1 6 5.2 5.1','8.2'),
   quality:options('0.25 0.5 1 2'),seed,negative_prompt:line(1000,{control:'textarea'}),

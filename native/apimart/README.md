@@ -118,7 +118,16 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 - 可灵两档动作控制支持水印与按人物朝向校验源视频时长。SkyReels V4 的中间帧可指定秒点。[可灵动作控制](https://docs.apimart.ai/cn/api-reference/videos/kling-v2-6/kling-v2-6-motion-control-generation.md) · [SkyReels](https://docs.apimart.ai/cn/api-reference/videos/skyreels-v4/generation.md)
 - Grok Imagine Image 2.0 官方版使用版本化任务回执，文生图可选质量。两档官方视频可用多张参考图，Base 版另有视频编辑入口。旧 1.5 官方编辑 ID 保留识别，重新执行时提示切换模型。[Grok 图像](https://docs.apimart.ai/cn/api-reference/images/grok-imagine-2.0-ext/official.md) · [Grok 视频](https://docs.apimart.ai/cn/api-reference/videos/grok-imagine/official.md)
 
-H3 Context-IR 返回结构化文本，需要宿主提供文本生成产物。Seedream 的富文本 OCR 仍待画布编辑支持。GPT-4o Mini TTS 的原始 PCM 文档未声明采样率、声道和位深。VEO 多样本预估与续写费用仍以实际任务回执或专用报价为准。
+## 1.3.6 派生产物和原任务续作
+
+- MiniMax H3 Context-IR 在同一模型内提供纯文本、首尾帧和多模态参考，输出增强提示词并保存输入／输出 token 计量。可以复制结果或提取为画布文本节点。[Context-IR](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/context-ir.md)
+- Seedream 5.5 按原图片 URL 的位置保存图层名称、边界框、OCR 行和文字样式。图层选项内开启富文本 OCR，结果可复制或提取为普通文本节点。旧草稿中的 OCR 开关在请求时转换为嵌套字段。[Seedream 5.5](https://docs.apimart.ai/cn/api-reference/images/seedream-5-5/generation.md)
+- Suno 原音轨支持续写、翻唱、片段替换、单轨和全部分轨。Flow Music 原音轨支持续写、翻唱、片段替换和分轨。分轨 ZIP 由宿主展开，独立播放可校验的 WAV、MP3 和 FLAC 音轨。各操作使用已完成版本对应的服务端回执。同一任务返回多首歌曲时，Suno 按回执中的原始顺序选择。[Suno](https://docs.apimart.ai/cn/api-reference/audios/suno/overview.md) · [Flow Music](https://docs.apimart.ai/cn/api-reference/audios/flow-music/extend.md)
+- Midjourney 原四宫格支持取单图、生成变体和重生成。Midjourney Video 支持首帧和首尾帧，480p／720p 与 1、2、4 条输出。黄金价按操作、档位及输出数量读取。[Midjourney](https://docs.apimart.ai/cn/api-reference/images/midjourney/upscale.md) · [Midjourney Video](https://docs.apimart.ai/cn/api-reference/images/midjourney/video.md)
+
+- Grok Imagine 2.0 扩展版的已完成单图任务可创建局部编辑节点。确认后按原任务定位图像，校验选区后提交一次付费矩形编辑。[Grok 局部编辑](https://docs.apimart.ai/cn/api-reference/images/grok-imagine-2.0-ext/layer-region-edit.md)
+
+Midjourney 的遮罩弹窗流程、Grok 的对象与多边形选区仍待接入。GPT-4o Mini TTS 原始 PCM 尚缺 APIMart 的采样率、声道和位深契约。VEO 多样本预估与续写费用以实际任务回执或专用报价为准。
 
 ## 构建与核验
 

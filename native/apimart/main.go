@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.5"
+	version  = "1.3.6"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -126,10 +126,22 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 	if err != nil {
 		return spec, nil, nil, err
 	}
+	if spec.Upstream == "seedream-5-5" && body["layer_decomposition"] == true {
+		// Translate the old draft value when the new nested field is unset.
+		legacy, _ := g.Parameters["text_recognition"].(bool)
+		if options, ok := body["layer_decomposition_options"].(map[string]any); ok && legacy {
+			original, _ := g.Parameters["layer_decomposition_options"].(map[string]any)
+			if _, explicit := original["text_recognition"]; !explicit {
+				options["text_recognition"] = true
+			}
+		}
+	}
 	for key, value := range spec.Fixed {
 		body[key] = value
 	}
-	body["model"] = spec.Upstream
+	if spec.Model.ID != "midjourney-follow-up" && spec.Model.ID != "midjourney-video" {
+		body["model"] = spec.Upstream
+	}
 	if spec.Upstream == "veo3.1-fast" || spec.Upstream == "veo3.1-quality" {
 		switch body["generation_type"] {
 		case "text-to-video":
@@ -147,10 +159,25 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 		if spec.Model.TaskContinuation == nil {
 			return spec, nil, nil, errors.New("APIMart model does not accept a source task")
 		}
-		if !request.SourceTask.Valid() || !taskIDPattern.MatchString(request.SourceTask.Ticket) {
+		if !request.SourceTask.Valid() {
+			return spec, nil, nil, errors.New("invalid APIMart source task")
+		}
+		pattern := taskIDPattern
+		if spec.Model.ID == "flowmusic-follow-up" {
+			pattern = uuidPattern
+		}
+		if !pattern.MatchString(request.SourceTask.Ticket) {
 			return spec, nil, nil, errors.New("invalid APIMart source task")
 		}
 		switch spec.Model.ID {
+		case "grok-imagine-2.0-ext-region-edit":
+			// The source is resolved through the free segmentation stage at execution.
+		case "midjourney-follow-up":
+			if err := prepareMidjourneyFollowUp(&spec, body, *request.SourceTask); err != nil {
+				return spec, nil, nil, err
+			}
+		case "suno-follow-up", "flowmusic-follow-up":
+			// Music operation fields are normalized during both preflight and execution.
 		case "MiniMax-H3-Regeneration":
 			body["source_task_id"] = request.SourceTask.Ticket
 		case "seedance-2.5-final-1080p", "apimart-zoe-final":
@@ -165,8 +192,13 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			return spec, nil, nil, errors.New("unknown APIMart task continuation")
 		}
 	}
+	if spec.Model.ID == "suno-follow-up" || spec.Model.ID == "flowmusic-follow-up" {
+		if err := prepareMusicFollowUp(&spec, body, request.SourceTask); err != nil {
+			return spec, nil, nil, err
+		}
+	}
 	prompt := spec.Model.Prompt.ProjectReferences(strings.TrimSpace(g.Prompt))
-	if spec.Upstream == "flowmusic" {
+	if spec.Upstream == "flowmusic" && spec.Model.TaskContinuation == nil {
 		if lyrics, _ := body["lyrics"].(string); prompt == "" && strings.TrimSpace(lyrics) == "" {
 			return spec, nil, nil, errors.New("Flow Music requires a description or lyrics")
 		}
@@ -246,6 +278,11 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			return spec, nil, nil, errors.New("PixVerse V6 transition requires both first and last frames")
 		}
 		files[0].ref.Field, files[0].ref.Array = "image_urls", true
+	}
+	if spec.Model.ID == "grok-imagine-2.0-ext-region-edit" {
+		if err := normalizeGrokRegions(body); err != nil {
+			return spec, nil, nil, err
+		}
 	}
 	if err := normalizeModelOptions(spec, body, files); err != nil {
 		return spec, nil, nil, err

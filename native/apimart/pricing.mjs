@@ -29,10 +29,37 @@ export function modelPricing(entry, row, checkedAt) {
   const perInputImage = row.input_image_first_free === false
     ? component('input_image', row.input_image_paid_price, ['input_image_paid_price']) : undefined
   const imageCharges = part => perInputImage && entry.model.inputKinds.includes('image') ? [part, perInputImage] : [part]
+  if (entry.model.id === 'grok-imagine-2.0-ext-region-edit') return spec
   if (entry.endpoint === '/v1/videos/{task_id}/remix' || entry.model.id === 'grok-imagine-video-1.5-edit') {
     return spec
   }
-  if (id === 'grok-imagine-image-2.0') {
+  if (entry.model.id === 'suno-follow-up') {
+    for (const [operation, action] of [['extend','extend'],['cover','cover'],['replace','replace_section']]) {
+      for (const version of fields.version.enum) {
+        const key = 'suno@' + action + '-' + version
+        for (const max of [false,true]) add({operation,version,max_mode:String(max)},
+          component('job',row.action_paid_prices?.[key],['action_paid_prices',key],1,max?(row.max_mode_multiplier||2):1))
+      }
+    }
+    for (const [operation, action] of [['stem','stems'],['stems','stems_all']]) {
+      const key = 'suno@' + action
+      add({operation},component('job',row.action_paid_prices?.[key],['action_paid_prices',key]))
+    }
+  } else if (entry.model.id === 'flowmusic-follow-up') {
+    for (const operation of fields.operation.enum) {
+      const key = 'flowmusic@' + operation
+      add({operation},component('job',row.action_paid_prices?.[key],['action_paid_prices',key]))
+    }
+  } else if (entry.model.id === 'midjourney-follow-up') {
+    for (const operation of fields.operation.enum) for (const speed of fields.speed.enum) {
+      add({operation,speed},component('job',row.action_paid_prices?.[operation]?.[speed],['action_paid_prices',operation,speed]))
+    }
+  } else if (entry.model.id === 'midjourney-video') {
+    for (const video_type of fields.video_type.enum) for (const batch_size of fields.batch_size.enum) {
+      const tier = video_type.endsWith('_720') ? '720p' : 'default'
+      add({video_type,batch_size:String(batch_size)},component('job',row.action_paid_prices?.video?.[tier],['action_paid_prices','video',tier],1,batch_size))
+    }
+  } else if (id === 'grok-imagine-image-2.0') {
     for (const resolution of fields.resolution.enum) {
       const key = resolution.toUpperCase()
       for (const quality of fields.quality?.enum ?? []) {

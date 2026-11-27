@@ -42,7 +42,7 @@ func TestDocumentedModelParameters(t *testing.T) {
 		{model: "wan2.7-image", capability: "image.generate", prompt: "A scene", params: map[string]any{"n": 5}, rejected: true},
 		{model: "seedream-5-5", capability: "image.generate", inputs: []aigc.Input{image},
 			params: map[string]any{"layer_decomposition": true, "text_recognition": true, "layer_decomposition_options": map[string]any{"max_images": 75}},
-			want:   map[string]any{"layer_decomposition": true, "text_recognition": true, "n": 1, "layer_decomposition_options": map[string]any{"max_images": 75}},
+			want:   map[string]any{"layer_decomposition": true, "n": 1, "layer_decomposition_options": map[string]any{"max_images": 75, "text_recognition": true}},
 			omit:   []string{"prompt", "background"}},
 		{model: "seedance-2.5", capability: "video.generate", prompt: "A boat", params: map[string]any{"duration": -1, "web_search": true, "output_format": "mov"},
 			want: map[string]any{"tools": []any{map[string]any{"type": "web_search"}}, "duration": -1, "output_format": "mov"}, omit: []string{"web_search"}},

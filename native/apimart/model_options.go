@@ -39,6 +39,10 @@ func normalizeModelOptions(spec modelSpec, body map[string]any, files []attachme
 		}
 	case "wan2.7-image", "wan2.7-image-pro":
 		return normalizeWanImageOptions(spec.Upstream, body, images)
+	case "MiniMax-H3-Context-IR":
+		if len(files) == 0 && body["aspect_ratio"] == "adaptive" {
+			return errors.New("MiniMax H3 Context-IR text mode requires a fixed aspect ratio")
+		}
 	case "seedream-5-5":
 		if body["layer_decomposition"] == true {
 			if images != 1 {

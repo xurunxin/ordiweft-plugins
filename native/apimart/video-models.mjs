@@ -144,10 +144,28 @@ add('video','MiniMax-Hailuo-02',{duration:durationChoices([6,10],6),resolution:r
   prompt_optimizer,fast_pretreatment:flag(false,{label:'快速预处理'}),watermark},frames(),textAndFrames())
 add('video','MiniMax-Hailuo-2.3 MiniMax-Hailuo-2.3-Fast',{duration:durationChoices([6,10],6),resolution:res('768p 1080p','768p'),
   prompt_optimizer,fast_pretreatment:flag(false,{label:'快速预处理'}),watermark},frames(false,''),textAndFrames(false))
+const midjourneyFrames = [ref('image_urls','image',1,{min:1,role:'first_frame',array:true,maxBytes:12*1024*1024}),
+  ref('end_url','image',1,{role:'last_frame',maxBytes:12*1024*1024})]
+add('video','midjourney-video',{
+  video_type:options('vid_1.1_i2v_480 vid_1.1_i2v_720','vid_1.1_i2v_480',{label:'分辨率',control:'resolution',optionLabels:{'vid_1.1_i2v_480':'480p','vid_1.1_i2v_720':'720p'}}),
+  motion:options('low high','high',{label:'运动幅度',optionLabels:{low:'低',high:'高'}}),
+  batch_size:options([1,2,4],1,{label:'视频数量',control:'count'}),
+},midjourneyFrames,{upstream:'midjourney',name:'Midjourney Video',...imageVideo({minInputs:1}),
+  endpoint:'/v1/midjourney/generations/video',outputCount:[{parameter:'batch_size',maximum:4}],
+  usage:'接入首帧，可选尾帧。每段约 5 秒，按实际生成数量收费。'})
+
 const h3 = {...basic(seconds(4,15),res('768P 2K','2K'),ratio('adaptive '+videoRatios)),watermark}
 const h3Max = {...h3,duration:seconds(5,15),resolution:res('480P 768P 1080P','768P'),
   watermark:flag(false,{visibleWhenAny:[{resolution:'480P'},{resolution:'768P'}]})}
 const h3Prompt = {maxPrompt:7000,referenceSyntax:'cn-numbered'}
+const contextIR = {duration:seconds(4,15),aspect_ratio:ratio('adaptive '+videoRatios,'16:9')}
+const contextIRSettings = {name:'MiniMax H3 Context-IR',...h3Prompt,outputKinds:['text'],
+  prompt:{label:'原始镜头构想',required:true,maxLength:7000,referenceSyntax:'cn-numbered'},
+  usage:'根据目标画幅、时长和参考素材增强镜头提示词。生成结果可提取为文本节点。'}
+add('video','MiniMax-H3-Context-IR',contextIR,multimodal(9,3,3),{...contextIRSettings,
+  ...generationMode('reference','多模态参考',{textLabel:'纯文本'}),audioRequiresVisual:true})
+add('video','MiniMax-H3-Context-IR-frames',{...contextIR,aspect_ratio:ratio('adaptive '+videoRatios,'adaptive')},frames(),{
+  ...contextIRSettings,upstream:'MiniMax-H3-Context-IR',...generationMode('first_last_frame','首尾帧',{minInputs:1})})
 const h3Frames = {...h3Prompt,...imageVideo({minInputs:1}),usage:'可接入首帧、尾帧或两者。画幅跟随输入图片。'}
 const h3Reference = {...h3Prompt,...textAndReference(),audioRequiresVisual:true,usage:'最多 9 张参考图、3 段参考视频和 3 段参考音频。音频需搭配图片或视频。'}
 add('video','MiniMax-H3',h3,multimodal(9,3,3),h3Reference)

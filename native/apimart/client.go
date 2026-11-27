@@ -38,6 +38,9 @@ type remoteTask struct {
 	CreditsCost *json.Number `json:"credits_cost"`
 	Usage       struct {
 		CompletionTokens *int64 `json:"completion_tokens"`
+		PromptTokens     *int64 `json:"prompt_tokens"`
+		InputTokens      *int64 `json:"input_tokens"`
+		OutputTokens     *int64 `json:"output_tokens"`
 	} `json:"usage"`
 	Result json.RawMessage `json:"result"`
 }
@@ -112,6 +115,9 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	spec, body, files, err := p.prepare(request)
 	if err != nil {
 		return empty, err
+	}
+	if spec.Model.TaskContinuation != nil && request.SourceTask == nil {
+		return empty, errors.New("APIMart continuation requires an owned source task")
 	}
 	if spec.Model.TaskContinuation != nil && (request.SourceTask == nil || len(files) > 0) {
 		return empty, errors.New("APIMart continuation requires the bound original task")
@@ -203,6 +209,13 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 		}
 	}
 	var origins []aigc.TaskOrigin
+	var segmentTaskID string
+	if spec.Model.ID == "grok-imagine-2.0-ext-region-edit" {
+		segmentTaskID, err = p.prepareGrokRegionEdit(ctx, key, spec, body, request.SourceTask.Ticket)
+		if err != nil {
+			return empty, err
+		}
+	}
 	payload, err := json.Marshal(body)
 	if err != nil {
 		return empty, err
@@ -248,13 +261,8 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 			return empty, err
 		}
 		taskList = append(taskList, task)
-		// APIMart's follow-up endpoints select a task, with no field for
-		// choosing between several outputs belonging to the same task.
-		if sourceEligible && singleVideoOutput(media) && len(all) < 16 &&
-			task.Created > 0 && task.Created <= time.Now().Add(5*time.Minute).Unix() {
-			origins = append(origins, aigc.TaskOrigin{
-				SourceTask: aigc.SourceTask{Ticket: task.ID, OutputIndex: len(all)}, CreatedAt: task.Created * 1000,
-			})
+		if sourceEligible && task.Created > 0 && task.Created <= time.Now().Add(5*time.Minute).Unix() {
+			origins = append(origins, taskOrigins(spec, task, media, len(all))...)
 		}
 		all = append(all, media...)
 	}
@@ -269,21 +277,44 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 		meta["referenceUploads"] = uploads
 	}
 	receipts := make([]map[string]any, 0, len(taskList))
-	var completionTokens int64
-	usageComplete := true
+	var completionTokens, inputTokens int64
+	usageComplete, inputComplete := true, true
 	for _, task := range taskList {
 		receipts = append(receipts, map[string]any{
 			"taskId": task.ID, "usd": task.Cost, "credits": task.CreditsCost,
 		})
-		if tokens := task.Usage.CompletionTokens; tokens != nil && *tokens >= 0 && *tokens <= 1e9 {
+		output := task.Usage.CompletionTokens
+		if output == nil {
+			output = task.Usage.OutputTokens
+		}
+		if tokens := output; tokens != nil && *tokens >= 0 && *tokens <= 1e9 {
 			completionTokens += *tokens
 		} else {
 			usageComplete = false
 		}
+		input := task.Usage.PromptTokens
+		if input == nil {
+			input = task.Usage.InputTokens
+		}
+		if input != nil && *input >= 0 && *input <= 1e9 {
+			inputTokens += *input
+		} else {
+			inputComplete = false
+		}
+	}
+	if segmentTaskID != "" {
+		meta["segmentTaskId"] = segmentTaskID
 	}
 	meta["receipts"] = receipts
+	usage := map[string]int64{}
 	if usageComplete {
-		meta["usage"] = map[string]int64{"completion_tokens": completionTokens}
+		usage["completion_tokens"] = completionTokens
+	}
+	if inputComplete {
+		usage["prompt_tokens"] = inputTokens
+	}
+	if len(usage) > 0 {
+		meta["usage"] = usage
 	}
 	resultMetadata, _ := json.Marshal(meta)
 	return aigc.Result{Media: all, Metadata: resultMetadata, TaskOrigins: origins}, nil
@@ -356,12 +387,12 @@ func (p *plugin) wait(ctx context.Context, key, path, id string) (remoteTask, er
 		if err := p.query(ctx, key, path, id, &task); err != nil {
 			return task, err
 		}
-		switch task.Status {
-		case "completed":
+		switch strings.ToLower(task.Status) {
+		case "completed", "success":
 			return task, nil
-		case "failed", "cancelled", "canceled":
+		case "failed", "failure", "cancelled", "canceled":
 			return task, fmt.Errorf("APIMart task %s ended with status %s", id, task.Status)
-		case "submitted", "queued", "pending", "processing", "running", "unknown", "in_progress":
+		case "submitted", "queued", "pending", "processing", "running", "unknown", "in_progress", "not_start":
 		default:
 			return task, errors.New("APIMart returned an unrecognized task status")
 		}
@@ -384,6 +415,9 @@ func (p *plugin) query(ctx context.Context, key, path, id string, task *remoteTa
 	if json.Unmarshal(reply, &response) != nil || response.Code != 200 ||
 		json.Unmarshal(response.Data, task) != nil || task.ID != id {
 		return errors.New("APIMart query did not return the original task")
+	}
+	if len(task.Result) == 0 || string(task.Result) == "null" {
+		task.Result = response.Data
 	}
 	return nil
 }
