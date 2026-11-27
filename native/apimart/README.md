@@ -158,3 +158,16 @@ node native/apimart/build-catalog.mjs <上一步价格JSON> <核对日期YYYY-MM
 对比差异并核实费率规则后再更新嵌入的 `catalog.json`。所有计费 POST 只发一次。异步受理后会先发 checkpoint，再查询原任务。对已接收的票据可在授权环境中运行 `provider status <model-id> <task-id>` 只读恢复，命令输出可能包含短期产物链接。
 
 接口契约与各模型说明见 [APIMart 中文文档](https://docs.apimart.ai/cn)。
+
+## 1.3.9 续写节点
+
+生成结果旁提供两种快捷入口。需要原任务时，宿主从所选版本核对账户、回执和有效期后创建对应节点。需要源视频或音频时，宿主固定所选版本的素材并连到新节点，设置对应模式并打开参数和提示词。创建节点本身只保存画布。
+
+| 续写方式 | 模型与参数 |
+| --- | --- |
+| 原任务续写 | VEO 3.1 Ext、PixVerse V6、Gemini Omni 的任务续写，以及 Suno／Flow Music 原音轨续作 |
+| 视频素材续写 | Seedance 2.5／Flash、Kling V4／Flash、SkyReels V4 Fast／Standard、Wan 2.7、FLUX 3 Video、Gemini Omni 1.1 Flash／1.2 Flash／1.2 Flash Ext 使用各自的续写模式 |
+| 音频素材续写 | Suno 使用 uploadExtend，固定音频作为 source_audio |
+| H3 视频参考续写 | MiniMax-H3／H3-Max 使用已有多模态参考输入和可编辑的续写提示词，另保留原任务升为 2K |
+
+Seedance 2.5、Zoe 和 FLUX 3 Video 草稿转正，以及原任务的有效期和计费仍以对应接口为准。支持原任务和素材续写的模型可分别选择两个入口。

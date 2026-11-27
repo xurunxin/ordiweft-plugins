@@ -1,5 +1,6 @@
 # MiniMax 独立接入包
 
+2.2.6 候选从 H3 成片提供「用视频续写」，固定所选版本作为全能参考视频，预填可编辑的续写提示词，生成仍由 MiniMax Design 或官方 API 按常规渠道规则执行。原任务「升为 2K」沿用 768P 样片、原渠道账户与回执校验。需要支持 videoContinuationPrompt 与 fromDraft.actionLabel 的宿主。
 接入包 2.2.5，target 为 minimax。安装、native 迁移预检/授权、连接绑定、合成验证及显式激活均沿用插件平台；保留原生实现与旧任务，不自行发布或切换生产。旧型号缺省只走官方 API，作为隐藏兼容型号保留，已有选中节点仍显示。新建菜单每个模型只保留一个普通名称，在同一模型的接入参数中选择 auto／订阅／官方，不重复列出兼容型号；默认优先使用管理员共享的 MiniMax Design 账户。
 
 标准 MiniMax-H3 的「全能参考」在 Design 订阅和官方 API 均支持图片、视频和音频。参考视频最多 3 段，每段 2–15 秒，总长最多 15 秒，单文件最多 50 MB，混合素材最多 12 个。Design 支持最多 9 张图片，视频和音频合计最多 3 段。宿主核对 MP4 原件，并按素材顺序向 Design 提供原件 URL 和视频轨道时长，用于订阅积分估算与提交。接入包要求渠道 0.4.0、`channel.design-video-reference@1` 和宿主 `connections.video-reference-duration@1`。[MiniMax H3 全能参考](https://design.minimax.io/h3)

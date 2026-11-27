@@ -1,7 +1,7 @@
 {
   "formatVersion": 1,
   "packageId": "ordiweft-migrations/volcengine",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "license": "Apache-2.0",
   "runtime": "node",
   "hostProtocol": 1,
@@ -165,7 +165,7 @@
     "apiVersion": 2,
     "id": "volcengine",
     "name": "火山方舟",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "runtime": "process",
     "auth": "api-key",
     "secrets": [
@@ -2788,6 +2788,7 @@
           }
         },
         "fromDraft": {
+          "actionLabel": "草稿转正片",
           "parameter": "sourceJob",
           "models": [
             "seedance-2.5-auto",

@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.8"
+	version  = "1.3.9"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )

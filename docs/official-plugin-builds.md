@@ -73,3 +73,7 @@ APIMart 使用 `@daoxialiuren/ordiweft-apimart` 分发 Linux amd64 与 Windows a
 ## 推送到安装来源
 
 用现有 `catalog-index` 生成候选目录，指定维护者审查通过的 ZIP 后，交给 TUF 维护者签发。公开入口 `repository/source.json` 使用宿主的来源定义格式，包括 `id`、`metadataUrl`、`targetsUrl`、`root`（初始公开根原字节的 Base64）、`rootSHA256`、`publishers`、`enabled`。GitHub 仓库主页通过 `main/repository/source.json` 发现配置。通过独立可信渠道提供初始根指纹。签名目录、ZIP 和旧版元数据按原发布策略保存。
+
+### 续写节点候选
+
+APIMart 1.3.9、MiniMax 2.2.6 和即梦／火山方舟 2.2.2 要求包含素材续写入口的宿主。APIMart 和 MiniMax 使用支持 videoContinuationPrompt 的 SDK 声明 H3 参考续写。MiniMax 与方舟使用 fromDraft.actionLabel 为原任务操作提供文案。合成验收应检查当前版本素材固定、模式与连线、原任务核验及创建节点前后生成请求数量。使用新版模板重新构建并核对制品摘要，已发布版本保持原始字节。
