@@ -59,7 +59,13 @@ Fish Audio 的候选使用 `@daoxialiuren/ordiweft-fish-audio` 分发 `ordiweft-
 
 ComfyUI 工作流使用 `@daoxialiuren/ordiweft-comfyui` 分发 `ordiweft-migrations/comfyui`。宿主需要支持 `comfy-workflows-v1`，工作流图和连接由管理员在各自部署中导入和配置。
 
-首次发布由维护者使用对 `@daoxialiuren` 有相应权限的 npm 凭据提交暂存，再由维护者完成确认。后续在 npm 包设置中绑定 Trusted Publisher，使用 GitHub 仓库所有者 `xurunxin`、仓库 `ordiweft-plugins`、工作流 `npm-release.yml`、环境 `npm-release`，授予 stage 权限。GitHub 环境限定 `main`，在 Actions 页面手动选择包 ID 和审核过的版本。工作流复现原 ZIP 并交给 npm 暂存，维护者核对后批准公开发布。[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
+首次发布由维护者使用对 `@daoxialiuren` 有相应权限的 npm 凭据提交暂存，再由维护者完成确认。此后为每个 npm 包设置 GitHub Actions Trusted Publisher，所有者填 `xurunxin`，仓库填 `ordiweft-plugins`，工作流文件名填 `npm-release.yml`，环境填 `npm-release`，允许 `npm stage publish`。
+
+GitHub 环境限定 `main`。在 Actions 页面手动选择包 ID 和审核通过、尚未发布的版本。工作流使用本仓的预构建文件复现原 ZIP，经候选清单的长度和 SHA-256 校验后提交 npm 暂存。维护者核对暂存包并完成 npm 双因素认证后，版本才会公开。
+
+遇到 `ENEEDAUTH` 时，查看暂存步骤中 npm 的 `oidc` 日志，并在对应 npm 包设置中核对 Trusted Publisher 的仓库、文件名、环境和暂存权限。新建的信任配置需要在两天内完成首次成功发布以绑定仓库，已过期的配置需由维护者重新建立。[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
+
+仅验证认证时，在 Actions 的 `main` 工作流中选择一个已审核的版本并勾选 `verify_oidc`。工作流校验候选 ZIP 并执行 npm OIDC 令牌交换，跳过暂存步骤。已发布的候选版本也可用于这项检查。
 
 ```powershell
 node scripts/npm-release.mjs ordiweft-examples/doubao-audio 1.0.3 <原始ZIP> <仓外新包目录>

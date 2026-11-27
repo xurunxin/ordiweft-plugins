@@ -25,6 +25,10 @@ on:
         description: Reviewed release version
         type: string
         required: true
+      verify_oidc:
+        description: Verify npm OIDC authentication without staging
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -41,20 +45,7 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           persist-credentials: false
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
-        if: inputs.package_id != 'ordiweft-migrations/apimart'
-        with:
-          repository: xurunxin/Ordiweft
-          ref: 05c2a029fb34607ffaf5d2c6ab26026b149a68c3
-          path: host
-          persist-credentials: false
       - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
-        if: inputs.package_id != 'ordiweft-migrations/apimart'
-        with:
-          go-version-file: host/go.mod
-          cache: false
-      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
-        if: inputs.package_id == 'ordiweft-migrations/apimart'
         with:
           go-version: "1.27.0"
           cache: false
@@ -70,19 +61,20 @@ jobs:
           set -euo pipefail
           [[ "$PACKAGE_ID" =~ ^[a-z0-9-]+/[a-z0-9-]+$ && "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
           node scripts/registry.mjs check
-          if [[ "$PACKAGE_ID" == "ordiweft-migrations/apimart" ]]; then
-            go run scripts/npm-pack.go "plugins/$PACKAGE_ID/$VERSION/source" "$RUNNER_TEMP/plugin.zip"
-          else
-            (cd host && go build -mod=readonly -trimpath -o "$RUNNER_TEMP/ordiweft-plugin" ./cmd/ordiweft-plugin)
-            "$RUNNER_TEMP/ordiweft-plugin" pack \
-              -root "plugins/$PACKAGE_ID/$VERSION/source" \
-              -out "$RUNNER_TEMP/plugin.zip"
-          fi
+          go run scripts/npm-pack.go "plugins/$PACKAGE_ID/$VERSION/source" "$RUNNER_TEMP/plugin.zip"
           node scripts/npm-release.mjs "$PACKAGE_ID" "$VERSION" "$RUNNER_TEMP/plugin.zip" "$RUNNER_TEMP/npm-plugin"
+      - name: Verify npm OIDC authentication
+        if: inputs.verify_oidc
+        run: node scripts/npm-verify-oidc.mjs "$RUNNER_TEMP/npm-plugin/package.json"
       - name: Submit the package for npm approval
+        if: inputs.verify_oidc == false
         env:
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org
         run: |
           set -euo pipefail
+          if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" || -z "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]]; then
+            echo "::error::GitHub Actions OIDC is unavailable. Check id-token: write on the stage job."
+            exit 1
+          fi
           cd "$RUNNER_TEMP/npm-plugin"
-          npm stage publish --ignore-scripts --access public
+          npm stage publish --ignore-scripts --access public --loglevel verbose
