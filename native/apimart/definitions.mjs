@@ -38,6 +38,12 @@ export const frames = (required = false, end = 'last_frame_image', first = 'firs
   ...(end ? [ref(end, 'image', 1, {role: 'last_frame'})] : []),
 ]
 
+const hiddenModels = new Set([
+  'gpt-4o-mini-tts', 'gpt-audio-mini', 'dall-e-3', 'imagen-4.0-apimart',
+  'seedance-2.0-face', 'seedance-2.0-fast-face',
+  'grok-imagine-1.0-apimart', 'grok-imagine-1.0-edit-apimart', 'grok-imagine-1.0-video-apimart',
+])
+
 const model = (kind, id, fields, references, settings) => {
   const {name, maxPrompt, optionalPrompt, presentation, referenceSyntax, usage, endpoint, upstream, fixed, musicTask, promptKey, hidden, transcription, action, ...rest} = settings
   const capabilities = {image: 'image.generate', video: 'video.generate', music: 'music.generate', speech: 'speech.generate', transcription: 'speech.transcribe'}
@@ -72,7 +78,7 @@ const model = (kind, id, fields, references, settings) => {
       inputKinds: [...new Set(references.map(r => r.kind))],
       maxInputs: references.reduce((sum, r) => sum + r.max, 0), inputRoles,
       prompt: kind !== 'transcription' && promptKey !== false ? {required: !optionalPrompt, label: promptLabels[kind], maxLength: maxPrompt, referenceSyntax} : undefined,
-      usageNote: usage, hidden, transcription, ...rest,
+      usageNote: usage, hidden: hidden || hiddenModels.has(upstream || id) || undefined, transcription, ...rest,
     },
     upstream, references, presentation, endpoint: endpoint || route[kind], fixed,
     promptKey: promptKey === false ? undefined : (promptKey || (kind !== 'transcription' ? (kind === 'speech' ? 'input' : 'prompt') : undefined)),

@@ -30,7 +30,7 @@ APIMart 接入 Ordiweft 的图像、视频、音乐、配音和语音转录入�
 
 - `image-models.mjs` 描述参考图、蒙版、组图、精细度、画幅和分辨率。Nano banana 2.1 官方版支持 1–4 张，Ext 一次一张。
 - `video-models.mjs` 描述各模型可选时长、分辨率、比例和引用。MAGI-2 分为文生、首尾帧、多模态参考。三种模式固定输出 1080p。
-- `audio-models.mjs` 描述 Flow Music、Lyria 3.5、Suno 音效和参考音频操作。Suno 音乐生成的灵感、自定义、歌词和纯音乐选项位于 `definitions.mjs`。Whisper-1 在转录入口提供时间段。GPT Audio Mini 默认关闭，兼容路由仍待该账户实测。
+- `audio-models.mjs` 描述 Flow Music、Lyria 3.5、Suno 音效和参考音频操作。Suno 音乐生成的灵感、自定义、歌词和纯音乐选项位于 `definitions.mjs`。Whisper-1 在转录入口提供时间段。GPT Audio Mini 保留历史型号 ID，兼容路由仍待该账户实测。
 - MiniMax H3 Context IR 输出结构化上下文。部分 Midjourney、Suno 和 Flow Music 编辑操作仍需接入各自的任务票据或专用产物。
 
 插件对每个接入的模型声明公开定价来源和精确上游 ID。按张、按秒、按次和宿主可计量的费率进入 `pricing.rules`。需要更多用量字段的阶梯保持待核实。Nano banana 2.1 官方版的分辨率预扣与实际 Token 结算是两个字段。
@@ -133,6 +133,10 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 - 从已保存的放大单图创建遮罩重绘节点。画布使用与 GPT Image 相同的遮罩编辑器，在底图像素坐标内绘制或导入透明 PNG。保存后才可执行。适配器先打开 inpaint 任务，收到 MODAL 状态后在同一任务提交一次遮罩，提示词可留空。两阶段之间保留原任务回执。[Inpaint](https://docs.apimart.ai/cn/api-reference/images/midjourney/inpaint.md) · [Modal](https://docs.apimart.ai/cn/api-reference/images/midjourney/modal.md)
 - Grok 延用归一化矩形，增加精确多边形（含内部孔洞）与对象索引输入。对象索引可填写 API 分段结果中的原始索引，由插件核对原图分段结果；目前使用参数面板填写坐标和索引。[局部编辑](https://docs.apimart.ai/cn/api-reference/images/grok-imagine-2.0-ext/layer-region-edit.md)
 GPT-4o Mini TTS 原始 PCM 尚缺 APIMart 的采样率、声道和位深契约。VEO 多样本预估与续写费用以实际任务回执或专用报价为准。
+
+## 1.3.8 模型目录
+
+隐藏 GPT-4o Mini TTS，以及 DALL·E 3、Imagen 4、Seedance 2.0 Face／Fast Face、Grok Imagine 1.0 文生图／图像编辑／视频、GPT Audio Mini。Grok Imagine 1.0 视频的文生、参考图与首尾帧执行条目一并隐藏。历史工程和模型 ID 保留。APIMart 默认配音节点从新建菜单移除。
 
 ## 构建与核验
 

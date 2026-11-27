@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.7"
+	version  = "1.3.8"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -82,7 +82,6 @@ func loadPlugin() (*plugin, error) {
 				{ID: "image", Label: "APIMart 图片", Capability: "image.generate", Model: "gemini-nano-banana-2.1"},
 				{ID: "video", Label: "APIMart 视频", Capability: "video.generate", Model: "magi-2"},
 				{ID: "music", Label: "APIMart 音乐", Capability: "music.generate", Model: "suno"},
-				{ID: "speech", Label: "APIMart 配音", Capability: "speech.generate", Model: "gpt-4o-mini-tts"},
 			},
 		},
 	}
