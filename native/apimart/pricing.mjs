@@ -42,10 +42,40 @@ export function modelPricing(entry, row, checkedAt) {
       }
     }
   } else if (entry.model.id === 'seedance-2.5-final-1080p') {
-    for (let videos = 0; videos <= 10; videos++) {
-      const key = videos === 0 ? 'token-1080P' : 'token-1080P-input'
-      add({reference_video_count: String(videos)},
-        component('output_token', row.billing_tier_paid_prices?.[key], ['billing_tier_paid_prices', key], 1000000))
+    for (const resolution of fields.resolution.enum) {
+      for (let videos = 0; videos <= 10; videos++) {
+        const key = 'token-' + resolution.toUpperCase() + (videos === 0 ? '' : '-input')
+        add({resolution, reference_video_count: String(videos)},
+          component('output_token', row.billing_tier_paid_prices?.[key], ['billing_tier_paid_prices', key], 1000000))
+      }
+    }
+  } else if (id === 'flux-3-video') {
+    const draft = entry.fixed?.draft === true
+    const continuation = Boolean(entry.model.taskContinuation)
+    const videoInput = entry.references.some(r => r.kind === 'video')
+    const resolutions = draft ? ['hd'] : fields.resolution.enum
+    for (const resolution of resolutions) {
+      for (const videos of continuation ? [0,1] : [Number(videoInput)]) {
+        const key = (videos ? 'V2V-' : '') + (draft ? 'DRAFT' : resolution.toUpperCase())
+        const when = draft ? {} : {resolution}
+        if (continuation) when.reference_video_count = String(videos)
+        add(when, use('resolution_paid_prices', row.resolution_paid_prices?.[key], key))
+      }
+    }
+  } else if (id === 'apimart-zoe') {
+    const draft = entry.fixed?.draft === true
+    const final = Boolean(entry.model.taskContinuation)
+    const maxVideos = final ? 10 : entry.references.find(r => r.kind === 'video')?.max ?? 0
+    const resolutions = draft || final ? [entry.fixed.resolution] : fields.resolution.enum
+    for (const resolution of resolutions) {
+      for (let videos = 0; videos <= maxVideos; videos++) {
+        const key = resolution.toUpperCase() + (videos ? '-input' : '')
+        const rate = row.resolution_paid_prices?.[key]
+        const path = ['resolution_paid_prices', key]
+        const when = (draft || final) ? {} : {resolution}
+        when.reference_video_count = String(videos)
+        add(when, component('video_second', rate, path), ...(videos ? [component('input_video_second', rate, path)] : []))
+      }
     }
   } else if (entry.fixed?.draft === true) {
     const maxVideos = entry.references.find(r => r.kind === 'video')?.max ?? 0
@@ -81,7 +111,7 @@ export function modelPricing(entry, row, checkedAt) {
   } else if (row.billing_type === 'mj_action') {
     const operation = entry.action || 'imagine'
     for (const speed of fields.speed?.enum ?? []) {
-      add({speed}, component('job', row.action_paid_prices?.[operation]?.[speed], ['action_paid_prices', operation, speed]))
+      add({speed,...(fields.repeat ? {repeat:'1'} : {})}, component('job', row.action_paid_prices?.[operation]?.[speed], ['action_paid_prices', operation, speed]))
     }
     if (!fields.speed) add({}, component('job', row.action_paid_prices?.[operation]?.default, ['action_paid_prices', operation, 'default']))
   } else if (row.billing_type === 'version_resolution') {
@@ -169,5 +199,5 @@ export function modelPricing(entry, row, checkedAt) {
       }
     }
   }
-  return {...spec, rules: [...rules.values()]}
+  return {...spec, rules: [...rules.values()].map(rule => fields.official_fallback ? {...rule,when:{...rule.when,official_fallback:"false"}} : rule)}
 }

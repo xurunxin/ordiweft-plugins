@@ -126,6 +126,7 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	}
 	grouped := map[string][]any{}
 	ordinals := map[string]int{}
+	originalSound := body["keep_original_sound"]
 	var actorVoice string
 	for i, file := range files {
 		if file.ref.Field == "ref_images.audio_url" {
@@ -143,6 +144,10 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 			if !strings.Contains(prompt, tag) {
 				body["prompt"] = strings.TrimSpace(prompt + " " + tag)
 			}
+		}
+		if file.ref.Field == "video_list" && originalSound != nil {
+			value.(map[string]string)["keep_original_sound"] = originalSound.(string)
+			delete(body, "keep_original_sound")
 		}
 		if file.ref.Array {
 			grouped[file.ref.Field] = append(grouped[file.ref.Field], value)
@@ -164,6 +169,18 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	for field, values := range grouped {
 		body[field] = values
 	}
+	limit := 16
+	if len(spec.Model.OutputCount) > 0 {
+		var g aigc.Generation
+		if err := json.Unmarshal(request.Payload, &g); err != nil {
+			return empty, err
+		}
+		limit, err = aigc.GenerationOutputLimit(spec.Model, g.Parameters, 1)
+		if err != nil {
+			return empty, err
+		}
+	}
+	var origins []aigc.TaskOrigin
 	payload, err := json.Marshal(body)
 	if err != nil {
 		return empty, err
@@ -194,21 +211,20 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	}
 	taskList := make([]remoteTask, 0, len(tasks))
 	var all []aigc.Media
-	var origins []aigc.TaskOrigin
 	sourceEligible := p.manifest.CanProduceTaskSource(spec.Model.ID, body)
 	for _, id := range tasks {
 		task, err := p.wait(ctx, key, path, id)
 		if err != nil {
 			return empty, err
 		}
-		media, err := decodeMedia(spec.Model.Capability, task.Result)
+		media, err := decodeTaskMedia(spec, body, task.Result)
 		if err != nil {
 			return empty, err
 		}
 		taskList = append(taskList, task)
 		// APIMart's follow-up endpoints select a task, with no field for
 		// choosing between several outputs belonging to the same task.
-		if sourceEligible && len(media) == 1 && media[0].Kind == "video" && len(all) < 16 &&
+		if sourceEligible && singleVideoOutput(media) && len(all) < 16 &&
 			task.Created > 0 && task.Created <= time.Now().Add(5*time.Minute).Unix() {
 			origins = append(origins, aigc.TaskOrigin{
 				SourceTask: aigc.SourceTask{Ticket: task.ID, OutputIndex: len(all)}, CreatedAt: task.Created * 1000,
@@ -216,7 +232,7 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 		}
 		all = append(all, media...)
 	}
-	if len(all) == 0 || len(all) > 16 {
+	if len(all) == 0 || len(all) > limit {
 		return empty, errors.New("APIMart returned an unsupported number of outputs")
 	}
 	meta := map[string]any{

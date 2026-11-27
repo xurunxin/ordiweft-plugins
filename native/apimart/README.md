@@ -62,13 +62,13 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 | Seedance 2.0 标准 / Fast / Mini | 文生视频、图生视频、多模态参考生视频 |
 | Seedance 2.5 / Flash | 文生视频、图生视频、多模态参考生视频、视频编辑、视频延长。标准版另外提供 480p 草稿入口 |
 | Kling V4 / Flash | 文生视频、图生视频、参考生视频、视频编辑、视频续写。Flash 图生只接首帧，参考可接图和视频 |
-| APIMart Zoe | 文生视频、图生视频、多模态参考生视频、视频编辑 |
-| Wan 3.0 / Prime | 文生视频、图生视频、多模态参考生视频 |
+| APIMart Zoe | 文生视频、图生视频、多模态参考生视频、视频编辑、480p 样片 |
+| Wan 3.0 / Prime | 文生视频、图生视频、多模态参考生视频、文档或网页参考 |
 | Vidu Q4 Preview | 图生视频、参考生视频。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/vidu-q4-preview/generation) |
-| FLUX 3 Video | 文生视频、图生视频（1–10 张按顺序的关键帧）、视频续写。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/flux-3-video/generation) |
+| FLUX 3 Video | 文生视频、图生视频（1–10 张按顺序的关键帧）、视频续写、HD 草稿、续写草稿。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/flux-3-video/generation) |
 | HappyHorse 1.0 | 文生视频、图生视频、参考图生视频、视频编辑。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/happyhorse-1.0/generation) |
 
-对于 Seedance 2.5、Kling V4 和 Zoe，普通视频连线默认作为参考素材。视频编辑、视频延长和续写由用户显式选择，适配器发送各自的 APIMart 参数。Vidu Q4 的旧文生 ID 与 Wan 3.0 的旧编辑 ID 仅保留用于旧节点识别。上表列出当前插件接入的方式，Wan 3.0 的文件／链接参考和 Zoe 样片暂未接入。
+对于 Seedance 2.5、Kling V4 和 Zoe，普通视频连线默认作为参考素材。视频编辑、视频延长和续写由用户显式选择，适配器发送各自的 APIMart 参数。Vidu Q4 的旧文生 ID 与 Wan 3.0 的旧编辑 ID 仅保留用于旧节点识别。Wan 3.0 的文档参考使用免登录的公网网址，在参数面板中选定「文档或网页参考」后可填写。
 
 ### 其他模型
 
@@ -78,7 +78,7 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 | Seedance 1.0 Pro 与海螺 | 分开呈现文生和图生。Seedance 1.0 Pro Fast 只接首帧，Quality 可接尾帧。海螺 2.3 只接首帧。[Seedance 1.0 Pro](https://docs.apimart.ai/cn/api-reference/videos/doubao/generation) · [海螺 2.3](https://docs.apimart.ai/cn/api-reference/videos/minimax-hailuo-2.3/generation) |
 | SkyReels V4 | 文生、首尾帧及中间帧、多模态参考、拼贴图驱动、单主体声纹同步、视频扩展。适配器发送对应的带标签对象。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/skyreels-v4/generation) |
 | Kling v3 Omni / Video O1 | 文生、首尾帧、参考图、源视频编辑与视频特征参考。视频输入走 `video_list`，素材引用按可灵格式编号。[v3 Omni](https://docs.apimart.ai/cn/api-reference/videos/kling-v3-omni/generation) · [Video O1](https://docs.apimart.ai/cn/api-reference/videos/kling-video-o1/generation) |
-| Wan 2.5 / 2.6 / 2.7 | 区分图生和文生。文生可带背景音频，图生可用驱动音频。Wan 2.7 的视频续写使用独立入口。[Wan 2.5](https://docs.apimart.ai/cn/api-reference/videos/wan2.5/generation) · [Wan 2.6](https://docs.apimart.ai/cn/api-reference/videos/wan2.6/generation) · [Wan 2.7](https://docs.apimart.ai/cn/api-reference/videos/wan2.7/generation) |
+| Wan 2.5 / 2.6 / 2.7 | 区分图生和文生。文生可带背景音频，图生可用驱动音频。Wan 2.6 的图片特效使用一张参考图并选择模板。Wan 2.7 的视频续写使用独立入口。[Wan 2.5](https://docs.apimart.ai/cn/api-reference/videos/wan2.5/generation) · [Wan 2.6](https://docs.apimart.ai/cn/api-reference/videos/wan2.6/generation) · [Wan 2.7](https://docs.apimart.ai/cn/api-reference/videos/wan2.7/generation) |
 | Vidu Q3 | Pro / Turbo 支持文生和图生。标准版及 Mix 使用参考生视频，要求参考图。[Pro / Turbo](https://docs.apimart.ai/cn/api-reference/videos/vidu-q3-pro/generation) · [标准版与 Mix](https://docs.apimart.ai/cn/api-reference/videos/vidu-q3/generation) |
 | Grok Imagine 1.5 Video | 文生、参考图、图生（首帧或首尾帧）、首帧加参考图。同一执行家族提交到 APIMart 文档所用的 Ext 模型，保留旧画布 ID。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/grok-imagine/generation) |
 | PixVerse V6 | 文生、单图、首尾帧过渡、多参考图融合，以及从已绑定任务续写。V6 Max 提供文生和单图。[V6](https://docs.apimart.ai/cn/api-reference/videos/pixverse-v6/generation) · [V6 Max](https://docs.apimart.ai/cn/api-reference/videos/pixverse-v6-max/generation) |
@@ -91,9 +91,24 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 ## 从原任务续作
 
 - 选择成功的 MiniMax H3 768P 版本，点击参数按钮旁的「升为 2K」创建续作节点。支持普通生成及首尾帧，沿用上游原任务的内容和参考。[H3 Regeneration 文档](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/regeneration)
-- 用 Seedance 2.5 的 480p 草稿或首尾帧草稿模式生成预览，选择版本并创建 1080p 正式片。任务自上游创建起 3 天内有效，正式片沿用原内容、时长、画幅和参考。[Seedance 2.5 文档](https://docs.apimart.ai/cn/api-reference/videos/seedance-2-5/generation)
+- 用 Seedance 2.5 的 480p 草稿或首尾帧草稿模式生成预览，选择版本并点击「草稿转正片」。默认 1080p，原样片通道支持时可选 4K。3 天内可基于同一草稿创建正式片，沿用原内容、时长、画幅和参考。[Seedance 2.5 文档](https://docs.apimart.ai/cn/api-reference/videos/seedance-2-5/generation)
+
+- APIMart Zoe 的 480p 样片有 24 小时的转正窗口，生成 1080p 正片时沿用原样片设置。[Zoe 文档](https://docs.apimart.ai/cn/api-reference/videos/apimart-zoe/generation)
+- FLUX 3 Video 的 HD 草稿或续写草稿可按 HD 或 FHD 渲染正片。续写草稿使用续写价档。[FLUX 3 Video 文档](https://docs.apimart.ai/cn/api-reference/videos/flux-3-video/generation)
 
 创建续作节点只保存来源和设置。在新节点中点击生成才提交计费请求。宿主要求原任务归属当前用户、原版本仍在同一画布且凭据一致。早期插件回执缺少这项证明。黄金价报价使用原版本时长及已测量的参考视频，H3 计入超过 5 张的参考图，Seedance 按对应 Token 档位呈现估算。所需计量缺失时显示待核实，实扣保留 APIMart 回执。
+
+## 1.3.4 参数核对
+
+| 系列 | 已接入的参数与限制 |
+| --- | --- |
+| 图像 | 文档声明的提交前审核、Ext 官方兜底、GPT Image 2.6 规划强度与 SVG 写作配置、标注层、Seedream 5.5 图层拆分与 OCR 开关、Wan 2.7 框选坐标与配色、Qwen Image 改写模式、Midjourney 结构化权重与参考图网址。 |
+| 视频 | 自动时长、MP4 / MOV、尾帧、VEO GIF、Seedance 联网工具、可灵分镜及参考主体、视频原声处理、PixVerse 连续片段、Omni Ext 系统指令与负面提示词、Wan 3.0 文档／网页、Wan 2.6 图片特效。 |
+| 音频 | Suno 灵感生成的自定义模型和歌词改写，翻唱的灵感／自定义选项，延伸的 Persona，Whisper 转录提示词及温度。 |
+
+画布连线提供图像、音频、视频素材。可灵主体图及 Midjourney 的角色、风格、深度图参数支持公网图像网址。任务 ID 由原版本绑定，回调和异步结果格式由适配器管理。Whisper 使用带时间段的 verbose JSON。VEO GIF 在 720p 选项下显示。Seedream 图层的高级 OCR 元数据尚无专用编辑器。开启官方兜底时，实际费用以渠道回执为准。
+
+当前公开文档未给部分已接入的历史 ID 提供请求契约，沿用原有声明。包括 DALL·E 3、Imagen 4、Nano banana 2 Lite、带人脸渠道的 Seedance 2.0、VEO 3.1 官方渠道、HappyHorse 1.1、Wan 2.7 R2V/VideoEdit、Wan 2.6 I2V/Flash、可灵动作控制、部分 Grok Imagine 历史模型及 GPT Audio Mini。[APIMart 中文 API 参考](https://docs.apimart.ai/cn/api-reference)
 
 ## 构建与核验
 

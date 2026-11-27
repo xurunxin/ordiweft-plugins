@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { add, decimal, flag, generationMode, imageAndText, images, line, number, object, options, ratios, ref, wideRatios } from './definitions.mjs'
+import { add, decimal, flag, generationMode, imageAndText, images, line, list, number, object, officialFallback, options, publicURL, ratios, ref, wideRatios } from './definitions.mjs'
 
 const gptRatios = ratios + ' 2:1 1:2 9:21 3:1 1:3'
 const ratios7 = '1:1 16:9 9:16 4:3 3:4 3:2 2:3'
@@ -40,6 +40,7 @@ for (const [id, name] of Object.entries(nanoLabels)) {
   addImage( id, {
     size: ratio('auto ' + (v31 ? wideRatios : ratios), 'auto'),
     ...(v31 && !lite ? {resolution: res('0.5K 1K 2K 4K')} : id.startsWith('gemini-3-pro') ? {resolution: res()} : {}),
+    ...(!official && !lite ? {official_fallback:officialFallback} : {}),
     ...(official && !lite ? {n: n(4)} : {}),
     ...(v31 && !lite ? {google_search: flag(false), google_image_search: flag(false)} : {}),
   }, images(id.startsWith('gemini-2.5') ? 3 : 14), {name, fixed: lite || !official ? {n: 1} : undefined})
@@ -55,20 +56,30 @@ addImage('gpt-image-1 gpt-image-1-official gpt-image-1.5 gpt-image-1.5-official'
   ...commonGPT, size: ratio('1:1 3:2 2:3'),
   background: options('auto opaque transparent','auto'),
 }, masked(15), {...imageAndText('参考图编辑'),usage: '可连入参考图及透明 PNG 蒙版。压缩质量只在 JPEG 和 WebP 下可设置。'})
-addImage('gpt-image-2', {size:ratio(gptRatios), resolution:res('1k 2k 4k','1k'), n:n(4)}, images(15))
+addImage('gpt-image-2', {size:ratio(gptRatios), resolution:res('1k 2k 4k','1k'), n:n(1), official_fallback:officialFallback}, images(15))
 addImage('gpt-image-2-official', {...commonGPT, size:ratio(gptRatios), resolution:res('1k 2k 4k','1k')}, masked(16))
 const nextGPT = {...commonGPT, quality: options('auto low medium high xhigh max','auto'), resolution: res('1k 2k 4k','1k'),
   size: pixels, background: options('auto opaque transparent','auto')}
 addImage( 'gpt-image-2.5-flare gpt-image-2.5-sunburst', nextGPT, masked(16))
 addImage( 'gpt-image-2.5-ext', {version: options('flare sunburst','flare'), size: ratio('auto ' + ratios, 'auto'), resolution: res(), n: n(4)}, images(16))
 const gif = {output_format:'gif'}
+const svg = {output_format:'svg'}
+const svgFields = {
+  model:line(128,{label:'SVG 编写模型',required:true}),
+  reasoning:object({effort:options('none minimal low medium high xhigh max',undefined,{label:'推理强度'})},{label:'SVG 推理'}),
+}
+const complexity = options('low medium high',undefined,{label:'规划强度'})
+const markup = ref('markup_url','image',1,{role:'markup',inline:true})
 addImage( 'gpt-image-2.6-flare gpt-image-2.6-sunburst', {
-  ...nextGPT, output_format: format('png jpeg webp gif svg'),
+  ...nextGPT, complexity, svg:object(svgFields,{label:'SVG 配置',visibleWhen:svg,required:true}),
+  safety_identifier:line(128,{label:'终端用户标识',description:'填入稳定的匿名标识，例如用户名的哈希。'}),
+  output_format: format('png jpeg webp gif svg'),
   frame_count: number(2, 16, 9, {label:'帧数', visibleWhen:gif}),
   frame_duration_ms: number(20, undefined, 200, {label:'每帧时长（毫秒）', step:10, visibleWhen:gif}),
-}, masked(16), {usage: '静态图可使用参考图与蒙版。GIF 尺寸为单帧像素尺寸，不使用比例名或蒙版。'})
+}, [...masked(16),markup], {usage: '静态图支持参考图、蒙版或标注层。GIF 使用单帧像素尺寸。官方 SVG 另按编写模型的 Token 结算。'})
 addImage( 'gpt-image-2.6-ext', {
-  version:options('flare sunburst','flare'), size:ratio('auto '+ratios,'auto'), resolution: res('1k 2k 4k','1k'), n:n(4),
+  version:options('flare sunburst','flare'), size:ratio('auto '+ratios,'auto'), resolution: res('1k 2k 4k','1k'), n:n(1),
+  quality:nextGPT.quality, complexity, svg:object(svgFields,{label:'SVG 配置',visibleWhen:svg}),
   output_format:format('png jpeg webp gif svg'), frame_count:number(2,16,9,{label:'帧数',visibleWhen:gif}),
   frame_duration_ms:number(20,undefined,200,{label:'每帧时长（毫秒）',step:10,visibleWhen:gif}),
 }, images(16))
@@ -88,9 +99,12 @@ const layerFields = {size:pixels, resolution:res('1K 1.5K 2K','1K'), watermark:f
 }
 addImage('seedream-5-0-pro seedream-5-0-flash',layerFields,images(10),{fixed:{n:1},usage:'可进行多图融合。图层拆分需要参考图。'})
 addImage('seedream-5-5',{
-  ...layerFields, output_format:format('png jpeg','png'), text_recognition:flag(false,{label:'文字识别'}),
-  layer_decomposition_options:object({max_images:number(1,16,undefined,{label:'最大图层数'})},{label:'图层选项',visibleWhen:{layer_decomposition:true}}),
-}, images(10))
+  ...layerFields, resolution:res('1K 1.5K 2K','2K'), background:options('auto opaque transparent','auto',{visibleWhen:{layer_decomposition:false}}),
+  output_format:format('png jpeg','png'), text_recognition:flag(false,{label:'文字识别',visibleWhen:{layer_decomposition:true}}),
+  layer_decomposition_options:object({max_images:number(2,100,30,{label:'最大输出数（含底图）',required:true})},{label:'图层选项',default:{max_images:30},visibleWhen:{layer_decomposition:true}}),
+}, images(10),{fixed:{n:1},optionalPrompt:true,
+  outputCount:[{when:{layer_decomposition:true},parameter:'layer_decomposition_options.max_images',maximum:100}],
+  usage:'图层拆分接入一张图片，省略提示词时自动拆分。'})
 
 addImage('kling-v4-image',{
   size:ratio('auto ' + ratios7 + ' 21:9','auto'), resolution:res('2K 4K 8K','2K'),
@@ -138,7 +152,7 @@ addImage('minimax-h3-image minimax-h3-image-highspeed',{
 },images(16))
 const qwen = {size:ratio(),resolution:res('1K 2K'),n:n(6),negative_prompt:line(2000,{control:'textarea'})}
 addImage('qwen-image-2.0 qwen-image-2.0-pro',qwen,images(3))
-addImage('qwen-image-3.0 qwen-image-3.0-pro',{...qwen,prompt_extend:flag(false)},images(3))
+addImage('qwen-image-3.0 qwen-image-3.0-pro',{...qwen,prompt_extend:flag(false),prompt_extend_mode:options('direct agent',undefined,{label:'提示词改写方式',visibleWhen:{prompt_extend:true},optionLabels:{direct:'直接改写',agent:'智能改写（文生图）'}})},images(3))
 addImage('z-image-turbo',{size:ratio(),resolution:res('1K 2K'),prompt_extend:flag(false)},[])
 addImage('imagen-4.0-apimart',{size:ratio('1:1 3:4 4:3 9:16 16:9'),n:n(4)},[])
 addImage('grok-imagine-1.0-apimart grok-imagine-1.5-apimart',{size:ratio(),n:n(4)},[])
@@ -147,19 +161,31 @@ addImage('grok-imagine-1.5-edit-apimart',{size:ratio()},[ref('image_urls','image
   upstream:'grok-imagine-1.5-apimart',fixed:{n:1},...generationMode('reference','参考图编辑'),
 })
 const officialGrokRatios = 'auto 1:1 16:9 9:16 4:3 3:4 3:2 2:3 2:1 1:2 19.5:9 9:19.5 20:9 9:20'
-const officialGrok = {size:ratio(officialGrokRatios,'1:1'),resolution:res('1k 2k','1k'),n:n(10)}
-addImage('grok-imagine-image',officialGrok,images(5))
-addImage('grok-imagine-image-quality',officialGrok,images(3))
+const officialGrok = {size:ratio(officialGrokRatios,'auto'),resolution:res('1k 2k','1k'),n:n(10)}
+addImage('grok-imagine-image',officialGrok,images(5),{maxPrompt:8000})
+addImage('grok-imagine-image-quality',officialGrok,images(3),{maxPrompt:8000})
 addImage('grok-imagine-2.0-ext',{size:ratio('auto ' + wideRatios,'auto'),resolution:res('1k 2k','1k'),n:n(12)},images(5),{usage:'文生图最多 12 张；使用参考图时仅支持生成 1 张。'})
 addImage('grok-imagine-image-2.0',{aspect_ratio:ratio('auto ' + wideRatios,'auto'),resolution:res('1k 2k','1k'),quality:options('low medium','medium'),n:n(10)},images(3))
-addImage('wan2.7-image wan2.7-image-pro',{
-  size:options('1K 2K 4K','2K'),n:n(9),negative_prompt:line(2000,{control:'textarea'}),
-  watermark:flag(false),seed,thinking_mode:flag(true,{label:'思考模式'}),enable_sequential:flag(false),
-},images(10))
+const rectangle = object(Object.fromEntries(['x1','y1','x2','y2'].map(key => [key,number(0,undefined,undefined,{label:key,required:true})])),{label:'框选区域'})
+for (const id of ['wan2.7-image','wan2.7-image-pro']) {
+  addImage(id,{
+    size:line(24,{label:'尺寸或比例',description:'可填写像素尺寸、宽高比或分辨率档位。'}),
+    resolution:res(id.endsWith('-pro')?'1K 2K 4K':'1K 2K','2K'), n:n(12), negative_prompt:line(2000,{control:'textarea'}),
+    watermark:flag(false), seed:number(0,2147483647), thinking_mode:flag(undefined,{label:'思考模式',visibleWhen:{enable_sequential:false}}), enable_sequential:flag(false),
+    bbox_list:list(object({boxes:list(rectangle,{label:'像素坐标'})},{label:'参考图'}),{label:'框选编辑区域',description:'按参考图顺序各添加一项，每张图最多 2 个框。无需框选的图片保留空项。'}),
+    color_palette:list(object({hex:line(7,{label:'十六进制色值',required:true}),ratio:line(7,{label:'占比（如 10.5%）',required:true})}),{label:'配色表',description:'填写 3 至 10 个颜色，占比合计 100%。',visibleWhen:{enable_sequential:false}}),
+  },images(10))
+}
 addImage('midjourney',{
   size:ratio(),speed:options('relax fast turbo','relax'),version:options('8.2 8.1 7 6.1 6 5.2 5.1','8.2'),
   quality:options('0.25 0.5 1 2'),seed,negative_prompt:line(1000,{control:'textarea'}),
   stylize:number(0,1000,undefined,{label:'风格化'}),chaos:number(0,100,undefined,{label:'变化幅度'}),
   weird:number(0,3000,undefined,{label:'怪异度'}),tile:flag(undefined,{label:'平铺'}),
+  style:line(64,{label:'风格预设'}),niji:flag(undefined,{label:'Niji 模式'}),
+  iw:decimal(0,3,undefined,{label:'垫图权重'}),cw:number(0,100,undefined,{label:'角色权重'}),
+  sw:number(0,1000,undefined,{label:'风格权重'}),dw:decimal(0,100,undefined,{label:'深度权重'}),
+  cref:publicURL('角色参考图网址'),sref:publicURL('风格参考图网址'),dref:publicURL('深度参考图网址'),
+  repeat:number(1,40,1,{label:'重复生成',description:'1 为单次，2 至 40 为重复生成。'}),stop:number(10,100,undefined,{label:'提前停止（%）'}),
+  extra:line(1000,{label:'附加参数'}),
   raw:flag(undefined,{label:'原始风格'}),draft:flag(undefined,{label:'草稿'}),hd:flag(undefined,{label:'高清'}),
-},images(4),{...imageAndText('垫图生成'),endpoint:'/v1/midjourney/generations',action:'imagine',usage:'原生 Midjourney 提示词参数也可直接写在提示词末尾。'})
+},images(4),{...imageAndText('垫图生成'),endpoint:'/v1/midjourney/generations',action:'imagine',outputCount:[{parameter:'repeat',maximum:40}],usage:'原生 Midjourney 提示词参数也可直接写在提示词末尾。'})

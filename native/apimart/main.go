@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.3"
+	version  = "1.3.4"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -149,8 +149,10 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 		switch spec.Model.ID {
 		case "MiniMax-H3-Regeneration":
 			body["source_task_id"] = request.SourceTask.Ticket
-		case "seedance-2.5-final-1080p":
+		case "seedance-2.5-final-1080p", "apimart-zoe-final":
 			body["draft_task_id"] = request.SourceTask.Ticket
+		case "flux-3-video-final":
+			body["draft_from_task_id"] = request.SourceTask.Ticket
 		case "pixverse-v6-extend", "gemini-omni-1.1-flash-task-extend", "gemini-omni-1.2-flash-task-extend", "gemini-omni-1.2-flash-ext-task-extend", "gemini-omni-flash-preview-task-extend":
 			body["extend_from_task_id"] = request.SourceTask.Ticket
 		default:
@@ -166,8 +168,9 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			body["bpm"] = fmt.Sprintf("%.0f", bpm)
 		}
 	}
-	if body["model"] == "suno" && spec.Endpoint == "/v1/music/generations" {
-		if err := prepareSuno(body, prompt); err != nil {
+	if spec.Upstream == "suno" {
+		prompt, err = prepareSuno(spec.Model.ID, body, prompt)
+		if err != nil {
 			return spec, nil, nil, err
 		}
 	}
@@ -212,7 +215,7 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 	}
 	if len(files) > 0 {
 		switch spec.Model.ID {
-		case "seedance-2.5", "seedance-2-5-flash", "seedance-2.5-draft", "apimart-zoe":
+		case "seedance-2.5", "seedance-2-5-flash", "seedance-2.5-draft", "apimart-zoe", "apimart-zoe-draft":
 			body["omni_reference_task_type"] = "reference"
 		case "wan3.0-video", "wan3.0-video-prime", "Omni-Flash-Ext":
 			body["generation_type"] = "reference"
@@ -241,39 +244,10 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 		}
 		files[0].ref.Field, files[0].ref.Array = "image_urls", true
 	}
-	if spec.Upstream == "gpt-image-2.6-ext" && len(files) > 0 && (body["output_format"] == "gif" || body["output_format"] == "svg") {
-		return spec, nil, nil, errors.New("APIMart GPT Image 2.6 Ext GIF and SVG accept text only")
-	}
-	if body["output_format"] == "gif" {
-		for _, file := range files {
-			if file.ref.Role == "mask" {
-				return spec, nil, nil, errors.New("GIF output does not support a mask")
-			}
-		}
+	if err := normalizeModelOptions(spec, body, files); err != nil {
+		return spec, nil, nil, err
 	}
 	return spec, body, files, nil
-}
-
-func prepareSuno(body map[string]any, prompt string) error {
-	custom := body["custom"] == "custom"
-	body["custom"] = custom
-	instrumental, _ := body["instrumental"].(bool)
-	if !custom && (prompt == "" || len([]rune(prompt)) > 3000) || custom && !instrumental && prompt == "" {
-		return errors.New("Suno requires an inspiration prompt up to 3000 characters or lyrics in custom vocal mode")
-	}
-	if body["version"] == "custom" {
-		id, _ := body["custom_model_id"].(string)
-		if !uuidPattern.MatchString(id) {
-			return errors.New("Suno custom model requires its complete UUID")
-		}
-		if persona, _ := body["persona_id"].(string); persona != "" {
-			return errors.New("Suno custom model and persona are mutually exclusive")
-		}
-		delete(body, "version")
-	} else {
-		delete(body, "custom_model_id")
-	}
-	return nil
 }
 
 func matchesRole(ref reference, role string) bool {
