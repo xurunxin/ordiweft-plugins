@@ -21,6 +21,7 @@
 | 百炼万相 2.7 | [dashscope-wan](../examples/plugin-go/dashscope-wan) | `ordiweft-examples/dashscope-wan` | 百炼区域 API 连接和受审 OSS 上传策略 |
 | 百炼完整渠道 | [源码](../native/dashscope) · [发行配方](../plugins/ordiweft-migrations/dashscope/1.1.0/recipe.json) | `ordiweft-migrations/dashscope` | 支持 `dashscope-exec-v1` 的宿主、原工作空间与账号配置 |
 | Higgsfield | [源码](../native/higgsfield) · [发行配方](../plugins/ordiweft-migrations/higgsfield/1.1.0/recipe.json) | `ordiweft-migrations/higgsfield` | 支持 `higgsfield-stdio-v1` 并记录该发行摘要的宿主、Higgsfield API 凭据 |
+| APIMart | [源码与安装说明](../native/apimart/README.md) | `apimart`（受信进程部署包） | 支持 1 MiB 进程清单与 `taskContinuation` 的 Ordiweft 宿主、APIMart API Key、公开黄金价查询 |
 
 ## Go 适配器
 
