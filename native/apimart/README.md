@@ -4,7 +4,9 @@ APIMart 接入 Ordiweft 的图像、视频、音乐、配音和语音转录入�
 
 ## 安装
 
-使用支持 1 MiB 进程插件清单和 `taskContinuation` 的 Ordiweft 宿主。将适用平台 ZIP 解压到宿主可信的 `data_dir/plugins/apimart`。Linux 上为 `provider` 赋予执行权限。核对 `plugin.json` 的程序 SHA-256 后重启宿主，再在管理后台的「渠道与模型」启用 APIMart。将插件的 `API_KEY` 映射到宿主服务环境中的 `APIMART_API_KEY`。
+官方 npm 包为 `@daoxialiuren/ordiweft-apimart`。使用支持 `apimart-stdio-v1` 且固定该发行摘要的 Ordiweft 宿主，在插件中心安装并激活。将插件的 `API_KEY` 映射到宿主服务环境中的 `APIMART_API_KEY`，然后在「渠道与模型」启用 APIMart。
+
+本地开发可把对应平台的独立 ZIP 解压到 `data_dir/plugins/apimart`，在 Linux 为 `provider` 赋予执行权限，核对 `plugin.json` 的 SHA-256 后重启宿主。已有手动部署的实例应先处理原任务并退出独立进程部署，再从插件中心安装同渠道。
 
 进程适配器以宿主服务身份运行，需要访问 APIMart 和产物存储。宿主分配 `data_dir/plugin-process-state/apimart` 保存上传状态。
 
@@ -48,7 +50,7 @@ APIMart 接入 Ordiweft 的图像、视频、音乐、配音和语音转录入�
 pwsh.exe -NoProfile -File scripts/build-apimart.ps1 -Sdk <已导出的公开SDK> -Out <新仓外目录>
 ```
 
-构建器在无外部 Go 模块下载的模式下测试适配器并生成 Windows amd64 和 Linux amd64 的 ZIP、程序文件和校验值。两个 ZIP 是受信进程部署包。插件中心的签名发行需要单独建包审阅。
+构建器在无外部 Go 模块下载的模式下测试适配器并生成 Windows amd64 和 Linux amd64 的独立 ZIP。官方发行使用干净提交、固定 SDK 和相同 Go 版本，追加 `-Release` 生成包含双平台程序、许可和构建凭据的 `source` 目录。用可信 `ordiweft-plugin pack` 打包，再按仓库的 npm 暂存发布流程审查。
 
 用 Node 24 更新公开黄金价快照：
 
