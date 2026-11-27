@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.8"
+	version  = "1.3.10"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -264,9 +264,12 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 	if spec.Upstream == "gemini-omni-1.1-flash-ext" && counts[0] == 2 {
 		return spec, nil, nil, errors.New("Omni Flash Ext accepts one or three image references")
 	}
-	if spec.Upstream == "grok-imagine-2.0-ext" && len(files) > 0 {
-		if count, ok := body["n"].(float64); ok && count != 1 {
+	if spec.Model.ID == "grok-imagine-2.0-ext" {
+		if count, ok := body["n"].(float64); len(files) > 0 && ok && count != 1 {
 			return spec, nil, nil, errors.New("Grok Imagine 2.0 Ext accepts one output when using references")
+		}
+		if body["size"] == "auto" {
+			delete(body, "size")
 		}
 	}
 	if spec.Model.ID == "grok-imagine-1.5-video-apimart-frames" && len(files) > 1 && body["resolution"] == "1080p" {

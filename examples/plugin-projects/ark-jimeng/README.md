@@ -1,5 +1,6 @@
 # 火山方舟独立生成包
 
+2.2.2 候选通过支持素材续写的宿主提供 Seedance 2.5 和 2.5 Flash 的「用视频续写」。新节点固定原视频并选择 extend，比例保持 adaptive，使用已有方舟 API 延长路径。Seedance 2.5 的「草稿转正片」沿用原样片回执和对应渠道，输出 1080p。此版本使用 fromDraft.actionLabel 声明按钮文案。
 当前 2.2.1 候选增加 Seedance 2.5 Flash（`doubao-seedance-2-5-flash-261115`）。模型支持 4–30 秒、480p/720p，首尾帧、视频编辑和延长由方舟 API 执行。需要为方舟 API 启用时，将该模型 ID 加入渠道的 `models` 配置。
 
 2.2.0 候选与渠道0.5.0协商`generation.image-review@1`、`channel.image-review@1`，primary连接显式启用imageReview。素材审核入口按下游渠道出现在源图片右键菜单中；状态呈现在对应连线上，未审核不显示盾牌。官方方舟素材与即梦、TapNow的账号空间和结果分别保存。使用及验收范围见[素材审核操作](../../../docs/how-to/ark-jimeng-plugin.md#素材入库与审核)。未发布或部署该候选。

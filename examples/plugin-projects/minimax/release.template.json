@@ -1,7 +1,7 @@
 {
   "formatVersion": 1,
   "packageId": "ordiweft-migrations/minimax",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "license": "Apache-2.0",
   "runtime": "node",
   "hostProtocol": 1,
@@ -154,7 +154,7 @@
     "apiVersion": 2,
     "id": "minimax",
     "name": "MiniMax",
-    "version": "2.2.5",
+    "version": "2.2.6",
     "runtime": "process",
     "auth": "api-key",
     "secrets": [
@@ -3290,6 +3290,7 @@
           "maxLength": 20000
         },
         "id": "MiniMax-H3",
+        "videoContinuationPrompt": "Continue the action from the end of <Video 1>. Keep the scene, subjects, and camera direction consistent.",
         "label": "MiniMax-H3",
         "capability": "video.generate",
         "inputKinds": [
@@ -3490,6 +3491,7 @@
           "maxLength": 20000
         },
         "id": "MiniMax-H3-auto",
+        "videoContinuationPrompt": "Continue the action from the end of <Video 1>. Keep the scene, subjects, and camera direction consistent.",
         "label": "MiniMax-H3",
         "usageNote": "全能参考支持订阅和官方 API，均可混合输入图片、视频和音频。订阅下视频和音频合计最多 3 段。",
         "capability": "video.generate",
@@ -4712,6 +4714,7 @@
           "required": false
         },
         "fromDraft": {
+          "actionLabel": "升为 2K",
           "parameter": "sourceJob",
           "models": [
             "MiniMax-H3",

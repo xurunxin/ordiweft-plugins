@@ -53,6 +53,9 @@ func TestDocumentedWireFieldsForRemainingModes(t *testing.T) {
 			skip: []string{"omni_reference_task_type", "duration"}},
 		{name: "Gemini Ext continuation sends declared operation", model: "gemini-omni-1.2-flash-ext-task-extend", prompt: "Add snowfall", ticket: true,
 			want: map[string]any{"extend_from_task_id": "task_original", "omni_reference_task_type": "extend", "prompt": "Add snowfall"}, skip: []string{"video_urls"}},
+		{name: "Gemini Ext can extend a file and refer to an image", model: "gemini-omni-1.2-flash-ext-extend", prompt: "Add snowfall",
+			inputs: []aigc.Input{{Kind: "video", Role: "source_video", URL: video.URL}, {Kind: "image", Role: "image-urls-reference-1", URL: image.URL}},
+			want:   map[string]any{"video_urls": []any{video.URL}, "image_urls": []any{image.URL}, "omni_reference_task_type": "extend"}, skip: []string{"extend_from_task_id", "first_frame_image"}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			p, err := loadPlugin()
@@ -128,6 +131,9 @@ func TestDocumentedModelContractRequests(t *testing.T) {
 		{model: "grok-imagine-image-2.0", capability: "image.generate", responseVersion: "2026-07-27",
 			parameters: map[string]any{"quality": "low"}, inputs: []aigc.Input{{Kind: "image", URL: image}},
 			want: map[string]any{"image_urls": []string{image}}, omit: []string{"quality"}},
+		{model: "grok-imagine-2.0-ext", capability: "image.generate",
+			parameters: map[string]any{"resolution": "2k", "size": "auto"}, inputs: []aigc.Input{{Kind: "image", URL: image}},
+			want: map[string]any{"image_urls": []string{image}}, omit: []string{"resolution", "size"}},
 		{model: "veo3.1-fast-official", capability: "video.generate", parameters: map[string]any{"sample_count": 2, "person_generation": "disallow", "resize_mode": "crop"},
 			want: map[string]any{"sample_count": 2, "person_generation": "disallow"}, omit: []string{"resize_mode"}},
 		{model: "veo3.1-quality-official-frames", capability: "video.generate", parameters: map[string]any{"resize_mode": "crop"},
