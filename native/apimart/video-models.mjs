@@ -116,7 +116,7 @@ const veoRouting = (allowReference) => {
 }
 for (const id of ['veo3.1-fast','veo3.1-quality']) {
   const fast = id.endsWith('fast')
-  add('video',id,{...basic(undefined,res('720p 1080p 4k'),ratio(landscape)),generation_type:veoRouting(fast),official_fallback:officialFallback,enable_gif:flag(undefined,{label:'GIF 动图',visibleWhen:{resolution:'720p'}})},
+  add('video',id,{...basic(undefined,res('720p 1080p 4k'),ratio(landscape)),generation_type:veoRouting(fast),official_fallback:{...officialFallback,description:'可在 Ext 渠道失败时使用官方渠道并按官方价格结算。需要用原任务续写时，请关闭官方兜底。'},enable_gif:flag(undefined,{label:'GIF 动图',visibleWhen:{resolution:'720p'}})},
     [ref('image_urls','image',fast?3:2,{array:true,maxBytes:10000000})],{fixed:{duration:8}})
 }
 add('video','veo3.1-lite',{...basic(undefined,res('720p 1080p'),ratio(landscape)),enable_gif:flag(undefined,{label:'GIF 动图',visibleWhen:{resolution:'720p'}})},[],{
@@ -136,7 +136,7 @@ for (const id of ['veo3.1-fast-official','veo3.1-quality-official']) {
 for (const id of ['veo3.1-fast','veo3.1-quality']) {
   add('video',id+'-remix',{aspect_ratio:ratio(landscape,undefined),resolution:res('720p 1080p 4k'),raw:flag(undefined,{label:'直接使用提示词'})},[],{
     ...mention(id,id+' · 续写至 15 秒',{}),...continueTask([id]),endpoint:'/v1/videos/{task_id}/remix',
-    taskContinuation:{sourceModels:[id],actionLabel:'续写至 15 秒'},usage:'沿用所选的 8 秒视频，填写续写内容。',
+    taskContinuation:{sourceModels:[id],sourceWhen:{official_fallback:false},actionLabel:'续写至 15 秒'},usage:'沿用所选的 8 秒视频，填写续写内容。',
   })
 }
 
@@ -167,7 +167,8 @@ add('video','MiniMax-H3-Context-IR',contextIR,multimodal(9,3,3),{...contextIRSet
 add('video','MiniMax-H3-Context-IR-frames',{...contextIR,aspect_ratio:ratio('adaptive '+videoRatios,'adaptive')},frames(),{
   ...contextIRSettings,upstream:'MiniMax-H3-Context-IR',...generationMode('first_last_frame','首尾帧',{minInputs:1})})
 const h3Frames = {...h3Prompt,...imageVideo({minInputs:1}),usage:'可接入首帧、尾帧或两者。画幅跟随输入图片。'}
-const h3Reference = {...h3Prompt,...textAndReference(),audioRequiresVisual:true,usage:'最多 9 张参考图、3 段参考视频和 3 段参考音频。音频需搭配图片或视频。'}
+const h3Reference = {...h3Prompt,...textAndReference(),audioRequiresVisual:true,usage:'最多 9 张参考图、3 段参考视频和 3 段参考音频。音频需搭配图片或视频。',
+  videoContinuationPrompt:'Continue the action from the end of <Video 1>. Keep the scene, subjects, and camera direction consistent.'}
 add('video','MiniMax-H3',h3,multimodal(9,3,3),h3Reference)
 add('video','MiniMax-H3-Max',h3Max,multimodal(9,3,3),h3Reference)
 add('video','MiniMax-H3-frames',h3,frames(),{upstream:'MiniMax-H3',name:'MiniMax H3 · 首尾帧',...h3Frames})
@@ -398,14 +399,16 @@ add('video','Omni-Flash-Ext-frames',omniExtFields,img(1,false,1),{
   ...mention(omniExtID,'Gemini Omni 1.1 Flash Ext · 首帧',{generation_type:'frame'}),...generationMode('first_frame','图生视频'),
 })
 for (const id of ['gemini-omni-1.1-flash','gemini-omni-1.2-flash','gemini-omni-1.2-flash-ext']) {
-  const promptControls = id==='gemini-omni-1.2-flash-ext' ? {negative_prompt:line(12000,{control:'textarea'}),system_prompt:line(12000,{label:'系统指令',control:'textarea'})} : {}
+  const isExt = id==='gemini-omni-1.2-flash-ext'
+  const promptControls = isExt ? {negative_prompt:line(12000,{control:'textarea'}),system_prompt:line(12000,{label:'系统指令',control:'textarea'})} : {}
+  const videoReferences = [...videoOnly('video_urls'), ...(isExt ? img(10) : [])]
   const fields = {...omni,...promptControls,duration:id.includes('1.1')?undefined:omni.duration}
   const wireTask = task => id.includes('1.1')?{metadata:{task}}:{omni_reference_task_type:task}
   add('video',id,fields,img(10),textAndImageReference('多图参考生视频',{mediaImagesMin:id.endsWith('-ext')?1:2}))
   add('video',id+'-frames',{...fields,negative_prompt:undefined,system_prompt:undefined,duration:fields.duration?seconds(3,10,10):undefined},frames(true),{...mention(id,id+' · 首尾帧',{}),...imageVideo()})
   for (const [mode,label] of [['edit','编辑'],['extend','续写']]) {
     add('video',id+'-'+mode,{...promptControls,resolution:fields.resolution,duration:mode==='extend'&&fields.duration?seconds(3,10,10):undefined},
-      videoOnly('video_urls'),{
+      videoReferences,{
         ...mention(id,id+' · 视频'+label,wireTask(mode)),
         ...generationMode(mode,'视频'+label,{manualOnly:mode==='extend'}),
       })

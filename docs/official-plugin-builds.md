@@ -76,4 +76,6 @@ APIMart 使用 `@daoxialiuren/ordiweft-apimart` 分发 Linux amd64 与 Windows a
 
 ### 续写节点候选
 
-APIMart 1.3.9、MiniMax 2.2.6 和即梦／火山方舟 2.2.2 要求包含素材续写入口的宿主。APIMart 和 MiniMax 使用支持 videoContinuationPrompt 的 SDK 声明 H3 参考续写。MiniMax 与方舟使用 fromDraft.actionLabel 为原任务操作提供文案。合成验收应检查当前版本素材固定、模式与连线、原任务核验及创建节点前后生成请求数量。使用新版模板重新构建并核对制品摘要，已发布版本保持原始字节。
+APIMart 1.3.10、MiniMax 2.2.6 和即梦／火山方舟 2.2.2 要求包含素材续写入口的宿主。APIMart 和 MiniMax 使用 `videoContinuationPrompt` 声明 H3 参考续写。MiniMax 与方舟使用 `fromDraft.actionLabel` 为原任务操作提供文案。
+
+APIMart 1.3.10 还需要支持 `generationMode.familyNote` 的宿主与 Go SDK。合成验收核对 Ext 名称、执行模型 ID、图／视频素材允许的组合，以及原任务和创建节点时的绑定。MiniMax 独立渠道 0.4.2 保留 Design 原样片的多模态参考，方舟独立渠道 0.5.12 区分 Seedance 2.5 和 2.0 的编辑／续写请求字段。[媒体能力和续作来源](media-capabilities.md)

@@ -33,10 +33,18 @@ func applyGenerationModes(catalog []modelSpec) {
 		}
 	}
 	for key, group := range groups {
+		variant := modelVariants[key.upstream]
 		if len(group) == 1 && catalog[group[0]].Presentation == nil {
+			if variant.label != "" {
+				model := &catalog[group[0]].Model
+				model.Label, model.UsageNote = variant.label, variant.note
+			}
 			continue
 		}
 		familyLabel := familyLabels[key]
+		if variant.label != "" {
+			familyLabel = variant.label
+		}
 		if familyLabel == "" {
 			familyLabel = key.upstream
 		}
@@ -44,6 +52,7 @@ func applyGenerationModes(catalog []modelSpec) {
 			spec := &catalog[i]
 			mode := generationMode(*spec)
 			mode.Family, mode.FamilyLabel = key.upstream, familyLabel
+			mode.FamilyNote = variant.note
 			spec.Model.GenerationMode = &mode
 			if spec.Model.ID == "kling-v4-reference" {
 				spec.Model.MaxInputs = min(spec.Model.MaxInputs, 15)

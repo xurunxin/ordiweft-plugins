@@ -185,7 +185,10 @@ addImage('grok-imagine-2.0-ext-region-edit',{
 },[],{upstream:'grok-imagine-2.0-ext',name:'Grok Imagine 2.0 · 局部编辑',hidden:true,
   taskContinuation:{sourceModels:['grok-imagine-2.0-ext'],sourceWhen:{n:1},actionLabel:'局部编辑'},
   usage:'沿用已完成的单图任务。设置选区和修改提示词后确认生成。'})
-addImage('grok-imagine-2.0-ext',{size:ratio('auto ' + wideRatios,'auto'),resolution:res('1k 2k','1k'),n:n(12)},images(5),{usage:'文生图最多 12 张；使用参考图时仅支持生成 1 张。'})
+addImage('grok-imagine-2.0-ext',{
+  size:ratio('auto 1:1 2:3 3:2 3:4 4:3 9:16 16:9','auto'),
+  resolution:{...res('1k 2k','1k'),deprecated:true},n:n(12),
+},images(5,false),{usage:'文生图最多 12 张。使用参考图时生成一张。画面比例为自动时由接口决定。'})
 const officialGrok2 = {aspect_ratio:ratio(officialGrokRatios,'auto'),resolution:res('1k 2k','1k'),n:n(10)}
 addImage('grok-imagine-image-2.0',{...officialGrok2,quality:options('low medium','medium')},[ref('image_urls','image',3,{array:true,maxBytes:10*1024*1024})],{
   ...generationMode('text','文生图'),maxPrompt:8000,
