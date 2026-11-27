@@ -200,3 +200,46 @@ func TestGrokRegionEditUsesBoundSegmentationAndOnePaidSubmit(t *testing.T) {
 		t.Fatalf("%+v %v, %d/%d", out, err, segment, edit)
 	}
 }
+
+func TestGrokPolygonWithHoleAndSourceObjectIndices(t *testing.T) {
+	p, err := loadPlugin()
+	if err != nil {
+		t.Fatal(err)
+	}
+	point := func(x, y float64) map[string]any { return map[string]any{"x": x, "y": y} }
+	outer := []any{point(.1, .1), point(.8, .1), point(.8, .8), point(.1, .8)}
+	hole := []any{point(.3, .3), point(.4, .3), point(.35, .4)}
+	regions := []any{map[string]any{"outer": outer, "holes": []any{map[string]any{"points": hole}}}}
+	request := generation(t, "grok-imagine-2.0-ext-region-edit", "image.generate", "Change color", map[string]any{"selection_mode": "polygon", "polygons": regions}, nil)
+	request.SourceTask = &aigc.SourceTask{Ticket: "task_original_single"}
+	_, body, _, err := p.prepare(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	payload, _ := json.Marshal(body["selection_regions"])
+	if body["selection_mode"] != nil || body["boxes"] != nil || !strings.Contains(string(payload), `"holes":[{"points":[0.3,0.3,0.4,0.3,0.35,0.4]}]`) {
+		t.Fatal(body)
+	}
+	request = generation(t, "grok-imagine-2.0-ext-region-edit", "image.generate", "Change color", map[string]any{"selection_mode": "objects", "object_indices": []int{42}}, nil)
+	request.SourceTask = &aigc.SourceTask{Ticket: "task_original_single"}
+	var edits int
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "POST" {
+			var body map[string]any
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+				t.Error(err)
+			}
+			if body["operation"] == "region_edit" {
+				edits++
+			}
+			fmt.Fprint(w, `{"code":200,"data":[{"task_id":"task_segment"}]}`)
+			return
+		}
+		fmt.Fprint(w, `{"code":200,"data":{"id":"task_segment","status":"completed","result":{"image_id":"img_original","objects":[{"index":7}]}}}`)
+	}))
+	defer server.Close()
+	p.base = server.URL
+	if _, err = p.Execute(t.Context(), request, nil); err == nil || edits != 0 {
+		t.Fatal("unexpected edit of source with missing object", err, edits)
+	}
+}

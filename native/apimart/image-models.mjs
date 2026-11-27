@@ -172,12 +172,19 @@ const officialGrok = {size:ratio(officialGrokRatios,'auto'),resolution:res('1k 2
 addImage('grok-imagine-image',officialGrok,images(5),{maxPrompt:8000})
 addImage('grok-imagine-image-quality',officialGrok,images(3),{maxPrompt:8000})
 const regionCoordinate = label => decimal(0,1,undefined,{label,required:true})
+const regionPoint = object({x:regionCoordinate('横坐标'),y:regionCoordinate('纵坐标')})
+const regionRing = label => list(regionPoint,{label,required:true,description:'按轮廓顺序填写至少 3 个点。坐标范围为 0–1。'})
 addImage('grok-imagine-2.0-ext-region-edit',{
+  selection_mode:options('rectangle polygon objects','rectangle',{label:'选区方式',section:'common',optionLabels:{rectangle:'矩形',polygon:'多边形',objects:'对象索引'}}),
+  polygons:list(object({outer:regionRing('外轮廓'),holes:list(object({points:regionRing('孔洞轮廓')}),{label:'内部孔洞'})}),
+    {label:'多边形选区',section:'common',required:true,visibleWhen:{selection_mode:'polygon'}}),
+  object_indices:list(number(0,1000000),{label:'对象索引',section:'common',required:true,visibleWhen:{selection_mode:'objects'},
+    description:'使用 APIMart 分段结果中的原始对象索引。提交前核对索引是否属于当前原图。'}),
   regions:list(object({x1:regionCoordinate('左'),y1:regionCoordinate('上'),x2:regionCoordinate('右'),y2:regionCoordinate('下')}),
-    {required:true,label:'矩形选区',section:'common',description:'坐标为相对整图的 0–1 小数，左上为 (0,0)，右下为 (1,1)。最多 16 个选区。'}),
+    {required:true,label:'矩形选区',section:'common',visibleWhen:{selection_mode:'rectangle'},description:'坐标为相对整图的 0–1 小数，左上为 (0,0)，右下为 (1,1)。最多 16 个选区。'}),
 },[],{upstream:'grok-imagine-2.0-ext',name:'Grok Imagine 2.0 · 局部编辑',hidden:true,
   taskContinuation:{sourceModels:['grok-imagine-2.0-ext'],sourceWhen:{n:1},actionLabel:'局部编辑'},
-  usage:'沿用已完成的单图任务。设置矩形选区和修改提示词后确认生成。'})
+  usage:'沿用已完成的单图任务。设置选区和修改提示词后确认生成。'})
 addImage('grok-imagine-2.0-ext',{size:ratio('auto ' + wideRatios,'auto'),resolution:res('1k 2k','1k'),n:n(12)},images(5),{usage:'文生图最多 12 张；使用参考图时仅支持生成 1 张。'})
 const officialGrok2 = {aspect_ratio:ratio(officialGrokRatios,'auto'),resolution:res('1k 2k','1k'),n:n(10)}
 addImage('grok-imagine-image-2.0',{...officialGrok2,quality:options('low medium','medium')},[ref('image_urls','image',3,{array:true,maxBytes:10*1024*1024})],{
@@ -198,11 +205,20 @@ for (const id of ['wan2.7-image','wan2.7-image-pro']) {
 }
 addImage('midjourney-follow-up',{
   operation:options('upscale variation reroll','upscale',{label:'续作方式',section:'common',optionLabels:{upscale:'从四宫格选图',variation:'生成变体',reroll:'重生成四宫格'}}),
+  upscale_style:options('normal subtle creative legacy_2x legacy_4x','normal',{label:'放大方式',section:'common',
+    visibleWhen:{operation:'upscale'},optionLabels:{normal:'从四宫格取图',subtle:'高清放大 · 细节保持',creative:'高清放大 · 创意增强',legacy_2x:'V5 高清 2×',legacy_4x:'V5 高清 4×'}}),
   speed:options('relax fast turbo','fast',{label:'生成速度'}),
   index:number(1,4,1,{label:'四宫格位置',visibleWhenAny:[{operation:'upscale'},{operation:'variation'}]}),
 },[],{upstream:'midjourney',name:'Midjourney 原图续作',hidden:true,promptKey:false,prompt:{required:false,label:'原图'},
   taskContinuation:{sourceModels:['midjourney'],actionLabel:'Midjourney 原图续作'},endpoint:'/v1/midjourney/generations/upscale',
-  usage:'从所选原任务的四宫格中选图、生成变体或重生成。'})
+  usage:'从所选四宫格取图、高清放大、生成变体或重生成。高清档位取决于原任务提供的按钮。'})
+
+addImage('midjourney-inpaint',{speed:options('relax fast turbo','fast',{label:'生成速度',section:'common'})},
+  [ref('mask_url','image',1,{role:'mask',min:1,inline:true,maxBytes:12*1024*1024})],{
+  upstream:'midjourney',name:'Midjourney 遮罩重绘',hidden:true,optionalPrompt:true,maxPrompt:4000,
+  taskContinuation:{sourceModels:['midjourney-follow-up'],sourceWhen:{operation:'upscale'},actionLabel:'遮罩重绘',mask:true,allowOptionalPrompt:true},
+  endpoint:'/v1/midjourney/generations/modal',usage:'在固定的放大单图上画好遮罩。提示词留空时沿用原任务描述。',
+})
 
 addImage('midjourney',{
   size:ratio(),speed:options('relax fast turbo','relax'),version:options('8.2 8.1 7 6.1 6 5.2 5.1','8.2'),

@@ -29,13 +29,14 @@ type envelope struct {
 }
 
 type remoteTask struct {
-	ID          string       `json:"id"`
-	TaskID      string       `json:"task_id"`
-	Status      string       `json:"status"`
-	Progress    float64      `json:"progress"`
-	Created     int64        `json:"created"`
-	Cost        *json.Number `json:"cost"`
-	CreditsCost *json.Number `json:"credits_cost"`
+	Buttons     []midjourneyButton `json:"buttons,omitempty"`
+	ID          string             `json:"id"`
+	TaskID      string             `json:"task_id"`
+	Status      string             `json:"status"`
+	Progress    float64            `json:"progress"`
+	Created     int64              `json:"created"`
+	Cost        *json.Number       `json:"cost"`
+	CreditsCost *json.Number       `json:"credits_cost"`
 	Usage       struct {
 		CompletionTokens *int64 `json:"completion_tokens"`
 		PromptTokens     *int64 `json:"prompt_tokens"`
@@ -119,8 +120,10 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	if spec.Model.TaskContinuation != nil && request.SourceTask == nil {
 		return empty, errors.New("APIMart continuation requires an owned source task")
 	}
-	if spec.Model.TaskContinuation != nil && (request.SourceTask == nil || len(files) > 0) {
-		return empty, errors.New("APIMart continuation requires the bound original task")
+	if spec.Model.ID == "midjourney-inpaint" {
+		if err := validateMidjourneyMask(files); err != nil {
+			return empty, err
+		}
 	}
 	if spec.Model.Capability == "speech.transcribe" {
 		return p.transcribe(ctx, spec, key, body, files[0].input)
@@ -209,6 +212,23 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 		}
 	}
 	var origins []aigc.TaskOrigin
+	if spec.Model.ID == "midjourney-follow-up" {
+		if err := p.resolveMidjourneyUpscale(ctx, key, body); err != nil {
+			return empty, err
+		}
+	}
+	var modalID string
+	if spec.Model.ID == "midjourney-inpaint" {
+		modalID, err = p.openMidjourneyModal(ctx, key, request.SourceTask.Ticket, body["speed"], func(id string) {
+			if checkpoint != nil {
+				checkpoint(aigc.Result{Metadata: taskMetadata(spec, "/v1/tasks/", []string{id}, uploads)})
+			}
+		})
+		if err != nil {
+			return empty, err
+		}
+		body["task_id"] = modalID
+	}
 	var segmentTaskID string
 	if spec.Model.ID == "grok-imagine-2.0-ext-region-edit" {
 		segmentTaskID, err = p.prepareGrokRegionEdit(ctx, key, spec, body, request.SourceTask.Ticket)
@@ -241,6 +261,9 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	if err != nil {
 		return empty, err
 	}
+	if modalID != "" && (len(tasks) != 1 || tasks[0] != modalID) {
+		return empty, errors.New("APIMart modal changed its original task ID")
+	}
 	path := "/v1/tasks/"
 	if spec.MusicTask {
 		path = "/v1/music/tasks/"
@@ -250,7 +273,7 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 	}
 	taskList := make([]remoteTask, 0, len(tasks))
 	var all []aigc.Media
-	sourceEligible := p.manifest.CanProduceTaskSource(spec.Model.ID, body)
+	sourceEligible := p.canProduceTaskSource(spec, request)
 	for _, id := range tasks {
 		task, err := p.wait(ctx, key, path, id)
 		if err != nil {
@@ -382,13 +405,24 @@ func submission(reply []byte) ([]string, error) {
 }
 
 func (p *plugin) wait(ctx context.Context, key, path, id string) (remoteTask, error) {
+	return p.waitForTask(ctx, key, path, id, false)
+}
+
+func (p *plugin) waitForTask(ctx context.Context, key, path, id string, modal bool) (remoteTask, error) {
 	var task remoteTask
 	for {
 		if err := p.query(ctx, key, path, id, &task); err != nil {
 			return task, err
 		}
 		switch strings.ToLower(task.Status) {
+		case "modal":
+			if modal {
+				return task, nil
+			}
 		case "completed", "success":
+			if modal {
+				return task, errors.New("Midjourney task completed before modal confirmation")
+			}
 			return task, nil
 		case "failed", "failure", "cancelled", "canceled":
 			return task, fmt.Errorf("APIMart task %s ended with status %s", id, task.Status)
@@ -586,4 +620,13 @@ func multipartFile(data []byte, extension string, fields map[string]string) ([]b
 		err = writer.Close()
 	}
 	return body.Bytes(), writer.FormDataContentType(), err
+}
+
+func (p *plugin) canProduceTaskSource(spec modelSpec, request aigc.Request) bool {
+	var generation aigc.Generation
+	if json.Unmarshal(request.Payload, &generation) != nil {
+		return false
+	}
+	parameters, err := aigc.NormalizeParameters(spec.Model, generation.Parameters)
+	return err == nil && p.manifest.CanProduceTaskSource(spec.Model.ID, parameters)
 }

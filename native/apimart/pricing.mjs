@@ -52,8 +52,15 @@ export function modelPricing(entry, row, checkedAt) {
     }
   } else if (entry.model.id === 'midjourney-follow-up') {
     for (const operation of fields.operation.enum) for (const speed of fields.speed.enum) {
-      add({operation,speed},component('job',row.action_paid_prices?.[operation]?.[speed],['action_paid_prices',operation,speed]))
+      const rate = key => component('job',row.action_paid_prices?.[operation]?.[key],['action_paid_prices',operation,key])
+      if(operation!=='upscale') add({operation,speed},rate(speed))
+      else for(const upscale_style of fields.upscale_style.enum) {
+        add({operation,speed,upscale_style},rate(upscale_style==='normal'?speed:'hd-'+speed))
+      }
     }
+  } else if (entry.model.id === 'midjourney-inpaint') {
+    for(const speed of fields.speed.enum) add({speed},
+      component('job',row.action_paid_prices?.modal?.[speed],['action_paid_prices','modal',speed]))
   } else if (entry.model.id === 'midjourney-video') {
     for (const video_type of fields.video_type.enum) for (const batch_size of fields.batch_size.enum) {
       const tier = video_type.endsWith('_720') ? '720p' : 'default'

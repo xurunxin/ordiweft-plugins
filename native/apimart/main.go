@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.6"
+	version  = "1.3.7"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -139,7 +139,7 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 	for key, value := range spec.Fixed {
 		body[key] = value
 	}
-	if spec.Model.ID != "midjourney-follow-up" && spec.Model.ID != "midjourney-video" {
+	if spec.Model.ID != "midjourney-follow-up" && spec.Model.ID != "midjourney-video" && spec.Model.ID != "midjourney-inpaint" {
 		body["model"] = spec.Upstream
 	}
 	if spec.Upstream == "veo3.1-fast" || spec.Upstream == "veo3.1-quality" {
@@ -152,7 +152,7 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			body["generation_type"] = "reference"
 		}
 	}
-	if spec.Model.TaskContinuation != nil && !spec.Model.Prompt.Required && strings.TrimSpace(g.Prompt) != "" {
+	if spec.Model.TaskContinuation != nil && !spec.Model.Prompt.Required && !spec.Model.TaskContinuation.AllowOptionalPrompt && strings.TrimSpace(g.Prompt) != "" {
 		return spec, nil, nil, errors.New("APIMart continuation uses the original prompt")
 	}
 	if request.SourceTask != nil {
@@ -170,7 +170,7 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			return spec, nil, nil, errors.New("invalid APIMart source task")
 		}
 		switch spec.Model.ID {
-		case "grok-imagine-2.0-ext-region-edit":
+		case "grok-imagine-2.0-ext-region-edit", "midjourney-inpaint":
 			// The source is resolved through the free segmentation stage at execution.
 		case "midjourney-follow-up":
 			if err := prepareMidjourneyFollowUp(&spec, body, *request.SourceTask); err != nil {

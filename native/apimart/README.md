@@ -127,7 +127,12 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 
 - Grok Imagine 2.0 扩展版的已完成单图任务可创建局部编辑节点。确认后按原任务定位图像，校验选区后提交一次付费矩形编辑。[Grok 局部编辑](https://docs.apimart.ai/cn/api-reference/images/grok-imagine-2.0-ext/layer-region-edit.md)
 
-Midjourney 的遮罩弹窗流程、Grok 的对象与多边形选区仍待接入。GPT-4o Mini TTS 原始 PCM 尚缺 APIMart 的采样率、声道和位深契约。VEO 多样本预估与续写费用以实际任务回执或专用报价为准。
+## 1.3.7 高清放大与遮罩重绘
+
+- Midjourney 从原四宫格的任务回执查找选定格的高清按钮。支持官方文档中的 V5 2×／4×、V6/V7 细节保持与创意增强，以源任务实际提供的按钮为准。[高清放大](https://docs.apimart.ai/cn/api-reference/images/midjourney/upscale.md)
+- 从已保存的放大单图创建遮罩重绘节点。画布使用与 GPT Image 相同的遮罩编辑器，在底图像素坐标内绘制或导入透明 PNG。保存后才可执行。适配器先打开 inpaint 任务，收到 MODAL 状态后在同一任务提交一次遮罩，提示词可留空。两阶段之间保留原任务回执。[Inpaint](https://docs.apimart.ai/cn/api-reference/images/midjourney/inpaint.md) · [Modal](https://docs.apimart.ai/cn/api-reference/images/midjourney/modal.md)
+- Grok 延用归一化矩形，增加精确多边形（含内部孔洞）与对象索引输入。对象索引可填写 API 分段结果中的原始索引，由插件核对原图分段结果；目前使用参数面板填写坐标和索引。[局部编辑](https://docs.apimart.ai/cn/api-reference/images/grok-imagine-2.0-ext/layer-region-edit.md)
+GPT-4o Mini TTS 原始 PCM 尚缺 APIMart 的采样率、声道和位深契约。VEO 多样本预估与续写费用以实际任务回执或专用报价为准。
 
 ## 构建与核验
 
