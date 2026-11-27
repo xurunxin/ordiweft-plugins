@@ -46,7 +46,7 @@ const model = (kind, id, fields, references, settings) => {
       const key = r.role || (r.field.replaceAll('_', '-') + '-reference-' + (index + 1))
       r.roles ??= []
       r.roles[index] = key
-      return [key, {kind: r.kind, label: roleLabels[key] || `参考${{image: '图', video: '视频', audio: '音频'}[r.kind]} ${index + 1}`, order: group * 20 + index + 1, required: index < (r.min || 0)}]
+      return [key, {kind: r.kind, label: roleLabels[key] || (key.startsWith('mid_frame_') ? '中间帧 '+key.split('_').at(-1) : undefined) || `参考${{image: '图', video: '视频', audio: '音频'}[r.kind]} ${index + 1}`, order: r.order ?? group * 20 + index + 1, required: index < (r.min || 0), visibleWhen:r.visibleWhen}]
     })
   )) : undefined
   const display = Object.fromEntries(Object.entries(fields).filter(([, f]) => f).map(([key, f]) => {
@@ -74,10 +74,11 @@ const model = (kind, id, fields, references, settings) => {
   }
 }
 
-export function videoMode(intent, label, options = {}) {
+export function generationMode(intent, label, options = {}) {
   return {presentation: {intent, label, ...options}}
 }
-export const textAndReference = () => videoMode('reference', '多模态参考生视频', {textLabel: '文生视频'})
+export const textAndReference = () => generationMode('reference', '多模态参考生视频', {textLabel: '文生视频'})
+export const imageAndText = (label = '图生图') => generationMode('reference', label, {textLabel:'文生图'})
 
 export const entries = []
 export const add = (kind, ids, fields = {}, refs = [], settings = {}) => {
@@ -91,10 +92,10 @@ const nano21 = {
   size: options('auto ' + wideRatios, 'auto'), resolution: options('1K 2K 4K', '1K'),
 }
 add('image', 'gemini-nano-banana-2.1', {...nano21, n: number(1, 4, 1)}, [ref('image_urls','image',14,{inline:true,maxBytes:20000000})], {
-  name: 'Nano banana 2.1 · 官方版', usage: '接受参考图做编辑。官方版按实际 Token 结算。可一次生成 1–4 张。',
+  ...imageAndText('参考图编辑'), name: 'Nano banana 2.1 · 官方版', usage: '接受参考图做编辑。官方版按实际 Token 结算。可一次生成 1–4 张。',
 })
 add('image', 'gemini-nano-banana-2.1-ext', nano21, [ref('image_urls','image',14,{inline:true,maxBytes:40000000})], {
-  name: 'Nano banana 2.1 · Ext', usage: '接受参考图做编辑。每次生成 1 张，按分辨率计价。', fixed: {n: 1},
+  ...imageAndText('参考图编辑'), name: 'Nano banana 2.1 · Ext', usage: '接受参考图做编辑。每次生成 1 张，按分辨率计价。', fixed: {n: 1},
 })
 
 const magi = {
@@ -102,12 +103,12 @@ const magi = {
   generate_audio: flag(true), seed: number(-1, 2147483647, -1),
 }
 const magiSettings = {upstream: 'magi-2', maxPrompt: 15000, referenceSyntax: 'cn-numbered', fixed: {resolution: '1080p'}}
-add('video', 'magi-2', magi, [], {...magiSettings, ...videoMode('text', '文生视频'), name: 'MAGI-2 · 文生视频', usage: '固定 1080p。描述镜头、动作与声音。'})
+add('video', 'magi-2', magi, [], {...magiSettings, ...generationMode('text', '文生视频'), name: 'MAGI-2 · 文生视频', usage: '固定 1080p。描述镜头、动作与声音。'})
 add('video', 'magi-2-frames', {...magi, aspect_ratio: options('auto 16:9 9:16 1:1 4:3 3:4','auto')}, frames(true), {
-  ...magiSettings, ...videoMode('first_last_frame', '图生视频'), name: 'MAGI-2 · 首尾帧', usage: '首帧必填，尾帧可选。自动比例跟随首帧。固定 1080p。',
+  ...magiSettings, ...generationMode('first_last_frame', '图生视频'), name: 'MAGI-2 · 首尾帧', usage: '首帧必填，尾帧可选。自动比例跟随首帧。固定 1080p。',
 })
 add('video', 'magi-2-reference', magi, [...images(10, false), ref('video_urls', 'video', 5), ref('audio_urls', 'audio', 5)], {
-  ...magiSettings, ...videoMode('reference', '多模态参考生视频', {minInputs: 1}), name: 'MAGI-2 · 多模态参考', usage: '可单独或混合使用图片、视频和音频，至少接入一项。参考图最多 10 张，参考视频和音频各最多 5 段，每类总时长建议不超过 30 秒。',
+  ...magiSettings, ...generationMode('reference', '多模态参考生视频', {minInputs: 1}), name: 'MAGI-2 · 多模态参考', usage: '可单独或混合使用图片、视频和音频，至少接入一项。参考图最多 10 张，参考视频和音频各最多 5 段，每类总时长建议不超过 30 秒。',
   fixed: {...magiSettings.fixed, omni_reference_task_type: 'reference'},
 })
 
@@ -132,7 +133,7 @@ add('music', 'suno', {
   variety: options('off normal high extra max'), max_mode: flag(false, customOnly),
   audio_format: options('mp3 m4a wav', 'mp3'), duration: number(10, 360, undefined, customOnly),
 }, [], {
-  name: 'Suno V6 · 生成音乐', optionalPrompt: true, maxPrompt: 5000, action: 'music',
+  ...generationMode('text','生成音乐'), name: 'Suno V6 · 生成音乐', optionalPrompt: true, maxPrompt: 5000, action: 'music',
   usage: '灵感模式输入歌曲设想。自定义模式输入歌词、风格和曲名，纯音乐可省略歌词。默认返回 MP3。',
 })
 

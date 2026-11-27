@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-import { add, decimal, flag, line, number, options, ref, sunoVersions } from './definitions.mjs'
+import { add, decimal, flag, generationMode, line, number, options, ref, sunoVersions } from './definitions.mjs'
 
 const flowFields = {
   lyrics:line(5000,{control:'textarea',label:'歌词'}),title:line(120),
   bpm:number(1,undefined,120,{label:'每分钟节拍'}),length:number(1,240,60,{label:'时长（秒）',control:'duration'}),
   seed:line(32),
 }
-add('music','flowmusic',flowFields,[],{name:'Flow Music',promptKey:'sound_prompt',optionalPrompt:true,action:'generate',usage:'填写风格提示词或歌词。'})
+add('music','flowmusic',flowFields,[],{...generationMode('text','音乐生成'),name:'Flow Music',promptKey:'sound_prompt',optionalPrompt:true,action:'generate',usage:'填写风格提示词或歌词。'})
 add('music','flowmusic-lyria-3.5',flowFields,[],{
-  upstream:'flowmusic',name:'Flow Music · Lyria 3.5',promptKey:'sound_prompt',optionalPrompt:true,
+  upstream:'flowmusic',...generationMode('text','Lyria 3.5',{manualOnly:true}),name:'Flow Music · Lyria 3.5',promptKey:'sound_prompt',optionalPrompt:true,
   fixed:{version:'lyria-3.5'},action:'generate-lyria-3.5',usage:'填写风格提示词或歌词。',
 })
 const audioFormat = options('mp3 m4a wav','mp3')
@@ -16,7 +16,7 @@ add('music','suno-sounds',{
   version:sunoVersions,audio_format:audioFormat,
   type:options('one-shot loop','one-shot',{label:'音效类型',optionLabels:{'one-shot':'单次',loop:'循环'}}),
   bpm:number(1,300,undefined,{label:'每分钟节拍'}),key:line(24,{label:'调性'}),
-},[],{upstream:'suno',name:'Suno V6 · 生成音效',endpoint:'/v1/music/generations/sounds',action:'sounds'})
+},[],{upstream:'suno',...generationMode('text','生成音效',{manualOnly:true}),name:'Suno V6 · 生成音效',endpoint:'/v1/music/generations/sounds',action:'sounds'})
 
 const sunoStyle = {
   version:sunoVersions,title:line(80),audio_format:audioFormat,
@@ -26,14 +26,15 @@ const sunoStyle = {
   vocal_gender:options('Male Female'),variety:options('off normal high extra max'),max_mode:flag(false),
 }
 const oneAudio = [ref('audio_url','audio',1,{min:1,role:'source_audio'})]
-const sunoAction = (path, action, name) => ({
+const sunoAction = (path, action, name, intent, manualOnly = false) => ({
+  ...generationMode(intent,name,{manualOnly}),
   upstream:'suno',name:'Suno V6 · '+name,endpoint:'/v1/music/generations/'+path,musicTask:true,action,optionalPrompt:true,maxPrompt:5000,
 })
-add('music','suno-inspiration',sunoStyle,[ref('audio_urls','audio',4,{array:true,min:1})],sunoAction('inspo','inspo','参考音频创作'))
+add('music','suno-inspiration',sunoStyle,[ref('audio_urls','audio',4,{array:true,min:1})],sunoAction('inspo','inspo','参考音频创作','reference'))
 add('music','suno-upload-cover',{...sunoStyle,instrumental:flag(false),duration_s:number(10,360,undefined,{label:'时长（秒）',control:'duration'})},
-  oneAudio,sunoAction('uploadCover','upload_cover','翻唱'))
+  oneAudio,sunoAction('uploadCover','upload_cover','翻唱','edit',true))
 add('music','suno-upload-extend',{...sunoStyle,continue_at:decimal(0,undefined,undefined,{label:'续写起点（秒）',required:true}),
-  duration_s:number(10,360,undefined,{label:'新增时长（秒）',control:'duration'})},oneAudio,sunoAction('uploadExtend','upload_extend','音乐续写'))
+  duration_s:number(10,360,undefined,{label:'新增时长（秒）',control:'duration'})},oneAudio,sunoAction('uploadExtend','upload_extend','音乐续写','extend',true))
 
 add('speech','gpt-audio-mini',{
   voice:options('alloy ash ballad coral echo sage shimmer verse','alloy'),

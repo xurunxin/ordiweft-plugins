@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.3.2"
+	version  = "1.3.3"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -126,7 +126,17 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 		body[key] = value
 	}
 	body["model"] = spec.Upstream
-	if spec.Model.TaskContinuation != nil && strings.TrimSpace(g.Prompt) != "" {
+	if spec.Upstream == "veo3.1-fast" || spec.Upstream == "veo3.1-quality" {
+		switch body["generation_type"] {
+		case "text-to-video":
+			delete(body, "generation_type")
+		case "image-to-video":
+			body["generation_type"] = "frame"
+		case "reference-to-video":
+			body["generation_type"] = "reference"
+		}
+	}
+	if spec.Model.TaskContinuation != nil && !spec.Model.Prompt.Required && strings.TrimSpace(g.Prompt) != "" {
 		return spec, nil, nil, errors.New("APIMart continuation uses the original prompt")
 	}
 	if request.SourceTask != nil {
@@ -141,6 +151,8 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 			body["source_task_id"] = request.SourceTask.Ticket
 		case "seedance-2.5-final-1080p":
 			body["draft_task_id"] = request.SourceTask.Ticket
+		case "pixverse-v6-extend", "gemini-omni-1.1-flash-task-extend", "gemini-omni-1.2-flash-task-extend", "gemini-omni-1.2-flash-ext-task-extend", "gemini-omni-flash-preview-task-extend":
+			body["extend_from_task_id"] = request.SourceTask.Ticket
 		default:
 			return spec, nil, nil, errors.New("unknown APIMart task continuation")
 		}
@@ -202,7 +214,7 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 		switch spec.Model.ID {
 		case "seedance-2.5", "seedance-2-5-flash", "seedance-2.5-draft", "apimart-zoe":
 			body["omni_reference_task_type"] = "reference"
-		case "wan3.0-video", "wan3.0-video-prime":
+		case "wan3.0-video", "wan3.0-video-prime", "Omni-Flash-Ext":
 			body["generation_type"] = "reference"
 		}
 	}
@@ -212,13 +224,25 @@ func (p *plugin) prepare(request aigc.Request) (modelSpec, map[string]any, []att
 	if spec.Upstream == "wan2.7-r2v" && (len(files) == 0 || len(files) > 5) {
 		return spec, nil, nil, errors.New("Wan 2.7 reference mode needs one to five references in total")
 	}
-	if spec.Upstream == "Omni-Flash-Ext" && counts[0] == 2 {
+	if spec.Upstream == "gemini-omni-1.1-flash-ext" && counts[0] == 2 {
 		return spec, nil, nil, errors.New("Omni Flash Ext accepts one or three image references")
 	}
 	if spec.Upstream == "grok-imagine-2.0-ext" && len(files) > 0 {
 		if count, ok := body["n"].(float64); ok && count != 1 {
 			return spec, nil, nil, errors.New("Grok Imagine 2.0 Ext accepts one output when using references")
 		}
+	}
+	if spec.Model.ID == "grok-imagine-1.5-video-apimart-frames" && len(files) > 1 && body["resolution"] == "1080p" {
+		return spec, nil, nil, errors.New("Grok Imagine 1.5 APIMart first and last frames support 480p or 720p")
+	}
+	if spec.Model.ID == "pixverse-v6" && len(files) == 1 {
+		if files[0].ref.Role != "first_frame" {
+			return spec, nil, nil, errors.New("PixVerse V6 transition requires both first and last frames")
+		}
+		files[0].ref.Field, files[0].ref.Array = "image_urls", true
+	}
+	if spec.Upstream == "gpt-image-2.6-ext" && len(files) > 0 && (body["output_format"] == "gif" || body["output_format"] == "svg") {
+		return spec, nil, nil, errors.New("APIMart GPT Image 2.6 Ext GIF and SVG accept text only")
 	}
 	if body["output_format"] == "gif" {
 		for _, file := range files {

@@ -70,6 +70,24 @@ Wan 3.0 的多模态入口明确指定参考族，素材按「图1、视频1、�
 
 对于 Seedance 2.5、Kling V4 和 Zoe，普通视频连线默认作为参考素材。视频编辑、视频延长和续写由用户显式选择，适配器发送各自的 APIMart 参数。Vidu Q4 的旧文生 ID 与 Wan 3.0 的旧编辑 ID 仅保留用于旧节点识别。上表列出当前插件接入的方式，Wan 3.0 的文件／链接参考和 Zoe 样片暂未接入。
 
+### 其他模型
+
+| 模型 | 对应 APIMart 入口 |
+| --- | --- |
+| VEO 3.1 | Fast 的文生、帧转视频、参考图，Quality 的文生与帧转视频，Lite 的文生。适配器把旧画布保存的模式转换为接口接受的 `frame` / `reference`。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/veo3/generation) |
+| Seedance 1.0 Pro 与海螺 | 分开呈现文生和图生。Seedance 1.0 Pro Fast 只接首帧，Quality 可接尾帧。海螺 2.3 只接首帧。[Seedance 1.0 Pro](https://docs.apimart.ai/cn/api-reference/videos/doubao/generation) · [海螺 2.3](https://docs.apimart.ai/cn/api-reference/videos/minimax-hailuo-2.3/generation) |
+| SkyReels V4 | 文生、首尾帧及中间帧、多模态参考、拼贴图驱动、单主体声纹同步、视频扩展。适配器发送对应的带标签对象。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/skyreels-v4/generation) |
+| Kling v3 Omni / Video O1 | 文生、首尾帧、参考图、源视频编辑与视频特征参考。视频输入走 `video_list`，素材引用按可灵格式编号。[v3 Omni](https://docs.apimart.ai/cn/api-reference/videos/kling-v3-omni/generation) · [Video O1](https://docs.apimart.ai/cn/api-reference/videos/kling-video-o1/generation) |
+| Wan 2.5 / 2.6 / 2.7 | 区分图生和文生。文生可带背景音频，图生可用驱动音频。Wan 2.7 的视频续写使用独立入口。[Wan 2.5](https://docs.apimart.ai/cn/api-reference/videos/wan2.5/generation) · [Wan 2.6](https://docs.apimart.ai/cn/api-reference/videos/wan2.6/generation) · [Wan 2.7](https://docs.apimart.ai/cn/api-reference/videos/wan2.7/generation) |
+| Vidu Q3 | Pro / Turbo 支持文生和图生。标准版及 Mix 使用参考生视频，要求参考图。[Pro / Turbo](https://docs.apimart.ai/cn/api-reference/videos/vidu-q3-pro/generation) · [标准版与 Mix](https://docs.apimart.ai/cn/api-reference/videos/vidu-q3/generation) |
+| Grok Imagine 1.5 Video | 文生、参考图、图生（首帧或首尾帧）、首帧加参考图。同一执行家族提交到 APIMart 文档所用的 Ext 模型，保留旧画布 ID。[APIMart 文档](https://docs.apimart.ai/cn/api-reference/videos/grok-imagine/generation) |
+| PixVerse V6 | 文生、单图、首尾帧过渡、多参考图融合，以及从已绑定任务续写。V6 Max 提供文生和单图。[V6](https://docs.apimart.ai/cn/api-reference/videos/pixverse-v6/generation) · [V6 Max](https://docs.apimart.ai/cn/api-reference/videos/pixverse-v6-max/generation) |
+| Gemini Omni | 依档位提供文生、首帧或首尾帧、参考、视频编辑与续写。1.1 Flash 的编辑和续写使用 `metadata.task`，1.2 Flash 系列使用 `omni_reference_task_type`。[1.1 Flash](https://docs.apimart.ai/cn/api-reference/videos/gemini-omni-1.1-flash/generation) · [1.2 Flash](https://docs.apimart.ai/cn/api-reference/videos/gemini-omni-1.2-flash/generation) · [1.2 Flash Ext](https://docs.apimart.ai/cn/api-reference/videos/gemini-omni-1.2-flash-ext/generation) |
+
+图像系列在同一执行模型中区分文生图与参考图生成。GPT Image 等模型的蒙版继续作为图像编辑的专用输入角色。可灵长图按 `skill` 分电商详情与网页设计，网页模式可指定风格图和主体图。Suno 的灵感、自定义、参考音频创作、上传翻唱、上传续写和音效沿用各自的字段或接口。[GPT Image 2.6](https://docs.apimart.ai/cn/api-reference/images/gpt-image-2.6/generation) · [可灵长图](https://docs.apimart.ai/cn/api-reference/images/kling-v4-long-image/generation) · [Suno](https://docs.apimart.ai/cn/api-reference/audios/suno/overview)
+
+公开文档未列出模式契约的旧兼容型号保留原接入。主体多图分组、指定中间帧时刻、Wan 文件或链接输入，以及 Midjourney 和 Suno 的部分原任务编辑操作仍需单独接入。
+
 ## 从原任务续作
 
 - 选择成功的 MiniMax H3 768P 版本，点击参数按钮旁的「升为 2K」创建续作节点。支持普通生成及首尾帧，沿用上游原任务的内容和参考。[H3 Regeneration 文档](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/regeneration)

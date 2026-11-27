@@ -80,6 +80,26 @@ func (p *plugin) doRequest(ctx context.Context, method, path, key, contentType s
 	return resp, nil
 }
 
+func referenceValue(ref reference, url string, ordinal int) (any, string) {
+	switch ref.Field {
+	case "ref_images":
+		tag := fmt.Sprintf("@Image%d", ordinal)
+		return map[string]any{"tag": tag, "type": ref.ItemRole, "image_urls": []string{url}}, tag
+	case "ref_videos":
+		tag := fmt.Sprintf("@Video%d", ordinal)
+		return map[string]string{"tag": tag, "type": ref.ItemRole, "video_url": url}, tag
+	case "mid_frame_images":
+		tag := fmt.Sprintf("@Image%d", ordinal)
+		return map[string]any{"tag": tag, "image_url": url, "time_stamp": -1}, tag
+	case "video_list":
+		return map[string]string{"video_url": url, "refer_type": ref.ItemRole, "keep_original_sound": "no"}, ""
+	}
+	if ref.ItemRole != "" {
+		return map[string]string{"url": url, "role": ref.ItemRole}, ""
+	}
+	return url, ""
+}
+
 func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint func(aigc.Result)) (aigc.Result, error) {
 	var empty aigc.Result
 	key := request.Secrets[secret]
@@ -105,11 +125,24 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 		return empty, err
 	}
 	grouped := map[string][]any{}
+	ordinals := map[string]int{}
+	var actorVoice string
 	for i, file := range files {
-		mediaURL := urls[i]
-		var value any = mediaURL
-		if file.ref.ItemRole != "" {
-			value = map[string]string{"url": mediaURL, "role": file.ref.ItemRole}
+		if file.ref.Field == "ref_images.audio_url" {
+			actorVoice = urls[i]
+			continue
+		}
+		ordinals[file.ref.Kind]++
+		value, tag := referenceValue(file.ref, urls[i], ordinals[file.ref.Kind])
+		if tag != "" {
+			prompt, _ := body["prompt"].(string)
+			if file.ref.Field == "ref_images" && file.ref.Role == "subject_image" {
+				prompt = strings.ReplaceAll(prompt, "@Audio1", tag)
+				body["prompt"] = prompt
+			}
+			if !strings.Contains(prompt, tag) {
+				body["prompt"] = strings.TrimSpace(prompt + " " + tag)
+			}
 		}
 		if file.ref.Array {
 			grouped[file.ref.Field] = append(grouped[file.ref.Field], value)
@@ -120,6 +153,13 @@ func (p *plugin) Execute(ctx context.Context, request aigc.Request, checkpoint f
 				body[file.ref.Field] = value
 			}
 		}
+	}
+	if actorVoice != "" {
+		images := grouped["ref_images"]
+		if len(images) != 1 {
+			return empty, errors.New("a SkyReels voice requires one reference subject")
+		}
+		images[0].(map[string]any)["audio_url"] = actorVoice
 	}
 	for field, values := range grouped {
 		body[field] = values

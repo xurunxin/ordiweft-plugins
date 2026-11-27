@@ -10,11 +10,13 @@ import (
 // modePresentation captures choices documented by the APIMart endpoint. Input
 // ranges still come from the adapter's reference fields.
 type modePresentation struct {
-	Intent     string `json:"intent"`
-	Label      string `json:"label"`
-	TextLabel  string `json:"textLabel,omitempty"`
-	MinInputs  int    `json:"minInputs,omitempty"`
-	ManualOnly bool   `json:"manualOnly,omitempty"`
+	Intent         string `json:"intent"`
+	Label          string `json:"label"`
+	TextLabel      string `json:"textLabel,omitempty"`
+	MinInputs      int    `json:"minInputs,omitempty"`
+	ManualOnly     bool   `json:"manualOnly,omitempty"`
+	TextAudioMax   int    `json:"textAudioMax,omitempty"`
+	MediaImagesMin int    `json:"mediaImagesMin,omitempty"`
 }
 
 func applyGenerationModes(catalog []modelSpec) {
@@ -107,6 +109,7 @@ func generationMode(spec modelSpec) aigc.ModelGenerationMode {
 	if declared := spec.Presentation; declared != nil {
 		mode.Intent, mode.Label, mode.TextLabel = declared.Intent, declared.Label, declared.TextLabel
 		mode.MinInputs, mode.ManualOnly = declared.MinInputs, declared.ManualOnly
+		mode.TextAudioMax, mode.MediaImagesMin = declared.TextAudioMax, declared.MediaImagesMin
 	}
 	return mode
 }
