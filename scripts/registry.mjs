@@ -55,11 +55,11 @@ async function repository(){
   const channelProfile = maintainedInRepository && publisher === 'ordiweft-migrations' &&
    (['tapnow','tapnow-web'].includes(name) && recipe.source.path === 'native/'+name ||
     ['breeze-tts-api','breeze-tts-local'].includes(name) && recipe.source.path === 'native/breeze-tts' ||
-    name === 'higgsfield' && recipe.source.path === 'native/higgsfield')
+    ['higgsfield','apimart'].includes(name) && recipe.source.path === 'native/'+name)
   const comfyLibrary = maintainedInRepository && recipe.packageId === 'ordiweft-migrations/comfyui' && recipe.source.path === 'native/comfyui'
   requireValue((hostExample||bailianSource||goAdapterSource||channelProfile||comfyLibrary)&&/^[a-f0-9]{40}$/.test(recipe.source.commit),'Unpinned source recipe')
   const source=await anchored(`plugins/${key}/source`)
-  const descriptor=JSON.parse((await regular(path.join(source,'release.json'),256<<10)).toString('utf8'))
+  const descriptor=JSON.parse((await regular(path.join(source,'release.json'),1<<20)).toString('utf8'))
   requireValue(descriptor.packageId===recipe.packageId&&descriptor.version===version&&descriptor.license==='Apache-2.0','Recipe and package differ')
   if(bailianSource){
    const executable=recipe.source.path==='executors/dashscope'
@@ -72,7 +72,7 @@ async function repository(){
     /^[a-f0-9]{40}$/.test(build.sdkCommit)&&build.target==='linux/amd64'&&build.cgo===false,'Go adapter build provenance differs')
   }
   if (channelProfile) {
-   const profile = {'native/breeze-tts':'breeze-stdio-v1','native/higgsfield':'higgsfield-stdio-v1'}[recipe.source.path] ?? 'tapnow-host-v1'
+   const profile = {'native/breeze-tts':'breeze-stdio-v1','native/higgsfield':'higgsfield-stdio-v1','native/apimart':'apimart-stdio-v1'}[recipe.source.path] ?? 'tapnow-host-v1'
    requireValue(descriptor.runtime === 'data' && descriptor.generation?.id === name &&
     descriptor.providerProfile === profile, 'Channel profile contract differs')
    if (profile !== 'tapnow-host-v1') {

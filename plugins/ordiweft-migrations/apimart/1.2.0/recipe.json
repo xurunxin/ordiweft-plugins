@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "packageId": "ordiweft-migrations/apimart",
+  "releaseVersion": "1.2.0",
+  "mode": "portable-pack",
+  "source": {
+    "repository": "https://github.com/xurunxin/ordiweft-plugins",
+    "commit": "21aa506d89b03412afff261cad64636fadf31147",
+    "path": "native/apimart"
+  }
+}

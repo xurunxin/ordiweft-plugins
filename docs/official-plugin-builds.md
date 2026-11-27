@@ -21,6 +21,7 @@
 | 百炼万相 2.7 | [dashscope-wan](../examples/plugin-go/dashscope-wan) | `ordiweft-examples/dashscope-wan` | 百炼区域 API 连接和受审 OSS 上传策略 |
 | 百炼完整渠道 | [源码](../native/dashscope) · [发行配方](../plugins/ordiweft-migrations/dashscope/1.1.0/recipe.json) | `ordiweft-migrations/dashscope` | 支持 `dashscope-exec-v1` 的宿主、原工作空间与账号配置 |
 | Higgsfield | [源码](../native/higgsfield) · [发行配方](../plugins/ordiweft-migrations/higgsfield/1.1.0/recipe.json) | `ordiweft-migrations/higgsfield` | 支持 `higgsfield-stdio-v1` 并记录该发行摘要的宿主、Higgsfield API 凭据 |
+| APIMart | [源码与安装说明](../native/apimart/README.md) · [1.2.0 发行配方](../plugins/ordiweft-migrations/apimart/1.2.0/recipe.json) | `ordiweft-migrations/apimart` | 支持 `apimart-stdio-v1` 并记录该发行摘要的宿主、APIMart API Key、公开黄金价查询 |
 
 ## Go 适配器
 
@@ -60,6 +61,8 @@ Fish Audio `1.1.0` 的[固定配方](../plugins/ordiweft-migrations/fish-audio/1
 - Fish Audio 的新候选位于上表的源码目录，保留 MsgPack 合成请求、原音色绑定及宿主音色目录。
 
 Higgsfield 以 `@daoxialiuren/ordiweft-higgsfield` 分发 Linux amd64 和 Windows amd64 预构建适配器。插件中心校验发行摘要并选取当前平台程序。部署侧只需在激活后配置渠道凭据。构建、权限边界和模型验收见 [Higgsfield 维护说明](../native/higgsfield/README.md)。
+
+APIMart 使用 `@daoxialiuren/ordiweft-apimart` 分发 Linux amd64 与 Windows amd64 适配器。其发行清单固定两个程序和完整模型声明。宿主把上传回执保存在独立于发行目录的渠道状态目录。
 
 ## Node 适配器
 
