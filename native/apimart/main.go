@@ -20,7 +20,7 @@ import (
 
 const (
 	provider = "apimart"
-	version  = "1.2.0"
+	version  = "1.3.0"
 	secret   = "API_KEY"
 	api      = "https://api.apimart.ai"
 )
@@ -84,10 +84,13 @@ func loadPlugin() (*plugin, error) {
 			},
 		},
 	}
-	for _, spec := range catalog {
-		if spec.Upstream == "" {
-			spec.Upstream = spec.Model.ID
+	for i := range catalog {
+		if catalog[i].Upstream == "" {
+			catalog[i].Upstream = catalog[i].Model.ID
 		}
+	}
+	applyGenerationModes(catalog)
+	for _, spec := range catalog {
 		p.manifest.Models = append(p.manifest.Models, spec.Model)
 		p.models[spec.Model.ID] = spec
 	}

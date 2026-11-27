@@ -64,6 +64,8 @@ Higgsfield 以 `@daoxialiuren/ordiweft-higgsfield` 分发 Linux amd64 和 Window
 
 APIMart 使用 `@daoxialiuren/ordiweft-apimart` 分发 Linux amd64 与 Windows amd64 适配器。其发行清单固定两个程序和完整模型声明。宿主把上传回执保存在独立于发行目录的渠道状态目录。
 
+1.3.0 的构建需使用包含 `aigc.ModelGenerationMode` 的 Go SDK 导出。宿主通过该声明合并模型菜单并判定自动模式，定价、提交与原任务恢复继续按具体模型 ID 处理。线上安装仍需为该版本审查并登记正式制品摘要。
+
 ## Node 适配器
 
 使用 Node 24.20.0，并按各项目锁文件准备原 SDK、私有维护工具归档及 TypeScript 缓存。归档由维护者单独取得。按包 README 在隔离构建目录执行 `npm ci --offline --ignore-scripts --no-audit --no-fund`、`npm test` 和 `npm run build`，再用可信 CLI 打包。MiniMax 和即梦渠道进程由部署者独立安装和管理。

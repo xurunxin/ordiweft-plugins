@@ -2,6 +2,8 @@
 
 APIMart 接入 Ordiweft 的图像、视频、音乐、配音和语音转录入口。参数由插件清单驱动画布原有控件。参考图、首尾帧和多模态素材通过现有画布输入提供。
 
+从 1.3.0 起，支持 `generationMode` 清单字段的宿主在模型菜单合并同一上游模型的入口。参数面板按素材自动选择模式，也可手动固定首尾帧、编辑、续写或草稿。草稿和需要明确意图的音乐操作须手动选择。每种模式保留原模型 ID、参数及定价。
+
 ## 安装
 
 官方 npm 包为 `@daoxialiuren/ordiweft-apimart`。使用支持 `apimart-stdio-v1` 且固定该发行摘要的 Ordiweft 宿主，在插件中心安装并激活。将插件的 `API_KEY` 映射到宿主服务环境中的 `APIMART_API_KEY`，然后在「渠道与模型」启用 APIMart。
@@ -37,7 +39,7 @@ APIMart 接入 Ordiweft 的图像、视频、音乐、配音和语音转录入�
 
 ## 从原任务续作
 
-- 选择成功的 MiniMax H3 768P 版本，在版本面板点击「升为 2K」创建再生成节点。支持普通生成及首尾帧，沿用上游原任务的内容和参考。[H3 Regeneration 文档](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/regeneration)
+- 选择成功的 MiniMax H3 768P 版本，点击参数按钮旁的「升为 2K」创建续作节点。支持普通生成及首尾帧，沿用上游原任务的内容和参考。[H3 Regeneration 文档](https://docs.apimart.ai/cn/api-reference/videos/minimax-h3/regeneration)
 - 用 Seedance 2.5 的 480p 草稿或首尾帧草稿模式生成预览，选择版本并创建 1080p 正式片。任务自上游创建起 3 天内有效，正式片沿用原内容、时长、画幅和参考。[Seedance 2.5 文档](https://docs.apimart.ai/cn/api-reference/videos/seedance-2-5/generation)
 
 创建续作节点只保存来源和设置。在新节点中点击生成才提交计费请求。宿主要求原任务归属当前用户、原版本仍在同一画布且凭据一致。早期插件回执缺少这项证明。黄金价报价使用原版本时长及已测量的参考视频，H3 计入超过 5 张的参考图，Seedance 按对应 Token 档位呈现估算。所需计量缺失时显示待核实，实扣保留 APIMart 回执。
