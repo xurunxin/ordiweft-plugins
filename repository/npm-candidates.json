@@ -109,6 +109,15 @@
       "target": "packages/ordiweft-migrations/higgsfield/1.1.0/518dbd5f81e1d2e1162b2a6a5fc557f6a6b46fc53564fd9ede7c2627be7b1ee9.zip",
       "sha256": "33ed43fe2aebb6d152540bfd61b0688298ba59032f964bff66b2c8dd6a7acba4",
       "bytes": 6737762
+    },
+    {
+      "packageId": "ordiweft-migrations/apimart",
+      "version": "1.2.0",
+      "npmPackage": "@daoxialiuren/ordiweft-apimart",
+      "releaseDigest": "e74d4acbcd6f504c526f98800408fe0b0e74a2c46003d4feb777cef48a8a0ff2",
+      "target": "packages/ordiweft-migrations/apimart/1.2.0/e74d4acbcd6f504c526f98800408fe0b0e74a2c46003d4feb777cef48a8a0ff2.zip",
+      "sha256": "cc41ff0533e3c848dbc474a39b06c88debf5dfd7c4a27b2b7270b18345ebcd86",
+      "bytes": 6566056
     }
   ]
 }

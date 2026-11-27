@@ -113,6 +113,7 @@
     "ordiweft-migrations/tapnow/1.0.0",
     "ordiweft-migrations/tapnow-web/1.0.0",
     "ordiweft-migrations/comfyui/1.0.0",
-    "ordiweft-migrations/higgsfield/1.1.0"
+    "ordiweft-migrations/higgsfield/1.1.0",
+    "ordiweft-migrations/apimart/1.2.0"
   ]
 }

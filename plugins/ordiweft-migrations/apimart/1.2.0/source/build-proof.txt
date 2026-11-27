@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "sourceCommit": "21aa506d89b03412afff261cad64636fadf31147",
+  "sdkCommit": "c5d9474d2d7a171fd068303b1c3874078d17cdac",
+  "goVersion": "1.27.0",
+  "adapters": [
+    {
+      "path": "bin/linux-amd64",
+      "bytes": 7594108,
+      "sha256": "6d3ddb1b5a86d01f5b61c3fe8498df387e6158f2408dec0dca85e106dab0fbb6"
+    },
+    {
+      "path": "bin/windows-amd64.exe",
+      "bytes": 7806976,
+      "sha256": "f2b86758525b2077bf2c39d61a8892da94d3de02fcee39d9a083719e967e2780"
+    }
+  ]
+}
